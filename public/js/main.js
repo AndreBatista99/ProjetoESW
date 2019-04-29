@@ -171,3 +171,15 @@ jQuery(function($) {
 		$('.modal:visible').each(centerModal);
 	});
 });
+function changeMode(mode){
+	document.getElementById("entradaSaida").value=mode;
+	document.getElementById("entradaSaida").textContent=mode;	
+}
+
+function RegistarEntradaSaida(){
+	nome = document.getElementById("EntradaSaidaNome").value;
+	entradaSaida = document.getElementById("entradaSaida").value;
+	alert('System under development');
+	alert('nome:'+nome);
+	alert('entradaSaida:'+ entradaSaida);
+}

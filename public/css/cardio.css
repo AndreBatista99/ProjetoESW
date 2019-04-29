@@ -1110,6 +1110,52 @@ footer .social-footer li:hover a {
 	}
 }
 
+/* */
+
+.dropdownDiv {
+	text-align: left;
+}
+
+.dropdownSelect:after {
+	content: '\f0d7';
+	font-family: 'FontAwesome';
+	display: inline-block;
+	float: right;
+	color: white;
+}
+
+.dropdownDiv .dropdown-menu {
+	top: 65px;
+	width: 100%;
+	padding: 0;
+	border: 2px solid white;
+	border-top: 0;
+	border-radius: 0;
+	background: white;
+	box-shadow: none;
+}
+
+.dropdownDiv .dropdown-menu li {
+	font-size: 16px;
+	width: 100%;
+	background: transparent;
+}
+
+.dropdownDiv .dropdown-menu li a {
+	width: 100%;
+	padding: 15px 30px;
+	color: #00a8ff;
+}
+
+.dropdownDiv .dropdown-menu li:hover a {
+	color: #fff;
+	background: #00a8ff;
+}
+
+
+
+/*  */
+
 
 
 
