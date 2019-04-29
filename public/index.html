@@ -90,14 +90,27 @@
 				<form action="" class="popup-form">
 					<input type="text" class="form-control form-white" placeholder="Número de aluno">
 					<input type="password" class="form-control form-white" placeholder="Password">
-					<div class="checkbox-holder text-left">
-						<button type="button" class="btn btn-submit">Utilizar Cartão</button>
-					</div>
+					<button type="button" class="btn btn-submit">Utilizar Cartão</button>
+					<button type="button" data-toggle="modal" data-target="#modal2" class="close-link btn btn-submit">Recuperar Pass</button>
 					<button type="submit" class="btn btn-submit">Entrar</button>
 				</form>
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content modal-popup">
+				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
+				<h3 class="white">Recuperar password</h3>
+				<form action="" class="popup-form">
+					<input type="text" class="form-control form-white" placeholder="Número de aluno">
+					<input type="text" class="form-control form-white" placeholder="BI">
+					<button type="submit" class="btn btn-submit">Entrar</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
 	<!-- Holder for mobile navigation -->
 	<div class="mobile-nav">
 		<ul>
