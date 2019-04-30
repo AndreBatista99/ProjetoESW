@@ -4,6 +4,7 @@ body {
 	font-size: 14px;
 	overflow-x: hidden;
 	color: #2a3237;
+	padding-right: 0px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -64,15 +65,15 @@ h6 {
 }
 
 h1 {
-	font-size: 60px;
+	font-size: 63px;
 }
 
 h2 {
-	font-size: 48px;
+	font-size: 78px;
 }
 
 h3 {
-	font-size: 30px;
+	font-size: 33px;
 }
 
 h4 {
@@ -724,7 +725,7 @@ footer .social-footer li:hover a {
 /* Form Control */
 
 .form-control {
-	font-size: 18px;
+	font-size: 25px;
 	position: relative;
 	left: 0;
 	height: auto;
@@ -1125,8 +1126,8 @@ footer .social-footer li:hover a {
 }
 
 .dropdownDiv .dropdown-menu {
-	top: 65px;
-	width: 100%;
+	top: 32px;
+	width: 30%;
 	padding: 0;
 	border: 2px solid white;
 	border-top: 0;
@@ -1145,14 +1146,34 @@ footer .social-footer li:hover a {
 	width: 100%;
 	padding: 15px 30px;
 	color: #00a8ff;
+	font-size:29px;
 }
 
 .dropdownDiv .dropdown-menu li:hover a {
 	color: #fff;
 	background: #00a8ff;
+	font-weight: bold;
+	
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
 }
 
-
+.navbar-nav > li > a{
+	font-size:18px;
+}
+.navbar-nav > li > a:hover{
+	
+	font-size:21px;
+	font-weight: bold;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+.BigButton{
+	font-size:35px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
 
 /*  */
 
