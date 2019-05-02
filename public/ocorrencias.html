@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Requisições</title>
+	<title>Ocorrências</title>
 	<meta name="description" content="Cardio is a free one page template made exclusively for Codrops by Luka Cvetinovic" />
 	<meta name="keywords" content="html template, css, free, one page, gym, fitness, web design" />
 	<meta name="author" content="Luka Cvetinovic for Codrops" />
@@ -19,6 +19,7 @@
 	<meta name="msapplication-TileColor" content="#00a8ff">
 	<meta name="msapplication-config" content="img/favicons/browserconfig.xml">
 	<meta name="theme-color" content="#ffffff">
+	
 	<!-- Normalize -->
 	<link rel="stylesheet" type="text/css" href="css/normalize.css">
 	<!-- Bootstrap -->
@@ -29,10 +30,12 @@
 	<link rel="stylesheet" type="text/css" href="css/animate.css">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.1.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 	<!-- Elegant Icons -->
 	<link rel="stylesheet" type="text/css" href="fonts/eleganticons/et-icons.css">
 	<!-- Main style -->
 	<link rel="stylesheet" type="text/css" href="css/cardio.css">
+	
 </head>
 
 <body>
@@ -55,9 +58,9 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right main-nav">
 					<li><a href="entradas.html">Entradas</a></li>
-					<li><a class="active" href="requisicoesMenu.html">Requisições</a></li>
-					<li><a href="eventos.html">Eventos</a></li>
-					<li><a href="ocorrencias.html">Ocorrências</a></li>
+					<li><a href="requisicoesMenu.html">Requisições</a></li>
+					<li><a  href="eventos.html">Eventos</a></li>
+					<li><a class="active" href="ocorrencias.html">Ocorrências</a></li>
 					<li><a href="gestaoMenu.html">Gestão</a></li>
 					<li><a href="#intro">Contactos</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#modal1" class="btn btn-blue">ENTRAR</a></li>
@@ -70,22 +73,55 @@
 	<header id="intro">
 		<div class="container" style="padding-top:250px">
 			<div class="row">
-				<div class="col-md-12 text-center">
-					<h1 class="white typed">Requisições</h1>
+				<div class="col-md-12 text-center BigTitle" >
+					<h1 class="white typed">Ocorrências</h1>
 					<span class="typed-cursor">|</span>
 				</div>
-				
-				<div class="col-md-12 text-center">
-					<h3 class="light white">O que pretende fazer?</h3><br>
-					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
+				<div class="col-md-12">
+					<div class="col-md-3 text-left" style="padding:8px">
+						<button type="button" data-toggle="modal" data-target="#modal-CriarOcorrencia" style="margin:0px;" class="btn btn-primary BigButton" onclick=""><i class="fas fa-plus" style="padding-right:10px"></i>Criar</button>
 					</div>
-					<div class="col-lg-6 col-md-8 col-sm-12 text-center">
-						<button type="button" class="btn btn-button BigButton" onclick="">Requisitar</button>
-						<button type="button" class="btn btn-button BigButton" onclick="">Entregar</button>
 					
+					<div class="col-md-3 text-left">
 					</div>
-					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
+					
+					<div class="col-md-4 text-left" style="padding-top:8px">
+						<input type="text" class="search form-control" placeholder="O que procura?">
 					</div>
+				
+					<div class="col-md-2 text-left" style="padding:0px;">
+						<span class="counter pull-left"  ></span>
+					</div>
+					<table class="table table-bordered  results" id="TableList" title="Ocorrência">
+						<thead >
+						<tr>
+							<th>#</th>
+							<th style="text-align: center;" class="col-md-4 col-xs-4">Descrição</th>
+							<th style="text-align: center;" class="col-md-2 col-xs-2">Participante</th>
+							<th style="text-align: center;" class="col-md-3 col-xs-3">Local</th>
+							<th style="text-align: center;" class="col-md-3 col-xs-3">Data</th>
+						</tr>
+						<tr class="warning no-result" style="text-align: center">
+							<td colspan="5" style="background-color: rgb(12, 31, 31)"><i class="fa fa-warning"></i> Sem resultados</td>
+						</tr>
+						</thead>
+						<tbody>
+						<tr>
+							<th scope="row">1</th>
+							<td>Está sempre suja</td>
+							<td>Matilde Limpezas</td>
+							<td>Sala do Brightstart</td>
+							<td>15-Maio-2019  9H</td>
+						</tr>
+						<tr>
+							<th scope="row">2</th>
+							<td>Barulho exessivo na biblioteca</td>
+							<td>João Bibliotecário</td>
+							<td>Biblioteca EST</td>
+							<td>16-Maio-2019  12H</td>
+						</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
@@ -105,6 +141,7 @@
 			</div>
 		</div>
 	</div>
+	
 	<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content modal-popup">
@@ -118,6 +155,30 @@
 			</div>
 		</div>
 	</div>
+
+	<!--Criar Ocorrência-->
+	<div class="modal fade" id="modal-CriarOcorrencia" tabindex="-1" role="dialog" aria-labelledby="Criar Ocorrência" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content modal-popup">
+					<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
+					<h3 class="white">Criar Ocorrência</h3>
+					<form action="" class="popup-form">
+						<input type="text" id="Data" class="form-control form-white" readonly>
+						<script>
+							var d = new Date();
+							let today = d.toISOString().substr(0, 10);
+							var hours = d.getHours();
+							var minutes = d.getMinutes();
+							document.getElementById("Data").value = today+'  '+hours+':'+minutes;	
+						</script>
+						<input type="text" id="Participante" class="form-control form-white" placeholder="Participante">
+						<input type="text" id="Local" class="form-control form-white" placeholder="Local">
+						<textarea class="form-control form-white" id="Descricao" placeholder="Descrição"></textarea>
+						<button type="submit" class="btn btn-submit BigButton">Criar</button>
+					</form>
+				</div>
+			</div>
+		</div>
 
 	<!-- Holder for mobile navigation -->
 	<div class="mobile-nav">

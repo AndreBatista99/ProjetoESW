@@ -1175,9 +1175,41 @@ footer .social-footer li:hover a {
 	letter-spacing: 2px;
 }
 
+.results tr[visible='false'],
+.no-result{
+  display:none;
+}
+
+.results tr[visible='true']{
+  display:table-row;
+}
+.results{
+	font-size:25px;
+}
+.results.th {
+	text-align: center;
+}
+.counter{
+  padding:8px; 
+  color:#ccc;
+  font-size:25px;
+}
+.search{
+	padding:22.5px;
+}
+.BigTitle{
+	margin-bottom:40px;
+}
+
+.hoverBlue:hover{
+	color:rgb(53, 147, 255);
+	font-weight: bold;
+	/*font-size:1.2em;*/
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	cursor:pointer;
+}
 /*  */
-
-
 
 
 
