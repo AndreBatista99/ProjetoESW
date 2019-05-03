@@ -23,7 +23,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   var userName = 'Tiago Mestre';
-  console.log(req.body.numero);
+  console.log(req.body.num);
   User.find({ '_name': userName }, '_name _pwd', (err, res) => {//{'_name':'Tiago Mestre'},'_name',
     if (err) {
       res.json('Erro: ' + err);

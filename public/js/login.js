@@ -1,7 +1,7 @@
 function clique() {
    
     var name = document.getElementById("LoginStudentNumber").value;
-    var json = {numero:name};
+    var json = {num:name};
     alert(name);
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
@@ -18,7 +18,7 @@ function clique() {
     }
 
     xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(json));
+    xhr.send(JSON.stringify({json}));
 
 };
 
