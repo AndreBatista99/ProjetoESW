@@ -70,23 +70,66 @@
 	<header id="intro">
 		<div class="container" style="padding-top:250px">
 			<div class="row">
-				<div class="col-md-12 text-center">
+				<div class="col-md-12 text-center" style="padding-bottom:50px">
 					<h1 class="white typed">Contactos</h1>
 					<span class="typed-cursor">|</span>
 				</div>
+
 				
-				<div class="col-md-12 text-center">
-					<h3 class="light white">O que pretende gerir?</h3><br>
-					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
+				<div class="col-md-12">
+					<div class="col-md-6">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3121.50689610856!2d-8.84097268466064!3d38.522081979630265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1937b2c60f8f47%3A0xa0df10aa0caa2efa!2sInstituto+Polit%C3%A9cnico+de+Set%C3%BAbal!5e0!3m2!1spt-PT!2spt!4v1556878428715!5m2!1spt-PT!2spt" width="555" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
 					</div>
-					<div class="col-lg-6 col-md-8 col-sm-12 text-center">
-						<button type="button" class="btn btn-button BigButton"  onclick="window.open('gestaoMateriais.html');">Materiais</button>
-						<button type="button" class="btn btn-button BigButton" onclick="">Salas / Chaves</button>
+					<div class="col-md-6" style="padding-left: 50px">
+						<h3 class="light white">Morada</h3>
+						<h4 class="light white">Campus do IPS, Estefanilha 2910-761 SETÚBAL </h4>
+						<br/>
+						<h3 class="light white">Contacto Telefonico</h3>
+						<h4 class="light white">265790000</h4>
+						<br/>
+						<h3 class="light white">Email de Assuntos gerais</h3>
+						<h4 class="light white"><a href="mailto:info@estsetubal.ips.pt">info@estsetubal.ips.pt</a></h4>
+					</div>
 					
-					</div>
-					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
+				</div>
+
+				
+					
+					
+
+
+			<div class="col-md-12 " style="padding-top: 50px">
+				<div class="col-md-4 multi-horizontal" data-for="name">
+					<div class="form-group">
+						<label class="form-control-label mbr-fonts-style display-7" for="name-form1-4">Name</label>
+						<input type="text" class="form-control" name="name" data-form-field="Name" required="" id="name-form1-4">
 					</div>
 				</div>
+				<div class="col-md-4 multi-horizontal" data-for="email">
+					<div class="form-group">
+						<label class="form-control-label mbr-fonts-style display-7" for="email-form1-4">Email</label>
+						<input type="email" class="form-control" name="email" data-form-field="Email" required="" id="email-form1-4">
+					</div>
+				</div>
+				<div class="col-md-4 multi-horizontal" data-for="phone">
+					<div class="form-group">
+						<label class="form-control-label mbr-fonts-style display-7" for="phone-form1-4">Phone</label>
+						<input type="tel" class="form-control" name="phone" data-form-field="Phone" id="phone-form1-4">
+					</div>
+				</div>
+
+				<div class="col-md-12 multi-horizontal" data-for="phone">
+					<div class="form-group" data-for="message">
+						<label class="form-control-label mbr-fonts-style display-7" for="message-form1-4">Message</label>
+						<textarea type="text" class="form-control" name="message" rows="7" data-form-field="Message" id="message-form1-4"></textarea>
+					</div>
+				</div>
+
+				<div class="col-md-12 text-center">
+					<button type="button" data-toggle="modal" data-target="#modal-EnviarFormulario" style="margin:0px;" class="btn btn-primary BigButton text-center" onclick="">Enviar</button>
+				</div>
+			</div>
+				
 			</div>
 		</div>
 	</header>
