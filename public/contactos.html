@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Entradas</title>
+	<title>Contactos</title>
 	<meta name="description" content="Cardio is a free one page template made exclusively for Codrops by Luka Cvetinovic" />
 	<meta name="keywords" content="html template, css, free, one page, gym, fitness, web design" />
 	<meta name="author" content="Luka Cvetinovic for Codrops" />
@@ -54,12 +54,12 @@
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right main-nav">
-					<li><a class="active" href="entradas.html">Entradas</a></li>
-					<li><a href="requisicoesMenu.html" >Requisições</a></li>
+					<li><a href="entradas.html">Entradas</a></li>
+					<li><a href="requisicoesMenu.html">Requisições</a></li>
 					<li><a href="eventos.html">Eventos</a></li>
 					<li><a href="ocorrencias.html">Ocorrências</a></li>
 					<li><a href="gestaoMenu.html">Gestão</a></li>
-					<li><a href="contactos.html">Contactos</a></li>
+					<li><a class="active" href="contactos.html">Contactos</a></li>
 					<li><a href="#" data-toggle="modal" data-target="#modal1" class="btn btn-blue">ENTRAR</a></li>
 				</ul>
 			</div>
@@ -71,28 +71,17 @@
 		<div class="container" style="padding-top:250px">
 			<div class="row">
 				<div class="col-md-12 text-center">
-					<h1 class="white typed">Entradas</h1>
+					<h1 class="white typed">Contactos</h1>
 					<span class="typed-cursor">|</span>
 				</div>
 				
 				<div class="col-md-12 text-center">
-					<h3 class="light white">Se não tiver as credênciais inseridas,<br> insira o seu nome</h3><br>
+					<h3 class="light white">O que pretende gerir?</h3><br>
 					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
 					</div>
 					<div class="col-lg-6 col-md-8 col-sm-12 text-center">
-						<input type="text" id="EntradaSaidaNome" style="text-align:center" class="form-control form-white" placeholder="Nome"><br>
-						
-						<div class="dropdownDiv">
-							<button id="entradaSaida" class="form-control form-white dropdownSelect" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Entrada ou Saida
-							</button>
-							<ul class="dropdown-menu animated fadeIn" role="menu" aria-labelledby="entradaSaida">
-								<li class="animated lightSpeedIn"><a onclick="changeMode('Entrada');" href="#">Entrada</a></li>
-								<li class="animated lightSpeedIn"><a onclick="changeMode('Saida');" href="#">Saida</a></li>
-							</ul>
-						</div>
-						
-						<button type="submit" class="btn btn-submit BigButton" onclick="RegistarEntradaSaida();">Registar</button>
+						<button type="button" class="btn btn-button BigButton"  onclick="window.open('gestaoMateriais.html');">Materiais</button>
+						<button type="button" class="btn btn-button BigButton" onclick="">Salas / Chaves</button>
 					
 					</div>
 					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
