@@ -1,3 +1,4 @@
+
 var express = require('express');
 var router = express.Router();
 
@@ -16,28 +17,25 @@ mongoose.connect(mongoDB, { useNewUrlParser: true });
 //Get the default connection
 var db = mongoose.connection;
 
-
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-    router.get('/login', function (req, res) {
-      
-      var userName='Tiago Mestre';
-      User.find({'_name':userName},'_name _pwd',(err, res) => {//{'_name':'Tiago Mestre'},'_name',
-        if (err) {
-          console.log('Erro: ' + err);
-        } else {
-          console.log('Resposta: ' + res[0]._pwd);
-        }
-      });
-
-    // find all athletes who play tennis, selecting the 'name' and 'age' fields
-    // Athlete.find({ 'sport': 'Tennis' }, 'name age', function (err, athletes) {
-    //   if (err) return handleError(err);
-    //   // 'athletes' contains the list of athletes that match the criteria.
-    // })
+/* GET users listing. */
+router.get('/', function (req, res, next) {
+  var userName = 'Tiago Mestre';
+  console.log(req.body.numero);
+  User.find({ '_name': userName }, '_name _pwd', (err, res) => {//{'_name':'Tiago Mestre'},'_name',
+    if (err) {
+      res.json('Erro: ' + err);
+      console.log(err);
+    } else {
+      console.log('Resposta: ' + res[0]._pwd);
+    }
   });
 
+  res.json({ "Message": "ok" });
+
+});
 
 module.exports = router;
 
