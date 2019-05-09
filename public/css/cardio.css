@@ -7,6 +7,11 @@ body {
 	padding-right: 0px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	background-color: rgb(37,45,68);
+	height:100%;
+	width:100%;
+	background: url('../img/header.jpg');
+	background-size: cover;
 }
 
 .parallax {
@@ -65,7 +70,7 @@ h6 {
 }
 
 h1 {
-	font-size: 63px;
+	font-size: 58px;
 }
 
 h2 {
@@ -114,9 +119,8 @@ header {
 	position: relative;
 	width: 100%;
 	color: white;
-	background: rgba(28, 36, 65, 0.93);
-	background: url('../img/header.jpg');
-	background-size: cover;
+	
+	
 }
 
 header .table {
@@ -1208,6 +1212,32 @@ footer .social-footer li:hover a {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 	cursor:pointer;
+}
+
+#dropdownMenuLink:focus{
+
+	background-color: transparent;
+}
+
+.dropdown-menu{
+	background-color:transparent;
+	left:40px;
+}
+
+.dropdown-item{
+
+	background-color:transparent;
+	color: white;
+	
+	
+}
+
+@media (max-width:400px){
+
+	.LogoutMobile{
+		display: none;
+	}
+
 }
 /*  */
 

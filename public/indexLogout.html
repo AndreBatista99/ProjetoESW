@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Entradas</title>
+	<title>Gestão segurança</title>
 	<meta name="description" content="Cardio is a free one page template made exclusively for Codrops by Luka Cvetinovic" />
 	<meta name="keywords" content="html template, css, free, one page, gym, fitness, web design" />
 	<meta name="author" content="Luka Cvetinovic for Codrops" />
@@ -53,49 +53,42 @@
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="nav navbar-nav navbar-right main-nav">
-					<li><a class="active" href="entradas.html">Entradas</a></li>
+				<ul class="active nav navbar-nav navbar-right main-nav">
+					<li><a href="entradas.html">Entradas</a></li>
 					<li><a href="requisicoesMenu.html" >Requisições</a></li>
 					<li><a href="eventos.html">Eventos</a></li>
 					<li><a href="ocorrencias.html">Ocorrências</a></li>
 					<li><a href="gestaoMenu.html">Gestão</a></li>
 					<li><a href="contactos.html">Contactos</a></li>
-					<li><a href="#" data-toggle="modal" data-target="#modal1" class="btn btn-blue">ENTRAR</a></li>
+					<li >
+						<div class="dropdown show">
+							<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+							<div class="dropdown-menu" style="left:0px;" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item" onclick="alert('ola')" >Logout</a>
+							</div>
+						</div>
+					</li>
+					<div class="LogoutMobile">
+						<li>
+							<a class="dropdown-item" onclick="alert('ola')" >Logout</a>
+						</li>
+					</div>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
 		</div>
 		<!-- /.container-fluid -->
 	</nav>
-	<header id="intro">
-		<div class="container" style="padding-top:250px">
-			<div class="row">
-				<div class="col-md-12 text-center">
-					<h1 class="white typed">Entradas</h1>
-					<span class="typed-cursor">|</span>
-				</div>
-				
-				<div class="col-md-12 text-center">
-					<h3 class="light white">Se não tiver as credênciais inseridas,<br> insira o seu nome</h3><br>
-					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
-					</div>
-					<div class="col-lg-6 col-md-8 col-sm-12 text-center">
-						<input type="text" id="EntradaSaidaNome" style="text-align:center" class="form-control form-white" placeholder="Nome"><br>
-						
-						<div class="dropdownDiv">
-							<button id="entradaSaida" class="form-control form-white dropdownSelect" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								Entrada ou Saida
-							</button>
-							<ul class="dropdown-menu animated fadeIn" role="menu" aria-labelledby="entradaSaida">
-								<li class="animated lightSpeedIn"><a onclick="changeMode('Entrada');" href="#">Entrada</a></li>
-								<li class="animated lightSpeedIn"><a onclick="changeMode('Saida');" href="#">Saida</a></li>
-							</ul>
+	<header id="intro" style="width:100%;height:100%">
+		<div class="container">
+			<div class="table"style="margin:0px">
+				<div class="header-text">
+					<div class="row">
+						<div class="col-md-12 text-center">
+							<h3 class="light white">Software de gestão de segurança.</h3>
+							<h1 class="white typed">Simplificar é um processo complicado.</h1>
+							<span class="typed-cursor">|</span>
 						</div>
-						
-						<button type="submit" class="btn btn-submit BigButton" onclick="RegistarEntradaSaida();">Registar</button>
-					
-					</div>
-					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
 					</div>
 				</div>
 			</div>
