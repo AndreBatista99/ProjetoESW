@@ -24,6 +24,7 @@ app.use(bodyParser());
 // app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login',indexRouter.getLogin);
+app.use('/resetPass',indexRouter.resetPass);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
