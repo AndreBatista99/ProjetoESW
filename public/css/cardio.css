@@ -70,7 +70,7 @@ h6 {
 }
 
 h1 {
-	font-size: 63px;
+	font-size: 58px;
 }
 
 h2 {
@@ -1212,6 +1212,32 @@ footer .social-footer li:hover a {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 	cursor:pointer;
+}
+
+#dropdownMenuLink:focus{
+
+	background-color: transparent;
+}
+
+.dropdown-menu{
+	background-color:transparent;
+	left:40px;
+}
+
+.dropdown-item{
+
+	background-color:transparent;
+	color: white;
+	
+	
+}
+
+@media (max-width:400px){
+
+	.LogoutMobile{
+		display: none;
+	}
+
 }
 /*  */
 
