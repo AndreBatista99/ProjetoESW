@@ -51,22 +51,23 @@ module.exports.getLogin = getLogin;
 
 function resetPass(req,res){
   //router.post('/login',(req,res)=>{
-    User.find({ '_NUser': req.body.num,'_Bi':req.body.bi}, (err, res) => {//{'_name':'Tiago Mestre'},'_name',
+    User.find({ '_NUser': req.body.num,'_Bi':req.body.bi}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
       if (err) {
         res.json('Erro: ' + err);
         console.log(err);
       } else {
-        console.log(res);
-        if(res.length>0){
-          //res.json({"Message" : "ok", "_Bi" : res[0]._Bi});
-          console.log(res[0]._Bi);
+        console.log(res2);
+        if(res2.length>0){
+          console.log(res2[0]._Bi);
           console.log('Success');
+          res.json({ "Message": "ok","bi":res2[0]._Bi,"num":res2[0]._NUser });
         }else
           console.log('ResetPass error');
       }
+      
     });
-  
-    res.json({ "Message": "ok" });
+    
+    
   }
   
   module.exports.resetPass = resetPass;

@@ -45,14 +45,13 @@ function resetPass() {
         alert('state:'+xhr.readyState+'| Status:'+xhr.status);
         //var response = JSON.parse(this.responseText);
         if (xhr.readyState == 4 && xhr.status == "200") {
+            alert("BI:"+xhr.response.bi+" | NUM:"+xhr.response.num);
+            
             alert('kanker yeah!');
         } else {
             console.error(users);
         }
     }
-    
-
-
     
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(json));
