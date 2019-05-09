@@ -22,20 +22,29 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-  var userName = 'Tiago Mestre';
-  console.log(req.body.num);
-  User.find({ '_name': userName }, '_name _pwd', (err, res) => {//{'_name':'Tiago Mestre'},'_name',
+
+
+});
+
+function getLogin(req,res){
+//router.post('/login',(req,res)=>{
+  User.find({ '_NUser': req.body.num,'_Pwd':req.body.pw}, (err, res) => {//{'_name':'Tiago Mestre'},'_name',
     if (err) {
       res.json('Erro: ' + err);
       console.log(err);
     } else {
-      console.log('Resposta: ' + res[0]._pwd);
+      console.log(res);
+      if(res.length>0){
+        //res.json({"Message" : "ok", "_Bi" : res[0]._Bi});
+        console.log(res[0]._Bi);
+        console.log('Success');
+      }else
+        console.log('Login error');
     }
   });
 
   res.json({ "Message": "ok" });
+}
 
-});
-
-module.exports = router;
+module.exports.getLogin = getLogin;
 
