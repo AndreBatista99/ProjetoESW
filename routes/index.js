@@ -28,22 +28,33 @@ router.get('/', function (req, res, next) {
 
 function getLogin(req,res){
 //router.post('/login',(req,res)=>{
-  User.find({ '_NUser': req.body.num,'_Pwd':req.body.pw}, (err, res) => {//{'_name':'Tiago Mestre'},'_name',
+  User.find({ '_NUser': req.body.num,'_Pwd':req.body.pw}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
     if (err) {
       res.json('Erro: ' + err);
       console.log(err);
     } else {
-      console.log(res);
-      if(res.length>0){
+      console.log(res2);
+      if(res2.length>0){
         //res.json({"Message" : "ok", "_Bi" : res[0]._Bi});
-        console.log(res[0]._Bi);
+        console.log(res2[0]._Bi);
         console.log('Success');
+        res.json({ "Message": "ok",
+                   "_id":res2[0]._id,
+                   "_NumSystem":res2[0]._NumSystem,
+                   "_Name":res2[0]._Name,
+                   "_Email":res2[0]._Email,
+                   "_Bi":res2[0]._Bi,
+                   "_Pwd":res2[0]._Pwd,
+                   "_NUser":res2[0]._NUser,
+                   "_Role":res2[0]._Role,
+                   "_Class":res2[0]._Class,
+                   "_State":res2[0]._State});
       }else
         console.log('Login error');
     }
   });
 
-  res.json({ "Message": "ok" });
+  
 }
 
 module.exports.getLogin = getLogin;
