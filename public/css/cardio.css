@@ -4,8 +4,14 @@ body {
 	font-size: 14px;
 	overflow-x: hidden;
 	color: #2a3237;
+	padding-right: 0px;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
+	background-color: rgb(37,45,68);
+	height:100%;
+	width:100%;
+	background: url('../img/header.jpg');
+	background-size: cover;
 }
 
 .parallax {
@@ -64,15 +70,15 @@ h6 {
 }
 
 h1 {
-	font-size: 60px;
+	font-size: 58px;
 }
 
 h2 {
-	font-size: 48px;
+	font-size: 78px;
 }
 
 h3 {
-	font-size: 30px;
+	font-size: 33px;
 }
 
 h4 {
@@ -113,9 +119,8 @@ header {
 	position: relative;
 	width: 100%;
 	color: white;
-	background: rgba(28, 36, 65, 0.93);
-	background: url('../img/header.jpg');
-	background-size: cover;
+	
+	
 }
 
 header .table {
@@ -724,7 +729,7 @@ footer .social-footer li:hover a {
 /* Form Control */
 
 .form-control {
-	font-size: 18px;
+	font-size: 25px;
 	position: relative;
 	left: 0;
 	height: auto;
@@ -1125,8 +1130,8 @@ footer .social-footer li:hover a {
 }
 
 .dropdownDiv .dropdown-menu {
-	top: 65px;
-	width: 100%;
+	top: 32px;
+	width: 30%;
 	padding: 0;
 	border: 2px solid white;
 	border-top: 0;
@@ -1145,18 +1150,96 @@ footer .social-footer li:hover a {
 	width: 100%;
 	padding: 15px 30px;
 	color: #00a8ff;
+	font-size:29px;
 }
 
 .dropdownDiv .dropdown-menu li:hover a {
 	color: #fff;
 	background: #00a8ff;
+	font-weight: bold;
+	
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
 }
 
+.navbar-nav > li > a{
+	font-size:18px;
+}
+.navbar-nav > li > a:hover{
+	
+	font-size:21px;
+	font-weight: bold;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+.BigButton{
+	font-size:35px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
 
+.results tr[visible='false'],
+.no-result{
+  display:none;
+}
 
+.results tr[visible='true']{
+  display:table-row;
+}
+.results{
+	font-size:25px;
+}
+.results.th {
+	text-align: center;
+}
+.counter{
+  padding:8px; 
+  color:#ccc;
+  font-size:25px;
+}
+.search{
+	padding:22.5px;
+}
+.BigTitle{
+	margin-bottom:40px;
+}
+
+.hoverBlue:hover{
+	color:rgb(53, 147, 255);
+	font-weight: bold;
+	/*font-size:1.2em;*/
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	cursor:pointer;
+}
+
+#dropdownMenuLink:focus{
+
+	background-color: transparent;
+}
+
+.dropdown-menu{
+	background-color:transparent;
+	left:40px;
+}
+
+.dropdown-item{
+
+	background-color:transparent;
+	color: white;
+	
+	
+}
+
+@media (max-width:400px){
+
+	.LogoutMobile{
+		display: none;
+	}
+
+}
 /*  */
-
-
 
 
 
