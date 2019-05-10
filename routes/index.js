@@ -73,11 +73,11 @@ function resetPass(req,res){/*
     var query = { '_NUser': req.body.num,'_Bi':req.body.bi};
 
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
-    
+
     console.log("random = "+ random);
      User.findOneAndUpdate(query,{"_Pwd":random},function(err,doc){
       if (err) return res.send(500, { error: err });
-      res.json({"Message:":"ok"});
+      res.json({"Message:":1,"pw":random});
       console.log("updated!");
       //return res.send("succesfully saved");
      }); 

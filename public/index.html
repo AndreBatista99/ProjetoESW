@@ -102,11 +102,11 @@
 		<div class="modal-dialog">
 			<div class="modal-content modal-popup">
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
-				<h3 class="white">Recuperar password</h3>
-				<form action="" class="popup-form">
+				<h3 class="white" id="recuperarPasswordLabel">Recuperar password</h3>
+				<form action="" id="RecuperarPassForm" class="popup-form">
 					<input type="text" id="RecoveryStudentNumber" name="RecoveryStudentNumber" class="form-control form-white" placeholder="Número de aluno">
 					<input type="text" id="RecoveryBINumber" name="RecoveryBINumber" class="form-control form-white" placeholder="BI">
-					<button type="button" onclick="resetPass()" class="btn btn-submit">Recuperar</button>
+					<button type="button" onclick="resetPass()" class="btn btn-submit" data-toggle="modal">Recuperar</button>
 				</form>
 			</div>
 		</div>
