@@ -26,6 +26,8 @@ router.get('/', function (req, res, next) {
 
 });
 
+mongoose.set('useFindAndModify', false);
+
 function getLogin(req,res){
 //router.post('/login',(req,res)=>{
   User.find({ '_NUser': req.body.num,'_Pwd':req.body.pw}, (err, res) => {//{'_name':'Tiago Mestre'},'_name',
@@ -49,7 +51,7 @@ function getLogin(req,res){
 module.exports.getLogin = getLogin;
 
 
-function resetPass(req,res){
+function resetPass(req,res){/*
   //router.post('/login',(req,res)=>{
     User.find({ '_NUser': req.body.num,'_Bi':req.body.bi}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
       if (err) {
@@ -66,8 +68,16 @@ function resetPass(req,res){
       }
       
     });
-    
-    
+    */
+   console.log("antes query");
+    var query = { '_NUser': req.body.num,'_Bi':req.body.bi};
+
+     User.findOneAndUpdate(query,{"_Pwd":"teste123"},function(err,doc){
+      if (err) return res.send(500, { error: err });
+      res.json({"Message:":"ok"});
+      console.log("updated!");
+      //return res.send("succesfully saved");
+     }); 
   }
   
   module.exports.resetPass = resetPass;
