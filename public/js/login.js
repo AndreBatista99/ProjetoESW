@@ -9,13 +9,8 @@ function clique() {
     */
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
-
     xhr.open("POST", document.location.origin + "/login", true);
-
     xhr.onload = function () {
-        
-        
-        
         if (xhr.readyState == 4 && xhr.status == "200") {
            
             document.cookie="_id="+xhr.response._id;
@@ -28,9 +23,7 @@ function clique() {
             document.cookie="_Role="+xhr.response._Role;
             document.cookie="_Class="+xhr.response._Class;
             document.cookie="_State="+xhr.response._State;
-            
             window.location.replace("entradas.html");
-           
         } else {
             console.error(users);
         }
