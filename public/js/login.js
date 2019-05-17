@@ -3,8 +3,10 @@ function clique() {
     var num = document.getElementById("LoginStudentNumber").value;
     var pw=document.getElementById("LoginPassword").value;
     var json = {"num":num,"pw":pw};
+    /*
     alert(num);
     alert(pw);
+    */
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
 
