@@ -164,10 +164,7 @@ jQuery(function($) {
 		event.preventDefault();
 		$('#modal1').modal('hide');
 		$('#modal2').modal('hide');
-		$('#modal-CriarEvento').modal('hide');
-		$('#modal-CriarOcorrencia').modal('hide');
-		$('#modal-EditarMaterial').modal('hide');
-		$('#modal-PedidoStock').modal('hide');
+		$('#modal3').modal('hide');
 	});
 
 
