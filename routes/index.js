@@ -10,6 +10,7 @@ var mongoDB = 'mongodb+srv://Admin:Admin@projetoesw-smjdo.gcp.mongodb.net/Projet
 
 // Models
 const User = require('../models/User');
+const Evento = require('../models/Evento');
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -61,7 +62,6 @@ module.exports.getLogin = getLogin;
 
 
 function resetPass(req,res){
-   console.log("antes query");
     var query = { '_NUser': req.body.num,'_Bi':req.body.bi};
 
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
@@ -76,3 +76,26 @@ function resetPass(req,res){
   }
   
   module.exports.resetPass = resetPass;
+
+  
+function lerEventos(req,res){
+  console.log("lerEventos");
+  console.log(Evento);
+  console.log(Evento.size);
+  Evento.find({},(err, res2) => {
+  if (err) {
+    console.log(err);
+    res.json({ "Message": "SystemError" });
+  } else {
+    console.log(res2);
+    if(res2.length>0){
+      console.log(res2[0]._Titulo);
+      res.json({ "Message": "Success",
+                  "eventos": res2});
+    }else
+      console.log('Erro de leitura');
+  }
+}); 
+ }
+ 
+ module.exports.lerEventos = lerEventos;
