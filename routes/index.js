@@ -29,18 +29,18 @@ router.get('/', function (req, res, next) {
 mongoose.set('useFindAndModify', false);
 
 function getLogin(req,res){
-//router.post('/login',(req,res)=>{
   User.find({ '_NUser': req.body.num,'_Pwd':req.body.pw}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
     if (err) {
-      res.json('Erro: ' + err);
+      //res.json('Erro: ' + err);
       console.log(err);
+      res.json({ "Message": "SystemError" });
     } else {
       console.log(res2);
       if(res2.length>0){
         //res.json({"Message" : "ok", "_Bi" : res[0]._Bi});
         console.log(res2[0]._Bi);
         console.log('Success');
-        res.json({ "Message": "ok",
+        res.json({ "Message": "Success",
                    "_id":res2[0]._id,
                    "_NumSystem":res2[0]._NumSystem,
                    "_Name":res2[0]._Name,
@@ -52,34 +52,15 @@ function getLogin(req,res){
                    "_Class":res2[0]._Class,
                    "_State":res2[0]._State});
       }else
+        res.json({ "Message": "WrongCombination" });
         console.log('Login error');
     }
-  });
-
-  
+  }); 
 }
-
 module.exports.getLogin = getLogin;
 
 
-function resetPass(req,res){/*
-  //router.post('/login',(req,res)=>{
-    User.find({ '_NUser': req.body.num,'_Bi':req.body.bi}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
-      if (err) {
-        res.json('Erro: ' + err);
-        console.log(err);
-      } else {
-        console.log(res2);
-        if(res2.length>0){
-          console.log(res2[0]._Bi);
-          console.log('Success');
-          res.json({ "Message": "ok","bi":res2[0]._Bi,"num":res2[0]._NUser });
-        }else
-          console.log('ResetPass error');
-      }
-      
-    });
-    */
+function resetPass(req,res){
    console.log("antes query");
     var query = { '_NUser': req.body.num,'_Bi':req.body.bi};
 

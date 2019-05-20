@@ -174,7 +174,7 @@ nav.navbar {
 	transition: all 0.3s ease;
 }
 
-nav.navbar .navbar-nav li.active a:not(.btn) {
+nav.navbar .navbar-nav li.active a:not(.custButton) {
 	color: #00a8ff !important;
 }
 
@@ -187,7 +187,7 @@ nav.navbar-fixed-top {
 	box-shadow: 0px 4px 3px rgba(0, 0, 0, 0.05);
 }
 
-nav.navbar-fixed-top .navbar-nav > li > a:not(.btn) {
+nav.navbar-fixed-top .navbar-nav > li > a:not(.custButton) {
 	color: #bbb;
 }
 
@@ -196,10 +196,10 @@ nav.navbar-fixed-top .navbar-nav > li > a:not(.btn) {
 }
 /* Buttons */
 
-.btn {
+.custButton {
 	font-size: 18px;
 	display: inline-block;
-	padding: 15px 30px;
+	padding: 15px 10px;
 	color: white;
 	border: 2px solid transparent;
 	border-radius: 2px;
@@ -208,8 +208,8 @@ nav.navbar-fixed-top .navbar-nav > li > a:not(.btn) {
 	transition: all 0.3s ease;
 }
 
-.btn:hover,
-.btn:focus {
+.custButton:hover,
+.custButton:focus {
 	color: white;
 }
 
@@ -1167,7 +1167,20 @@ footer .social-footer li:hover a {
 }
 .navbar-nav > li > a:hover{
 	
-	font-size:21px;
+	font-size:19px;
+	font-weight: bold;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+.list-item{
+	border:0px;
+	border-radius: 0px;
+	font-size:18px;
+	margin:0px;
+}
+.list-item:hover{
+	font-size:19px;
+	cursor:pointer;
 	font-weight: bold;
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
@@ -1240,6 +1253,8 @@ footer .social-footer li:hover a {
 
 }
 /*  */
-
+.modal-body{
+	font-size:20px;
+}
 
 
