@@ -98,9 +98,17 @@ function resetPass(req,res){/*
   module.exports.resetPass = resetPass;
 
   function criarEvento(req,res){
-
-    Evento.insert({'_titulo':req.body.Titulo,'_data':req.body.Data,'_horario':req.body.Horario,'_local':req.body.Local,'_Descricao':req.body.Descricao});
-
+    console.log("A");
+    Evento.insert({
+      '_titulo':req.body.Titulo,
+      '_data':req.body.Data,
+      '_horario':req.body.Horario,
+      '_local':req.body.Local,
+      '_descricao':req.body.Descricao
+    });
+    res.json({
+      "Message":"Success"
+    })
   }
 
   module.exports.criarEvento = criarEvento;

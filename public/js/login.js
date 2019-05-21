@@ -119,7 +119,7 @@ function criarEvento(){
         }else{
             alert('nope');
         }
-    
+    }
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(json));
 
