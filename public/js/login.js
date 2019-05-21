@@ -99,4 +99,30 @@ function resetPass() {
     xhr.send(JSON.stringify(json));
 };
 
+function criarEvento(){
+
+    var Titulo = document.getElementById("Título").value;
+    var Data = document.getElementById("Data").value;
+    var Horario = document.getElementById("Horario").value;
+    var Local = document.getElementById("Local").value;
+
+    var json = {"Titulo":Titulo,"Data":Data,"Horario":Horario,"Local":Local}
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+
+    xhr.open("POST", document.location.origin + "/criarEvento", true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            alert('yes');
+        }else{
+            alert('nope');
+        }
+    
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(json));
+
+}
+
 

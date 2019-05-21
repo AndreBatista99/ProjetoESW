@@ -10,6 +10,7 @@ var mongoDB = 'mongodb+srv://Admin:Admin@projetoesw-smjdo.gcp.mongodb.net/Projet
 
 // Models
 const User = require('../models/User');
+const Evento = require('../models/Evento');
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -95,3 +96,9 @@ function resetPass(req,res){/*
   }
   
   module.exports.resetPass = resetPass;
+
+  function criarEvento(req,res){
+
+    Evento.insert({'_titulo':req.body.Titulo})
+
+  }
