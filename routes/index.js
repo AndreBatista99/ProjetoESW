@@ -99,6 +99,8 @@ function resetPass(req,res){/*
 
   function criarEvento(req,res){
 
-    Evento.insert({'_titulo':req.body.Titulo})
+    Evento.insert({'_titulo':req.body.Titulo,'_data':req.body.Data,'_horario':req.body.Horario,'_local':req.body.Local,'_Descricao':req.body.Descricao});
 
   }
+
+  module.exports.criarEvento = criarEvento;
