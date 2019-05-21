@@ -63,7 +63,17 @@
 					<li><a class="active" href="ocorrencias.html">Ocorrências</a></li>
 					<li><a href="gestaoMenu.html">Gestão</a></li>
 					<li><a href="contactos.html">Contactos</a></li>
-					<li><a href="#" data-toggle="modal" data-target="#modal1" class="btn btn-blue">ENTRAR</a></li>
+					<li id="notLoggedIn" style="display:none">
+						<a href="#" data-toggle="modal" data-target="#modal1" class="custButton btn btn-blue">ENTRAR</a>
+					</li>
+					<li id="loggedIn" style="display:none">
+						<div class="dropdown show">
+							<a style="color:orange" class="custButton  btn btn-secondary dropdown-toggle list-item" href="#" role="button" id="LoggedUsername" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
+							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;" aria-labelledby="dropdownMenuLink">
+							<a class="dropdown-item list-item"  >Logout</a>
+							</div>
+						</div>
+					</li>
 				</ul>
 			</div>
 			<!-- /.navbar-collapse -->
@@ -79,7 +89,7 @@
 				</div>
 				<div class="col-md-12">
 					<div class="col-md-3 text-left" style="padding:8px">
-						<button type="button" data-toggle="modal" data-target="#modal-CriarOcorrencia" style="margin:0px;" class="btn btn-primary BigButton" onclick=""><i class="fas fa-plus" style="padding-right:10px"></i>Criar</button>
+						<button type="button" data-toggle="modal" data-target="#modal-CriarOcorrencia" style="margin:0px;" class="custButton btn btn-primary BigButton" onclick=""><i class="fas fa-plus" style="padding-right:10px"></i>Criar</button>
 					</div>
 					
 					<div class="col-md-3 text-left">
@@ -134,9 +144,9 @@
 				<form action="" class="popup-form">
 					<input type="text" id="LoginStudentNumber" class="form-control form-white" placeholder="Número de aluno" name="studentNumber">
 					<input type="password" id="LoginPassword" class="form-control form-white" placeholder="Password" name="password">
-					<button type="button" onclick="clique()" class="btn btn-submit">Entrar</button>
-					<button type="button"  class="btn btn-submit">Utilizar Cartão</button>
-					<button type="button"  data-toggle="modal" data-target="#modal2" class="close-link btn btn-submit">Recuperar Pass</button>
+					<button type="button" onclick="doLogin()" class="custButton btn btn-submit">Entrar</button>
+					<button type="button"  class="custButton btn btn-submit">Utilizar Cartão</button>
+					<button type="button"  data-toggle="modal" data-target="#modal2" class="custButton btn close-link btn-submit">Recuperar Pass</button>
 				</form>
 			</div>
 		</div>
@@ -146,16 +156,42 @@
 		<div class="modal-dialog">
 			<div class="modal-content modal-popup">
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
-				<h3 class="white">Recuperar password</h3>
-				<form action="" class="popup-form">
-					<input type="text" id="RecoveryStudentNumber" class="form-control form-white" placeholder="Número de aluno">
-					<input type="text" id="RecoveryBINumber" class="form-control form-white" placeholder="BI">
-					<button type="submit" class="btn btn-submit">Recuperar</button>
+				<h3 class="white" id="recuperarPasswordLabel">Recuperar password</h3>
+				<form action="" id="RecuperarPassForm" class="popup-form">
+					<input type="text" id="RecoveryStudentNumber" name="RecoveryStudentNumber" class="form-control form-white" placeholder="Número de aluno">
+					<input type="text" id="RecoveryBINumber" name="RecoveryBINumber" class="form-control form-white" placeholder="BI">
+					<button type="button" onclick="resetPass()" class="custButton btn btn-submit" data-toggle="modal">Recuperar</button>
 				</form>
 			</div>
 		</div>
 	</div>
-
+	
+	<div class="modal fade" id="modal_validation" tabindex="-5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header" >
+					<div class="row">
+						<div class="col-lg-10 col-md-10 col-sm-10">
+							<h4 class="modal-title" id="modal-title-login">Validação de login</h4>
+						</div>
+						<div class="col-lg-2 col-md-2 col-sm-2">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true" style="font-size:30px">&times;</span>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="modal-body" >
+					<p id="Wrong-Combination" style="color:red;display:none">
+							<i class="fas fa-exclamation-triangle"></i> Combinação inválida 
+					</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!--Criar Ocorrência-->
 	<div class="modal fade" id="modal-CriarOcorrencia" tabindex="-1" role="dialog" aria-labelledby="Criar Ocorrência" aria-hidden="true">
 			<div class="modal-dialog">
@@ -174,7 +210,7 @@
 						<input type="text" id="Participante" class="form-control form-white" placeholder="Participante">
 						<input type="text" id="Local" class="form-control form-white" placeholder="Local">
 						<textarea class="form-control form-white" id="Descricao" placeholder="Descrição"></textarea>
-						<button type="submit" class="btn btn-submit BigButton">Criar</button>
+						<button type="submit" class="custButton btn btn-submit BigButton">Criar</button>
 					</form>
 				</div>
 			</div>
@@ -187,8 +223,8 @@
 		<a href="#" class="close-link"><i class="arrow_up"></i></a>
 	</div>
 	<!-- Scripts -->
-	<script src="js/login.js"></script>
 	<script src="js/jquery-1.11.1.min.js"></script>
+	<script src="js/customized.js"></script>
 	<script src="js/owl.carousel.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/wow.min.js"></script>

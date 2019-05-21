@@ -162,16 +162,19 @@ jQuery(function($) {
 
 	$('.modal-popup .close-link').click(function(event){
 		event.preventDefault();
-		$('#modal1').modal('hide');
-		$('#modal2').modal('hide');
-		$('#modal3').modal('hide');
+		closeAllModals();
 	});
-
 
 	$(window).on("resize", function() {
 		$('.modal:visible').each(centerModal);
 	});
 });
+function closeAllModals(){
+	$('#modal1').modal('hide');
+	$('#modal2').modal('hide');
+	$('#modal3').modal('hide');
+
+}
 function changeMode(mode){
 	document.getElementById("entradaSaida").value=mode;
 	document.getElementById("entradaSaida").textContent=mode;	

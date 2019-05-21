@@ -2,11 +2,11 @@ var mongoose = require('mongoose');
 
 var EventoSchema = new mongoose.Schema({
   _id:{type:String},
-  _titulo:{type:String},
-  _data:{type:String},
-  _horario:{type:String},
-  _local:{type:String},
-  _descricao:{type:String}
+  _Titulo:{type:String},
+  _Data:{type:String},
+  _Horario:{type:String},
+  _Local:{type:String},
+  _Desricao:{type:String},
 }, {timestamps: true});
 
 module.exports = mongoose.model('Evento', EventoSchema, 'Evento');

@@ -30,18 +30,18 @@ router.get('/', function (req, res, next) {
 mongoose.set('useFindAndModify', false);
 
 function getLogin(req,res){
-//router.post('/login',(req,res)=>{
   User.find({ '_NUser': req.body.num,'_Pwd':req.body.pw}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
     if (err) {
-      res.json('Erro: ' + err);
+      //res.json('Erro: ' + err);
       console.log(err);
+      res.json({ "Message": "SystemError" });
     } else {
       console.log(res2);
       if(res2.length>0){
         //res.json({"Message" : "ok", "_Bi" : res[0]._Bi});
         console.log(res2[0]._Bi);
         console.log('Success');
-        res.json({ "Message": "ok",
+        res.json({ "Message": "Success",
                    "_id":res2[0]._id,
                    "_NumSystem":res2[0]._NumSystem,
                    "_Name":res2[0]._Name,
@@ -53,35 +53,15 @@ function getLogin(req,res){
                    "_Class":res2[0]._Class,
                    "_State":res2[0]._State});
       }else
+        res.json({ "Message": "WrongCombination" });
         console.log('Login error');
     }
-  });
-
-  
+  }); 
 }
-
 module.exports.getLogin = getLogin;
 
 
-function resetPass(req,res){/*
-  //router.post('/login',(req,res)=>{
-    User.find({ '_NUser': req.body.num,'_Bi':req.body.bi}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
-      if (err) {
-        res.json('Erro: ' + err);
-        console.log(err);
-      } else {
-        console.log(res2);
-        if(res2.length>0){
-          console.log(res2[0]._Bi);
-          console.log('Success');
-          res.json({ "Message": "ok","bi":res2[0]._Bi,"num":res2[0]._NUser });
-        }else
-          console.log('ResetPass error');
-      }
-      
-    });
-    */
-   console.log("antes query");
+function resetPass(req,res){
     var query = { '_NUser': req.body.num,'_Bi':req.body.bi};
 
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
@@ -97,18 +77,42 @@ function resetPass(req,res){/*
   
   module.exports.resetPass = resetPass;
 
-  function criarEvento(req,res){
-    console.log("A");
-    Evento.insert({
-      '_titulo':req.body.Titulo,
-      '_data':req.body.Data,
-      '_horario':req.body.Horario,
-      '_local':req.body.Local,
-      '_descricao':req.body.Descricao
-    });
-    res.json({
-      "Message":"Success"
-    })
+  
+function lerEventos(req,res){
+  console.log("lerEventos");
+  console.log(Evento);
+  console.log(Evento.size);
+  Evento.find({},(err, res2) => {
+  if (err) {
+    console.log(err);
+    res.json({ "Message": "SystemError" });
+  } else {
+    console.log(res2);
+    if(res2.length>0){
+      console.log(res2[0]._Titulo);
+      res.json({ "Message": "Success",
+                  "eventos": res2});
+    }else
+      console.log('Erro de leitura');
   }
+}); 
+ }
+ 
+ module.exports.lerEventos = lerEventos;
 
-  module.exports.criarEvento = criarEvento;
+ 
+ function criarEvento(req,res){
+  console.log("A");
+  Evento.insert({
+    '_titulo':req.body.Titulo,
+    '_data':req.body.Data,
+    '_horario':req.body.Horario,
+    '_local':req.body.Local,
+    '_descricao':req.body.Descricao
+  });
+  res.json({
+    "Message":"Success"
+  })
+}
+
+module.exports.criarEvento = criarEvento;
