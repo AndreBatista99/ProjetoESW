@@ -51,10 +51,11 @@ module.exports.getLogin = getLogin;
 
 
 function resetPass(req,res){
+  console.log("num = "+req.body.num+"   bi = "+req.body.bi);
     var query = { '_NAluno': req.body.num,'_BI':req.body.bi};
 
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
-
+ 
     console.log("random = "+ random);
      Utilizadores.findOneAndUpdate(query,{"_Pwd":random},function(err,doc){
       if (err) return res.send(500, { error: err });
