@@ -126,7 +126,7 @@ function resetPass() {
             
             
         } else {
-            console.error(users);
+            console.error("dados incorretos");
         }
     }
     

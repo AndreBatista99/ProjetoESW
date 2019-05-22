@@ -52,13 +52,26 @@ module.exports.getLogin = getLogin;
 
 function resetPass(req,res){
   console.log("num = "+req.body.num+"   bi = "+req.body.bi);
-    var query = { '_NAluno': req.body.num,'_BI':req.body.bi};
+    var query = {'_NAluno': req.body.num,'_BI':req.body.bi};
 
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
  
     console.log("random = "+ random);
+
+    /*
+     Utilizadores.findOne({'_NAluno': "123"}, function (err, result) {
+      console.log("kanker 1");
+      if (err) { console.log("DEU ERRRO CARALHO!!!") }
+      if (result) {
+        
+        console.log(result._NAluno);
+      }
+      console.log("kanker 2");
+     });*/
+
      Utilizadores.findOneAndUpdate(query,{"_Pwd":random},function(err,doc){
-      if (err) return res.send(500, { error: err });
+      if (err || !doc) return res.send(500, { error: err });
+
       res.json({"Message:":1,"pw":random});
       console.log("updated!");
       //return res.send("succesfully saved");
