@@ -1,10 +1,10 @@
 $( document ).ready(function() {
     console.log( "ready!" );
-    if (typeof getCookie("_Role") !== 'undefined'){
-        if (getCookie("_Role") !== ''){
+    if (typeof getCookie("_TipoUtilizador") !== 'undefined'){
+        if (getCookie("_TipoUtilizador") !== ''){
             
             document.getElementById("loggedIn").style.display="block";
-            document.getElementById("LoggedUsername").textContent=getCookie("_Name");
+            document.getElementById("LoggedUsername").textContent=getCookie("_Nome");
         }else{
             document.getElementById("notLoggedIn").style.display="block";
         }
@@ -37,15 +37,15 @@ function doLogin() {
                 alert("Erro de sistema");
             }else if (xhr.response.Message=="Success"){
                 setCookie("_id",xhr.response._id,10);
-                setCookie("_NumSystem",xhr.response._NumSystem,10);
-                setCookie("_Name",xhr.response._Name,10);
+                setCookie("_NUtilizador",xhr.response._NUtilizador,10);
+                setCookie("_Nome",xhr.response._Nome,10);
                 setCookie("_Email",xhr.response._Email,10);
-                setCookie("_Bi",xhr.response._Bi,10);
+                setCookie("_BI",xhr.response._BI,10);
                 setCookie("_Pwd",xhr.response._Pwd,10);
-                setCookie("_NUser",xhr.response._NUser,10);
-                setCookie("_Role",xhr.response._Role,10);
-                setCookie("_Class",xhr.response._Class,10);
-                setCookie("_State",xhr.response._State,10);
+                setCookie("_NAluno",xhr.response._NAluno,10);
+                setCookie("_TipoUtilizador",xhr.response._TipoUtilizador,10);
+                setCookie("_Turma",xhr.response._Turma,10);
+                setCookie("_Estado",xhr.response._Estado,10);
                 window.location.replace("entradas.html");
             }
         } else {
@@ -57,15 +57,15 @@ function doLogin() {
 };
 function doLogout(){
     setCookie("_id","",0);
-    setCookie("_NumSystem","",0);
-    setCookie("_Name","",0);
+    setCookie("_NUtilizador","",0);
+    setCookie("_Nome","",0);
     setCookie("_Email","",0);
-    setCookie("_Bi","",0);
+    setCookie("_BI","",0);
     setCookie("_Pwd","",0);
-    setCookie("_NUser","",0);
-    setCookie("_Role","",0);
-    setCookie("_Class","",0);
-    setCookie("_State","",0);
+    setCookie("_NAluno","",0);
+    setCookie("_TipoUtilizador","",0);
+    setCookie("_Turma","",0);
+    setCookie("_Estado","",0);
     window.location.replace("entradas.html");
 }
 

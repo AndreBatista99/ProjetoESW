@@ -2,7 +2,7 @@ $( document ).ready(function() {
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
 
-    xhr.open("GET", document.location.origin + "/lerEventos", true);
+    xhr.open("GET", document.location.origin + "/lerOcorrencias", true);
 
     xhr.onload = function () {
         //alert('state:'+xhr.readyState+'| Status:'+xhr.status);
@@ -10,7 +10,7 @@ $( document ).ready(function() {
         if (xhr.readyState == 4 && xhr.status == "200") {
             //alert(xhr.response.Message);
             var i = 1;
-            var tbody = document.getElementById("tbody_eventos");
+            var tbody = document.getElementById("tbody_ocorrencias");
             xhr.response.eventos.forEach(function(elem){
                 //alert(elem._local);
                 var tr = document.createElement("tr");
@@ -20,17 +20,17 @@ $( document ).ready(function() {
                     tr.appendChild(th);
                     /* Row */
                     var td = document.createElement("td");
-                    td.textContent=elem._Titulo;
+                    td.textContent=elem._titulo;
                     tr.appendChild(td);
                     
                     /* Row */
                     var td = document.createElement("td");
-                    td.textContent=elem._Local;
+                    td.textContent=elem._local;
                     tr.appendChild(td);
                     
                     /* Row */
                     var td = document.createElement("td");
-                    td.textContent=elem._Data+' '+elem._Horario;
+                    td.textContent=elem._data+' '+elem._horario;
                     tr.appendChild(td);
                 tbody.appendChild(tr);
             });
@@ -83,31 +83,5 @@ function resetPass() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(json));
 };
-
-function criarEvento(){
-
-    var Titulo = document.getElementById("Título").value;
-    var Data = document.getElementById("Data").value;
-    var Horario = document.getElementById("Horario").value;
-    var Local = document.getElementById("Local").value;
-
-    var json = {"Titulo":Titulo,"Data":Data,"Horario":Horario,"Local":Local}
-
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = "json";
-
-    xhr.open("POST", document.location.origin + "/criarEvento", true);
-
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == "200") {
-            alert('yes');
-        }else{
-            alert('nope');
-        }
-    }
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(json));
-
-}
 
 
