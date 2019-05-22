@@ -9,8 +9,9 @@ var mongoose = require('mongoose');
 var mongoDB = 'mongodb+srv://Admin:Admin@projetoesw-smjdo.gcp.mongodb.net/ProjetoESW?retryWrites=true';
 
 // Models
-const User = require('../models/User');
+const Utilizadores = require('../models/Utilizadores');
 const Evento = require('../models/Evento');
+const Ocorrencia = require('../models/Ocorrencia');
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -21,40 +22,28 @@ var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-
-
-});
 
 mongoose.set('useFindAndModify', false);
 
 function getLogin(req,res){
-  User.find({ '_NUser': req.body.num,'_Pwd':req.body.pw}, (err, res2) => {//{'_name':'Tiago Mestre'},'_name',
+  Utilizadores.find({ '_NAluno': req.body.num,'_Pwd':req.body.pw}, (err, res2) => {
     if (err) {
-      //res.json('Erro: ' + err);
-      console.log(err);
       res.json({ "Message": "SystemError" });
     } else {
-      console.log(res2);
       if(res2.length>0){
-        //res.json({"Message" : "ok", "_Bi" : res[0]._Bi});
-        console.log(res2[0]._Bi);
-        console.log('Success');
         res.json({ "Message": "Success",
                    "_id":res2[0]._id,
-                   "_NumSystem":res2[0]._NumSystem,
-                   "_Name":res2[0]._Name,
+                   "_NUtilizador":res2[0]._NUtilizador,
+                   "_Nome":res2[0]._Nome,
                    "_Email":res2[0]._Email,
-                   "_Bi":res2[0]._Bi,
+                   "_BI":res2[0]._BI,
                    "_Pwd":res2[0]._Pwd,
-                   "_NUser":res2[0]._NUser,
-                   "_Role":res2[0]._Role,
-                   "_Class":res2[0]._Class,
-                   "_State":res2[0]._State});
+                   "_NAluno":res2[0]._NAluno,
+                   "_TipoUtilizador":res2[0]._TipoUtilizador,
+                   "_Turma":res2[0]._Turma,
+                   "_Estado":res2[0]._Estado});
       }else
         res.json({ "Message": "WrongCombination" });
-        console.log('Login error');
     }
   }); 
 }
@@ -62,12 +51,12 @@ module.exports.getLogin = getLogin;
 
 
 function resetPass(req,res){
-    var query = { '_NUser': req.body.num,'_Bi':req.body.bi};
+    var query = { '_NAluno': req.body.num,'_BI':req.body.bi};
 
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
 
     console.log("random = "+ random);
-     User.findOneAndUpdate(query,{"_Pwd":random},function(err,doc){
+     Utilizadores.findOneAndUpdate(query,{"_Pwd":random},function(err,doc){
       if (err) return res.send(500, { error: err });
       res.json({"Message:":1,"pw":random});
       console.log("updated!");
@@ -79,9 +68,6 @@ function resetPass(req,res){
 
   
 function lerEventos(req,res){
-  console.log("lerEventos");
-  console.log(Evento);
-  console.log(Evento.size);
   Evento.find({},(err, res2) => {
   if (err) {
     console.log(err);
@@ -89,7 +75,6 @@ function lerEventos(req,res){
   } else {
     console.log(res2);
     if(res2.length>0){
-      console.log(res2[0]._Titulo);
       res.json({ "Message": "Success",
                   "eventos": res2});
     }else
@@ -99,3 +84,21 @@ function lerEventos(req,res){
  }
  
  module.exports.lerEventos = lerEventos;
+
+ function lerOcorrencias(req,res){
+  Ocorrencia.find({},(err, res2) => {
+  if (err) {
+    console.log(err);
+    res.json({ "Message": "SystemError" });
+  } else {
+    console.log(res2);
+    if(res2.length>0){
+      res.json({ "Message": "Success",
+                  "eventos": res2});
+    }else
+      console.log('Erro de leitura');
+  }
+}); 
+ }
+ 
+ module.exports.lerOcorrencias = lerOcorrencias;
