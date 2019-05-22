@@ -50,6 +50,7 @@ function getLogin(req,res){
 module.exports.getLogin = getLogin;
 
 
+//reset password
 function resetPass(req,res){
   console.log("num = "+req.body.num+"   bi = "+req.body.bi);
     var query = {'_NAluno': req.body.num,'_BI':req.body.bi};
@@ -57,17 +58,6 @@ function resetPass(req,res){
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
  
     console.log("random = "+ random);
-
-    /*
-     Utilizadores.findOne({'_NAluno': "123"}, function (err, result) {
-      console.log("kanker 1");
-      if (err) { console.log("DEU ERRRO CARALHO!!!") }
-      if (result) {
-        
-        console.log(result._NAluno);
-      }
-      console.log("kanker 2");
-     });*/
 
      Utilizadores.findOneAndUpdate(query,{"_Pwd":random},function(err,doc){
       if (err || !doc) return res.send(500, { error: err });
@@ -116,3 +106,23 @@ function lerEventos(req,res){
  }
  
  module.exports.lerOcorrencias = lerOcorrencias;
+
+
+ //criar nova ocorrencia
+ function criarOcorrencia(req,res){
+
+  console.log("num = "+req.body.num+"   bi = "+req.body.bi);
+  
+    var query = {'_NAluno': req.body.num,'_BI':req.body.bi};
+ 
+    console.log("random = "+ random);
+
+     Ocorrencia.findOne({'_NAluno': "123"}, function (err, result) {
+      console.log("kanker 1");
+      if (err || !result) { console.log("DEU ERRRO CARALHO!!!") }
+
+      console.log("kanker 2");
+     });
+  }
+  
+  module.exports.criarOcorrencia = criarOcorrencia;
