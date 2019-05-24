@@ -45,3 +45,30 @@ $( document ).ready(function() {
 });
 
 
+function criarOcorrencia() {
+   
+    var data = document.getElementById("Data").value;
+    var participante = document.getElementById("Participante").value;
+    var local = document.getElementById("Local").value;
+    var descricao = document.getElementById("Descricao").value;
+
+    var json = {"data":data,"participante":participante,"local":local,"descricao":descricao};
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+
+    xhr.open("POST", document.location.origin + "/criarOcorrencia", true);
+
+    xhr.onload = function () {
+
+        if (xhr.readyState == 4 && xhr.status == "200") {
+
+            console.log("yay nao existe! pff cria uma, meter aqui um poop up ou algo do genero a dizer que foi criado");
+        } else {
+            console.error("já existe uma ocorrencia igual");
+        }
+    }
+    
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(json));
+};
