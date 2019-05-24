@@ -7,6 +7,7 @@ var OcorrenciaSchema = new mongoose.Schema({
   _Horario:{type:String},
   _Local:{type:String},
   _Desricao:{type:String},
+  _NUtilizador:{type:String},
 }, {timestamps: true});
 
-module.exports = mongoose.model('Ocorrencia', OcorrenciaSchema, 'Ocorrencia');
+module.exports = mongoose.model('Ocorrencias', OcorrenciaSchema, 'Ocorrencias');

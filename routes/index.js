@@ -99,20 +99,45 @@ function lerEventos(req,res){
  
  module.exports.lerEventos = lerEventos;
 
+
  function lerOcorrencias(req,res){
   Ocorrencia.find({},(err, res2) => {
   if (err) {
     console.log(err);
     res.json({ "Message": "SystemError" });
   } else {
-    console.log(res2);
+    
+
     if(res2.length>0){
-      res.json({ "Message": "Success",
-                  "eventos": res2});
+      var creatorNum = 0;
+      var creatorName=[] ;
+      res2.forEach(function(elem){
+        console.log("procurando utilizador: "+elem._NUtilizador);
+        Utilizadores.find({ '_NUtilizador': elem._NUtilizador}, (err2,res3) => {
+          if (err2) {
+            res.json({ "Message": "SystemError" });
+            return ;
+          } else {
+            if(res3.length>0){
+              console.log("set "+res3[0]._Nome);
+              creatorName[creatorNum++] = res3[0]._Nome;
+            }else{
+              res.json({ "Message": "WrongUser" });
+              return;
+            }
+          }
+
+          if(creatorNum==res2.length){
+            res.json({ "Message": "Success",
+                        "ocorrencias": res2,
+                        "creatorName":creatorName});
+          }
+        });
+        
+      });
     }else
       console.log('Erro de leitura');
   }
 }); 
- }
- 
+};
  module.exports.lerOcorrencias = lerOcorrencias;
