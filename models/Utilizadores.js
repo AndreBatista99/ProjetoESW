@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var UtilizadoresSchema = new mongoose.Schema({
-  _id:{type:String},
+  //_id:{type:String},
   _NUtilizador:{type:String},
   _Nome:{type:String},
   _Email:{type:String},
