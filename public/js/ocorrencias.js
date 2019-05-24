@@ -5,14 +5,11 @@ $( document ).ready(function() {
     xhr.open("GET", document.location.origin + "/lerOcorrencias", true);
 
     xhr.onload = function () {
-        //alert('state:'+xhr.readyState+'| Status:'+xhr.status);
-        //var response = JSON.parse(this.responseText);
         if (xhr.readyState == 4 && xhr.status == "200") {
-            //alert(xhr.response.Message);
             var i = 1;
             var tbody = document.getElementById("tbody_ocorrencias");
-            xhr.response.eventos.forEach(function(elem){
-                //alert(elem._local);
+            xhr.response.ocorrencias.forEach(function(elem){
+                alert(elem._titulo);
                 var tr = document.createElement("tr");
                     var th = document.createElement("th");
                     th.scope="row";

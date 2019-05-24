@@ -32,6 +32,20 @@ $( document ).ready(function() {
                     var td = document.createElement("td");
                     td.textContent=elem._Data+' '+elem._Horario;
                     tr.appendChild(td);
+                    
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.id=""+elem._id
+                    td.className="event_delete"
+                    var iconTrash = document.createElement("i");
+                    iconTrash.className="fa fa-trash";
+                    var a = document.createElement("a");
+                    a.appendChild(iconTrash);
+                    a.addEventListener("click", deleteEvent);
+                    td.appendChild(a);
+                    td.style.textAlign="center";
+                    
+                    tr.appendChild(td);
                 tbody.appendChild(tr);
             });
         } else {
@@ -43,6 +57,8 @@ $( document ).ready(function() {
     xhr.send(JSON.stringify());
 
 });
-
+function deleteEvent(){
+    alert('a');
+}
 
 

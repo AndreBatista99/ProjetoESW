@@ -19,18 +19,13 @@ function doLogin() {
     var num = document.getElementById("LoginStudentNumber").value;
     var pw=document.getElementById("LoginPassword").value;
     var json = {"num":num,"pw":pw};
-    /*
-    alert(num);
-    alert(pw);
-    */
+
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     xhr.open("POST", document.location.origin + "/login", true);
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             if (xhr.response.Message=="WrongCombination"){
-                //alert("Wrong Combination");
-                //closeAllModals();
                 $('#modal_validation').modal('show');
                 document.getElementById("Wrong-Combination").style.display="block";
             }else if (xhr.response.Message=="SystemError"){
