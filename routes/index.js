@@ -147,14 +147,24 @@ function lerEventos(req,res){
 
   console.log("data="+req.body.data+"   participante="+req.body.participante+"   local="+req.body.local+"   descricao="+req.body.descricao);
 
-    var query = {"_Data":req.body.data,"_NUtilizador":req.body.participante,"_Local":req.body.local,"_Desricao":req.body.descricao};
+    var query = {"_Data":req.body.data,"_NUtilizador":req.body.participante,"_Local":req.body.local,"_Descricao":req.body.descricao};
 
-     Ocorrencia.findOne({'_NUtilizador':'1'},function(err,doc){
-      if (err || !doc) return res.send(500, { error: err });
+    //{"_Data":"21-05-2019","_NUtilizador":"1","_Local":"F264","_Descricao":"dada"}
+     Ocorrencia.findOne(query,function(err,doc){
+      if (err || !doc){
 
-      console.log("encontrou!");
+        var novaOcorrencia = new Ocorrencia({"_Titulo":"teste123","_Data":req.body.data,"_Horario":"8h","_Local":req.body.local,"_Descricao":req.body.descricao,"_NUtilizador":req.body.participante});
+        Ocorrencia.create(novaOcorrencia);
+       // if (err|| !ocorrencia) return res.send(500, { error: err });
+          console.log(novaOcorrencia._Descricao + " : é a descrição da nova ocorrencia!");
+
+        console.log("inserido novo registo");
+      } else {
+        console.log("encontrou registo existente");
+        return res.send(500, { error: err });
+      };
       
      }); 
   }
   
-  module.exports.resetPass = resetPass;
+  module.exports.criarOcorrencia = criarOcorrencia;
