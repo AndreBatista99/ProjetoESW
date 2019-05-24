@@ -25,6 +25,7 @@ app.use('/login',indexRouter.getLogin);
 app.use('/resetPass',indexRouter.resetPass);
 app.use('/lerEventos',indexRouter.lerEventos);
 app.use('/lerOcorrencias',indexRouter.lerOcorrencias);
+app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

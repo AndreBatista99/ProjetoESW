@@ -141,3 +141,20 @@ function lerEventos(req,res){
 }); 
 };
  module.exports.lerOcorrencias = lerOcorrencias;
+
+
+ function criarOcorrencia(req,res){
+
+  console.log("data="+req.body.data+"   participante="+req.body.participante+"   local="+req.body.local+"   descricao="+req.body.descricao);
+
+    var query = {"_Data":req.body.data,"_NUtilizador":req.body.participante,"_Local":req.body.local,"_Desricao":req.body.descricao};
+
+     Ocorrencia.findOne({'_NUtilizador':'1'},function(err,doc){
+      if (err || !doc) return res.send(500, { error: err });
+
+      console.log("encontrou!");
+      
+     }); 
+  }
+  
+  module.exports.resetPass = resetPass;
