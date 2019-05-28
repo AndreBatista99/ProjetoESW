@@ -106,20 +106,16 @@ function lerEventos(req,res){
     console.log(err);
     res.json({ "Message": "SystemError" });
   } else {
-    
-
     if(res2.length>0){
       var creatorNum = 0;
       var creatorName=[] ;
       res2.forEach(function(elem){
-        console.log("procurando utilizador: "+elem._NUtilizador);
-        Utilizadores.find({ '_NUtilizador': elem._NUtilizador}, (err2,res3) => {
+          Utilizadores.find({ '_NUtilizador': elem._NUtilizador}, (err2,res3) => {
           if (err2) {
             res.json({ "Message": "SystemError" });
             return ;
           } else {
             if(res3.length>0){
-              console.log("set "+res3[0]._Nome);
               creatorName[creatorNum++] = res3[0]._Nome;
             }else{
               res.json({ "Message": "WrongUser" });
@@ -144,20 +140,17 @@ function lerEventos(req,res){
 
 
  function criarOcorrencia(req,res){
-
+  if(req.body.participante==""||req.body.titulo==""||req.body.local==""){
+    console.log("Missing parameters");
+    res.json({ "Message": "MissingParameters" });
+    return;
+  }
   console.log("data="+req.body.data+"   participante="+req.body.participante+"   local="+req.body.local+"   descricao="+req.body.descricao);
-
-    var query = {"_Data":req.body.data,"_NUtilizador":req.body.participante,"_Local":req.body.local,"_Descricao":req.body.descricao};
-
-    //{"_Data":"21-05-2019","_NUtilizador":"1","_Local":"F264","_Descricao":"dada"}
+    var query = {"_NUtilizador":req.body.participante,"_Local":req.body.local,"_Titulo":req.body.titulo};
      Ocorrencia.findOne(query,function(err,doc){
       if (err || !doc){
-
-        var novaOcorrencia = new Ocorrencia({"_Titulo":"teste123","_Data":req.body.data,"_Horario":"8h","_Local":req.body.local,"_Descricao":req.body.descricao,"_NUtilizador":req.body.participante});
+        var novaOcorrencia = new Ocorrencia({"_Titulo":req.body.titulo,"_Data":req.body.data,"_Horario":req.body.horario,"_Local":req.body.local,"_Descricao":req.body.descricao,"_NUtilizador":req.body.participante});
         Ocorrencia.create(novaOcorrencia);
-       // if (err|| !ocorrencia) return res.send(500, { error: err });
-          console.log(novaOcorrencia._Descricao + " : é a descrição da nova ocorrencia!");
-
         console.log("inserido novo registo");
       } else {
         console.log("encontrou registo existente");

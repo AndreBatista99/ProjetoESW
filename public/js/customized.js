@@ -1,8 +1,14 @@
 $( document ).ready(function() {
     console.log( "ready!" );
+    if(isLogged()){
+        document.getElementById("loggedIn").style.display="block";
+        document.getElementById("LoggedUsername").textContent=getCookie("_Nome");
+    }else{
+        document.getElementById("notLoggedIn").style.display="block";
+    }
+    /*
     if (typeof getCookie("_TipoUtilizador") !== 'undefined'){
         if (getCookie("_TipoUtilizador") !== ''){
-            
             document.getElementById("loggedIn").style.display="block";
             document.getElementById("LoggedUsername").textContent=getCookie("_Nome");
         }else{
@@ -10,7 +16,7 @@ $( document ).ready(function() {
         }
     }else{
         document.getElementById("notLoggedIn").style.display="block";
-    }
+    }*/
 });
 
 
@@ -88,9 +94,31 @@ function getCookie(cname) {
     return "";
 }
 
+function isLogged(){
+    if (typeof getCookie("_TipoUtilizador") !== 'undefined'){
+        if (getCookie("_TipoUtilizador") !== ''){
+            return true;
+        }
+    }
+    return false;
+}
+function havePermission(Permission){
+    if (!isLogged){
+        alert("Please Log in first");
+        return false;
+    }
+    if(getCookie(_TipoUtilizador)==Permission){
+        return true;
+    }
+    return false;
+}
+
 
 function resetPass() {
-   
+    if (isLogged){
+        alert("Already logged in");
+        return;
+    }
     var num = document.getElementById("RecoveryStudentNumber").value;
     var bi=document.getElementById("RecoveryBINumber").value;
     var json = {"num":num,"bi":bi};

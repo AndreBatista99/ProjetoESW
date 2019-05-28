@@ -46,13 +46,19 @@ $( document ).ready(function() {
 
 
 function criarOcorrencia() {
-   
-    var data = document.getElementById("Data").value;
-    var participante = document.getElementById("Participante").value;
+    if(!isLogged()){
+        alert("Primeiro faça o login");
+        return;
+    }
+    var dateTime=document.getElementById("Data").value.split("  ");
+    var data = dateTime[0];
+    var horario = dateTime[1];
+    var titulo = document.getElementById("Titulo").value;
     var local = document.getElementById("Local").value;
     var descricao = document.getElementById("Descricao").value;
+    var participante = getCookie("_NUtilizador");
 
-    var json = {"data":data,"participante":participante,"local":local,"descricao":descricao};
+    var json = {"data":data,"horario":horario,"participante":participante,"titulo":titulo,"local":local,"descricao":descricao};
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
@@ -60,12 +66,11 @@ function criarOcorrencia() {
     xhr.open("POST", document.location.origin + "/criarOcorrencia", true);
 
     xhr.onload = function () {
-
         if (xhr.readyState == 4 && xhr.status == "200") {
-
-            console.log("yay nao existe! pff cria uma, meter aqui um poop up ou algo do genero a dizer que foi criado");
+            alert('Criado com sucesso');
+            closeAllModals();
         } else {
-            console.error("já existe uma ocorrencia igual");
+            alert("Erro");
         }
     }
     

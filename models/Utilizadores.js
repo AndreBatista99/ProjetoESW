@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var UtilizadoresSchema = new mongoose.Schema({
   //_id:{type:String},
-  _NUtilizador:{type:String},
+  _NUtilizador:{type:Number},
   _Nome:{type:String},
   _Email:{type:String},
   _BI:{type:String},
