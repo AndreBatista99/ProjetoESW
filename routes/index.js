@@ -11,7 +11,9 @@ var mongoDB = 'mongodb+srv://Admin:Admin@projetoesw-smjdo.gcp.mongodb.net/Projet
 // Models
 const Utilizadores = require('../models/Utilizadores');
 const Evento = require('../models/Evento');
+const EntradaSaida = require('../models/EntradaSaida');
 const Ocorrencia = require('../models/Ocorrencia');
+const Material = require('../models/Material');
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -55,20 +57,7 @@ function resetPass(req,res){
     var query = {'_NAluno': req.body.num,'_BI':req.body.bi};
 
     var random = Math.floor(Math.random() * (+999999 - +100000) + +100000); 
- 
     console.log("random = "+ random);
-
-    /*
-     Utilizadores.findOne({'_NAluno': "123"}, function (err, result) {
-      console.log("kanker 1");
-      if (err) { console.log("DEU ERRRO CARALHO!!!") }
-      if (result) {
-        
-        console.log(result._NAluno);
-      }
-      console.log("kanker 2");
-     });*/
-
      Utilizadores.findOneAndUpdate(query,{"_Pwd":random},function(err,doc){
       if (err || !doc) return res.send(500, { error: err });
 
@@ -81,13 +70,62 @@ function resetPass(req,res){
   module.exports.resetPass = resetPass;
 
   
+
+function changeStock(req,res){
+  var query = {'_NMaterial': req.body.nmaterial};
+  Material.find(query,(err, res2) => {
+    if (err) {
+      console.log(err);
+      res.json({ "Message": "SystemError" });
+      return;
+    } else {
+      var valorAtual = res2[0]._Stock;
+      switch(req.body.mode){
+        case '+':
+          valorAtual+=req.body.value;
+          break;
+        case '-':
+            valorAtual-=req.body.value;
+          break;
+
+        case 'update':
+            valorAtual=req.body.value;
+          break;
+      }
+      if (valorAtual<=0){
+        Material.deleteOne(query,function(err,doc){
+          if (err){
+            console.log(err);
+            return;
+          }
+          console.log("removed");
+          res.json({"Message:":"Success","_Stock":0});
+          return;
+        }); 
+      }else{
+        Material.findOneAndUpdate(query,{"_Stock":valorAtual},function(err,doc){
+          if (err){
+            console.log(err);
+            return;
+          }
+          res.json({"Message:":"Success","_Stock":valorAtual});
+          return;
+        });
+      }
+
+    }
+  }); 
+  }
+  
+  module.exports.changeStock = changeStock;
+
+  
 function lerEventos(req,res){
   Evento.find({},(err, res2) => {
   if (err) {
     console.log(err);
     res.json({ "Message": "SystemError" });
   } else {
-    console.log(res2);
     if(res2.length>0){
       res.json({ "Message": "Success",
                   "eventos": res2});
@@ -151,6 +189,7 @@ function lerEventos(req,res){
       if (err || !doc){
         var novaOcorrencia = new Ocorrencia({"_Titulo":req.body.titulo,"_Data":req.body.data,"_Horario":req.body.horario,"_Local":req.body.local,"_Descricao":req.body.descricao,"_NUtilizador":req.body.participante});
         Ocorrencia.create(novaOcorrencia);
+        res.json({ "Message": "Success" });
         console.log("inserido novo registo");
       } else {
         console.log("encontrou registo existente");
@@ -161,3 +200,115 @@ function lerEventos(req,res){
   }
   
   module.exports.criarOcorrencia = criarOcorrencia;
+
+
+  function registarEntradaSaida(req,res){
+    if(req.body.nome==""||req.body.entradaSaida==""){
+      console.log("Missing parameters");
+      res.json({ "Message": "MissingParameters" });
+      return;
+    }
+    var novaEntradaSaida = new EntradaSaida({"_Nome":req.body.nome,"_EntradaSaida":req.body.entradaSaida,"_Hora":new Date()});
+    EntradaSaida.create(novaEntradaSaida);
+    res.json({ "Message": "Success" });
+    console.log("inserido novo registo");
+  }
+    module.exports.registarEntradaSaida = registarEntradaSaida;
+
+  
+function lerMateriais(req,res){
+  Material.find({},(err, res2) => {
+  if (err) {
+    console.log(err);
+    res.json({ "Message": "SystemError" });
+  } else {
+    res2.sort((a,b)=>{
+      return a._NMaterial - b._NMaterial;
+    })
+    if(res2.length>0){
+      res.json({ "Message": "Success",
+                  "materiais": res2});
+    }else
+      console.log('Erro de leitura');
+  }
+}); 
+ }
+ module.exports.lerMateriais = lerMateriais;
+
+
+function criarMaterial(req,res){
+  if(req.body.nome==""||req.body.stock==""){
+    console.log("Missing parameters");
+    res.json({ "Message": "MissingParameters" });
+    return;
+  }
+  if(isNaN(req.body.stock)){
+    console.log("Stock NAN");
+    res.json({ "Message": "Stock NAN" });
+    return;
+  }
+  var query = {"_Nome":req.body.nome};
+  Material.findOne(query,function(err,doc){
+  if (err || !doc){
+   
+    Material.find({}).sort('_NMaterial').exec(function(err, docs) {
+      var nextNMaterial= parseInt(docs[docs.length-1]._NMaterial);
+      nextNMaterial+=1;
+      var novoMaterial = new Material({"_NMaterial":nextNMaterial,"_Nome":req.body.nome,"_Stock":req.body.stock});
+      Material.create(novoMaterial);
+      res.json({ "Message": "Success" });
+      console.log("inserido novo registo");
+    });
+
+    
+  } else {
+    console.log("encontrou registo existente");
+    res.json({ "Message": "ExistingMaterial" });
+    return;
+  };
+  
+  }); 
+}
+module.exports.criarMaterial = criarMaterial;
+ 
+
+
+function updateMaterial(req,res){
+  if (req.body.nome.trim()==""){
+    res.json({ "Message": "InvalidName" });
+    return;
+  }
+  var query = {'_NMaterial': req.body.nmaterial};
+
+  Material.find(query,(err, res2) => {
+    if (err) {
+      console.log(err);
+      res.json({ "Message": "SystemError" });
+      return;
+    } else {
+      if (req.body.stock<=0){
+        Material.deleteOne(query,function(err,doc){
+          if (err){
+            console.log(err);
+            return;
+          }
+          console.log("removed");
+          res.json({"Message:":"Success","_Stock":0});
+          return;
+        }); 
+      }else{
+        Material.findOneAndUpdate(query,{"_Nome":req.body.nome,"_Stock":req.body.stock},function(err,doc){
+          if (err){
+            console.log(err);
+            return;
+          }
+          res.json({"Message:":"Success","nome":req.body.nome,"stock":req.body.stock});
+          return;
+        });
+      }
+
+    }
+  }); 
+  }
+  
+  module.exports.updateMaterial = updateMaterial;

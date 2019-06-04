@@ -89,13 +89,13 @@
 				</div>
 				<div class="col-md-12">
 					<div class="col-md-3 text-left" style="padding:8px">
-						<button type="button" data-toggle="modal" data-target="#modal-CriarOcorrencia" style="margin:0px;" class="custButton btn btn-primary BigButton" onclick=""><i class="fas fa-plus" style="padding-right:10px"></i>Criar</button>
+						<button type="button" id="btnPopUpCriarOcorrencia" data-toggle="modal" data-target="#modal-CriarOcorrencia" style="margin:0px;display:none;" class="custButton btn btn-primary BigButton" onclick=""><i class="fas fa-plus" style="padding-right:10px"></i>Criar</button>
 					</div>
 					
 					<div class="col-md-3 text-left">
 					</div>
 					
-					<div class="col-md-4 text-left" style="padding-top:8px">
+					<div class="col-md-4 text-left" style="padding:8px">
 						<input type="text" class="search form-control" placeholder="O que procura?">
 					</div>
 				
@@ -106,7 +106,7 @@
 						<thead >
 						<tr>
 							<th>#</th>
-							<th style="text-align: center;" class="col-md-4 col-xs-4">Descrição</th>
+							<th style="text-align: center;" class="col-md-4 col-xs-4">Titulo</th>
 							<th style="text-align: center;" class="col-md-2 col-xs-2">Participante</th>
 							<th style="text-align: center;" class="col-md-3 col-xs-3">Local</th>
 							<th style="text-align: center;" class="col-md-3 col-xs-3">Data</th>
@@ -196,7 +196,7 @@
 						<input type="text" id="Titulo" class="form-control form-white" placeholder="Titulo">
 						<input type="text" id="Local" class="form-control form-white" placeholder="Local">
 						<textarea class="form-control form-white" id="Descricao" placeholder="Descrição"></textarea>
-						<button type="button" onclick="criarOcorrencia()" class="custButton btn btn-submit BigButton">Criar</button>
+						<button type="button" id="btnCriarOcorrencia" onclick="criarOcorrencia()"  class="custButton btn btn-submit BigButton" style="display:block">Criar</button>
 					</form>
 				</div>
 			</div>

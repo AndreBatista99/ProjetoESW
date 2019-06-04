@@ -175,6 +175,8 @@ function closeAllModals(){
 	$('#modal3').modal('hide');
 	$('#modal-CriarEvento').modal('hide');
 	$('#modal-CriarOcorrencia').modal('hide');
+	$('#modal-CriarMaterial').modal('hide');
+	$('#modal-EditarMaterial').modal('hide');
 
 }
 function changeMode(mode){
@@ -182,13 +184,6 @@ function changeMode(mode){
 	document.getElementById("entradaSaida").textContent=mode;	
 }
 
-function RegistarEntradaSaida(){
-	nome = document.getElementById("EntradaSaidaNome").value;
-	entradaSaida = document.getElementById("entradaSaida").value;
-	alert('System under development');
-	alert('nome:'+nome);
-	alert('entradaSaida:'+ entradaSaida);
-}
 
 
 //Styled TableList

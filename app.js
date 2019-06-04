@@ -23,9 +23,14 @@ app.use(bodyParser());
 // app.use('/', indexRouter);
 app.use('/login',indexRouter.getLogin);
 app.use('/resetPass',indexRouter.resetPass);
+app.use('/changeStock',indexRouter.changeStock);
 app.use('/lerEventos',indexRouter.lerEventos);
+app.use('/lerMateriais',indexRouter.lerMateriais);
 app.use('/lerOcorrencias',indexRouter.lerOcorrencias);
 app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
+app.use('/criarMaterial',indexRouter.criarMaterial);
+app.use('/updateMaterial',indexRouter.updateMaterial);
+app.use('/registarEntradaSaida',indexRouter.registarEntradaSaida);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
