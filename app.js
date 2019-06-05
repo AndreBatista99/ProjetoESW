@@ -31,6 +31,11 @@ app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
 app.use('/criarMaterial',indexRouter.criarMaterial);
 app.use('/updateMaterial',indexRouter.updateMaterial);
 app.use('/registarEntradaSaida',indexRouter.registarEntradaSaida);
+app.use('/lerChaves',indexRouter.lerChaves);
+app.use('/lerBlocos',indexRouter.lerBlocos);
+app.use('/lerPisos',indexRouter.lerPisos);
+app.use('/criarChave',indexRouter.criarChave);
+app.use('/updateChave',indexRouter.updateChave);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -91,12 +91,12 @@
 		<div class="container" style="padding-top:250px">
 			<div class="row">
 				<div class="col-md-12 text-center BigTitle">
-					<h1 class="white typed">Gestão de Materiais</h1>
+					<h1 class="white typed">Gestão de Chaves</h1>
 					<span class="typed-cursor">|</span>
 				</div>
 				<div class="col-md-12">
 					<div class="col-md-3 text-left" style="padding:8px">
-						<button type="button" data-toggle="modal" data-target="#modal-CriarMaterial" style="margin:0px;"
+						<button type="button" data-toggle="modal" data-target="#modal-CriarChave" style="margin:0px;"
 							class="custButton btn btn-primary BigButton" onclick=""><i class="fas fa-plus"
 								style="padding-right:10px"></i>Criar</button>
 					</div>
@@ -111,12 +111,12 @@
 					<div class="col-md-2 text-left" style="padding:0px;">
 						<span id="searchboxcounter" class="counter pull-left"></span>
 					</div>
-					<table class="table table-bordered  results" id="TableList" title="Objeto">
+					<table class="table table-bordered  results" id="TableList" title="Chave">
 						<thead>
 							<tr>
 								<th>#</th>
-								<th style="text-align: center;" class="col-md-7 col-xs-7">Nome</th>
-								<th style="text-align: center;" class="col-md-3 col-xs-3">Stock</th>
+								<th style="text-align: center;" class="col-md-7 col-xs-7">Sala</th>
+								<th style="text-align: center;" class="col-md-3 col-xs-3">Estado</th>
 								<th style="text-align: center;" class="col-md-2 col-xs-2">Acções</th>
 							</tr>
 							<tr class="warning no-result" style="text-align: center">
@@ -124,7 +124,7 @@
 									Sem resultados</td>
 							</tr>
 						</thead>
-						<tbody id="tbody_materiais">
+						<tbody id="tbody_chaves">
 							<tr>
 								<td colspan="4">
 									<div class="preloader1">
@@ -207,16 +207,21 @@
 		</div>
 	</div>
 	<!--Criar Material-->
-	<div class="modal fade" id="modal-CriarMaterial" tabindex="-1" role="dialog" aria-labelledby="Criar Material"
+	<div class="modal fade" id="modal-CriarChave" tabindex="-1" role="dialog" aria-labelledby="Criar Chave"
 		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content modal-popup">
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
-				<h3 class="white">Criar Material</h3>
+				<h3 class="white">Criar Chave</h3>
 				<form action="" class="popup-form">
-					<input type="text" id="Criar_Nome" class="form-control form-white" placeholder="Nome">
-					<input type="number" id="Criar_Stock" class="form-control form-white" placeholder="Stock">
-					<button type="button" onclick="criarMaterial();"
+					<select title="Bloco" id="Criar_Bloco" class="form-control">
+
+					</select>
+					<select title="Piso" id="Criar_Piso" class="form-control">
+
+					</select>
+					<input type="text" id="Criar_NumeroSala" class="form-control form-white" placeholder="Número da sala">
+					<button type="button" onclick="criarChave();"
 						class="custButton btn btn-submit BigButton">Criar</button>
 				</form>
 			</div>
@@ -224,17 +229,25 @@
 	</div>
 
 	<!--Editar Material-->
-	<div class="modal fade" id="modal-EditarMaterial" tabindex="-1" role="dialog" aria-labelledby="Editar Material"
+	<div class="modal fade" id="modal-EditarChave" tabindex="-1" role="dialog" aria-labelledby="Editar Chave"
 		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content modal-popup">
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
-				<h3 class="white">Editar Material</h3>
+				<h3 class="white">Editar Chave</h3>
 				<form action="" class="popup-form">
-					<input type="text" title="Numero de material" id="Edit_NMaterial" class="form-control form-white" readonly>
-					<input type="text" title="Nome" id="Edit_Nome" class="form-control form-white" placeholder="Nome">
-					<input type="number" title="Stock" id="Edit_Stock" class="form-control form-white" placeholder="Stock">
-					<button type="button" onclick="editarMaterial();"
+					<input type="text" title="Numero de chave" id="Editar_NChave" class="form-control form-white" readonly>
+					<select title="Bloco" id="Editar_Bloco" class="form-control">
+
+					</select>
+					<select title="Piso" id="Editar_Piso" class="form-control">
+
+					</select>
+					<input type="text" id="Editar_NumeroSala" class="form-control form-white" placeholder="Número da sala">
+					
+					<input type="checkbox" class="form-check-input" style="width:30px;height:30px;border-radius:10%" id="Editar_Perdida">
+					<label class="form-check-label" for="Editar_Perdida" style="font-size:30px">Foi perdida?</label>
+					<button type="button" onclick="editarChave();"
 						class="custButton btn btn-submit BigButton">Editar</button>
 				</form>
 			</div>
@@ -264,7 +277,7 @@
 	<!-- Scripts -->
 	<script src="js/jquery-1.11.1.min.js"></script>
 	<script src="js/customized.js"></script>
-	<script src="js/materiais.js"></script>
+	<script src="js/chaves.js"></script>
 	<script src="js/owl.carousel.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/wow.min.js"></script>

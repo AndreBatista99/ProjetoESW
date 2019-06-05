@@ -166,7 +166,7 @@ function openEditor(nmaterial) {
 }
 
 
-function editMaterial(){
+function editarMaterial(){
 
     var nmaterial = document.getElementById("Edit_NMaterial").value;
     var nome = document.getElementById("Edit_Nome").value;

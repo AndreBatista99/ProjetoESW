@@ -177,6 +177,8 @@ function closeAllModals(){
 	$('#modal-CriarOcorrencia').modal('hide');
 	$('#modal-CriarMaterial').modal('hide');
 	$('#modal-EditarMaterial').modal('hide');
+	$('#modal-CriarChave').modal('hide');
+	$('#modal-EditarChave').modal('hide');
 
 }
 function changeMode(mode){
