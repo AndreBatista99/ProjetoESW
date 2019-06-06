@@ -20,22 +20,37 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser());
 
-// app.use('/', indexRouter);
-app.use('/login',indexRouter.getLogin);
-app.use('/resetPass',indexRouter.resetPass);
-app.use('/changeStock',indexRouter.changeStock);
-app.use('/lerEventos',indexRouter.lerEventos);
-app.use('/lerMateriais',indexRouter.lerMateriais);
-app.use('/lerOcorrencias',indexRouter.lerOcorrencias);
-app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
-app.use('/criarMaterial',indexRouter.criarMaterial);
-app.use('/updateMaterial',indexRouter.updateMaterial);
-app.use('/registarEntradaSaida',indexRouter.registarEntradaSaida);
-app.use('/lerChaves',indexRouter.lerChaves);
-app.use('/lerBlocos',indexRouter.lerBlocos);
-app.use('/lerPisos',indexRouter.lerPisos);
-app.use('/criarChave',indexRouter.criarChave);
-app.use('/updateChave',indexRouter.updateChave);
+//Autenticação
+  app.use('/login',indexRouter.getLogin);
+  app.use('/resetPass',indexRouter.resetPass);
+//Eventos
+  app.use('/lerEventos',indexRouter.lerEventos);
+  app.use('/criarEvento',indexRouter.criarEvento);
+//Entradas e saidas
+  app.use('/registarEntradaSaida',indexRouter.registarEntradaSaida);
+//Ocorrencias
+  app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
+  app.use('/lerOcorrencias',indexRouter.lerOcorrencias);
+//Requisições
+  //Requisitar
+    app.use('/abrirRequisicao',indexRouter.abrirRequisicao);
+    app.use('/abrirLinhasRequisicao',indexRouter.abrirLinhasRequisicao);
+  //Entregar
+//Gestão
+  //Materiais
+    app.use('/lerMateriais',indexRouter.lerMateriais);
+    app.use('/criarMaterial',indexRouter.criarMaterial);
+    app.use('/updateMaterial',indexRouter.updateMaterial);
+    app.use('/changeStock',indexRouter.changeStock);
+  //Chaves    
+    app.use('/lerBlocos',indexRouter.lerBlocos);
+    app.use('/lerPisos',indexRouter.lerPisos);
+    app.use('/lerChaves',indexRouter.lerChaves);
+    app.use('/lerChavesDisponiveis',indexRouter.lerChavesDisponiveis);
+    app.use('/criarChave',indexRouter.criarChave);
+    app.use('/updateChave',indexRouter.updateChave);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

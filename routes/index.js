@@ -18,6 +18,9 @@ const Salas = require('../models/Salas');
 const Chave = require('../models/Chave');
 const Blocos = require('../models/Blocos');
 const Pisos = require('../models/Pisos');
+const LinhaRequisicao = require('../models/LinhaRequisicao');
+const ListaRequisicao = require('../models/ListaRequisicao');
+const NULLDATE = "1900-01-01T00:00:00.107+00:00";
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -98,27 +101,14 @@ function changeStock(req, res) {
           valorAtual = req.body.value;
           break;
       }
-      if (valorAtual <= 0) {
-        Material.deleteOne(query, function (err, doc) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          console.log("removed");
-          res.json({ "Message:": "Success", "_Stock": 0 });
+      Material.findOneAndUpdate(query, { "_Stock": valorAtual }, function (err, doc) {
+        if (err) {
+          console.log(err);
           return;
-        });
-      } else {
-        Material.findOneAndUpdate(query, { "_Stock": valorAtual }, function (err, doc) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          res.json({ "Message:": "Success", "_Stock": valorAtual });
-          return;
-        });
-      }
-
+        }
+        res.json({ "Message:": "Success", "_Stock": valorAtual });
+        return;
+      });
     }
   });
 }
@@ -298,27 +288,14 @@ function updateMaterial(req, res) {
       res.json({ "Message": "SystemError" });
       return;
     } else {
-      if (req.body.stock <= 0) {
-        Material.deleteOne(query, function (err, doc) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          console.log("removed");
-          res.json({ "Message:": "Success", "_Stock": 0 });
+      Material.findOneAndUpdate(query, { "_Nome": req.body.nome, "_Stock": req.body.stock }, function (err, doc) {
+        if (err) {
+          console.log(err);
           return;
-        });
-      } else {
-        Material.findOneAndUpdate(query, { "_Nome": req.body.nome, "_Stock": req.body.stock }, function (err, doc) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          res.json({ "Message:": "Success", "nome": req.body.nome, "stock": req.body.stock });
-          return;
-        });
-      }
-
+        }
+        res.json({ "Message:": "Success", "nome": req.body.nome, "stock": req.body.stock });
+        return;
+      });
     }
   });
 }
@@ -346,6 +323,27 @@ function lerChaves(req, res) {
   });
 }
 module.exports.lerChaves = lerChaves;
+
+function lerChavesDisponiveis(req, res) {
+  Chave.find({"_Estado":1}, (err, res2) => {
+    if (err) {
+      console.log(err);
+      res.json({ "Message": "SystemError" });
+    } else {
+      res2.sort((a, b) => {
+        return a._NChave - b._NChave;
+      })
+      if (res2.length > 0) {
+        res.json({
+          "Message": "Success",
+          "chaves": res2
+        });
+      } else
+        console.log('Erro de leitura');
+    }
+  });
+}
+module.exports.lerChavesDisponiveis = lerChavesDisponiveis;
 
 function lerBlocos(req, res) {
   Blocos.find({}, (err, res2) => {
@@ -455,3 +453,68 @@ function updateChave(req, res) {
 }
 
 module.exports.updateChave = updateChave;
+
+function abrirRequisicao(req, res) {
+  nutilizador=req.body.nutilizador;
+  var query = {"_Dono":nutilizador,"_DataRequisicao": NULLDATE};
+  ListaRequisicao.find(query, (err, res2) => {
+    if(res2.length==0){
+      console.log("Criar Lista");
+        ListaRequisicao.find({}).sort('_NLista').exec(function (err, docs) {
+        if(docs.length==0){
+          console.log("empty");
+          var nextNLista=1;
+        }else{
+          var nextNLista = parseInt(docs[docs.length - 1]._NLista);
+          nextNLista += 1;
+        }
+        var novaLista = new ListaRequisicao({ "_NLista": nextNLista, "_Dono": nutilizador, "_DataRequisicao": NULLDATE, "_DataEntrega": NULLDATE });
+        ListaRequisicao.create(novaLista);
+        res.json({ "Message": "ListaCriada","NLista":nextNLista });
+        return;
+      });
+    }else{
+      console.log("Já tem lista");
+      res.json({ "Message": "ExistingList","NLista" : res2[0]._NLista });
+      return;
+    }
+
+  });
+}
+module.exports.abrirRequisicao = abrirRequisicao;
+
+function abrirLinhasRequisicao(req, res) {
+  nlista=req.body.nlista;
+  var query = {"_NLista":nlista};
+  var i= 1;
+  LinhaRequisicao.find(query, (err, res2) => {
+    var i = 0;
+    for(var i=0;i<res2.length;i++ ){
+      console.log(res2[i]._NObjeto);
+      res2[i].NomeObjeto="Exemplo";
+    }
+    console.log(res2);
+    res.json({ "Message": "Success","linhas" : res2 });      
+    return;
+  });
+}
+module.exports.abrirLinhasRequisicao = abrirLinhasRequisicao;
+
+function criarEvento(req, res) {
+  var titulo = req.body.titulo;
+  var data = req.body.data;
+  var horario = req.body.horario;
+  var local = req.body.local;
+  var descricao = req.body.descricao;
+  return;
+  Chave.find({}).sort('_NChave').exec(function (err, docs) {
+    var nextNChave = parseInt(docs[docs.length - 1]._NChave);
+    nextNChave += 1;
+    console.log(nextNChave);
+    var novaChave = new Chave({ "_NChave": nextNChave, "_Tipo": "Regular", "_Sala": stringSala, "_Estado": 1 });
+    Chave.create(novaChave);
+    res.json({ "Message": "Success" });
+    return;
+  });
+}
+module.exports.criarEvento = criarEvento;

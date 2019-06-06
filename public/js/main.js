@@ -179,6 +179,7 @@ function closeAllModals(){
 	$('#modal-EditarMaterial').modal('hide');
 	$('#modal-CriarChave').modal('hide');
 	$('#modal-EditarChave').modal('hide');
+	$('#modal-AdicionarChave').modal('hide');
 
 }
 function changeMode(mode){

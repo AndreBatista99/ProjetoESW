@@ -73,7 +73,12 @@ function doLogout(){
 
 function setCookie(cname, cvalue, mins) {
     var d = new Date();
-    d.setTime(d.getTime() + (mins*60*1000));
+    var debug=true;
+    var time = mins*60*1000;
+    if (debug){
+        time*=10;
+    }
+    d.setTime(d.getTime() + (time));
     var expires = "expires="+ d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }

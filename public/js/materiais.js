@@ -131,11 +131,6 @@ function changeStock(nmaterial, mode, value, isVisual) {
                     $("#loadMe").modal("hide");
                     return;
                 }
-                if (xhr.response._Stock <= 0) {
-                    //alert("Material Eliminado");
-                    lerMateriais();
-                    return;
-                }
                 nomeMaterial = document.getElementById("Nome_" + nmaterial).innerText;
                 document.getElementById("Stock_" + nmaterial).value = xhr.response._Stock;
                 $("#loadMe").modal("hide");
@@ -171,13 +166,6 @@ function editarMaterial(){
     var nmaterial = document.getElementById("Edit_NMaterial").value;
     var nome = document.getElementById("Edit_Nome").value;
     var stock = document.getElementById("Edit_Stock").value;
-
-    if (stock<=0){
-        if(!confirm("Deseja eliminar o material?")){
-            alert("Não eliminou");
-            return;
-        }
-    }
     var json = { "nmaterial": nmaterial, "nome": nome, "stock": stock };
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
@@ -188,11 +176,6 @@ function editarMaterial(){
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
             closeAllModals();
-            if (xhr.response._Stock <= 0) {
-                //Material Eliminado
-                lerMateriais();
-                return;
-            }
             document.getElementById("Nome_" + nmaterial).innerText = xhr.response.nome
             document.getElementById("Stock_" + nmaterial).value = xhr.response.stock;
             $("#loadMe").modal("hide");        

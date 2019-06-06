@@ -1,10 +1,12 @@
 $(document).ready(function () {
     if (isLogged()) {
-        lerChaves();
-        modalsChave();
+        //lerChaves();
+        abrirRequisicao();
+        modalsRequisicoes();
     } else {
-        alert("Não tens permissão para ver as chaves, Faz login");
-        location.replace('index.html');
+        //DEBUGMODE
+        //alert("Não tens permissão para ver as chaves, Faz login");
+        //location.replace('index.html');
     }
 });
 function lerChaves() {
@@ -39,9 +41,6 @@ function lerChaves() {
                 td.id = "Sala_" + elem._NChave;
                 td.title = "Sala";
                 tr.appendChild(td);
-
-
-                
                 /* Row */
                 var td = document.createElement("td");
                 var img = document.createElement("img");
@@ -93,8 +92,6 @@ function lerChaves() {
                          <i class="far fa-edit hoverBlue" title="Editar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
                          <i class="fas fa-inbox hoverBlue" title="Pedido de Stock"></i>
                      </td>
- 
- 
                  */
             });
             if (counter==xhr.response.chaves.length){
@@ -268,6 +265,7 @@ function blockScreen(){
     });
 }
 function getBlocos(modo){
+    //Criar ou Editar
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
     xhr.open("GET", document.location.origin + "/lerBlocos", true);
@@ -308,9 +306,146 @@ function getPisos(modo){
     xhr.send(JSON.stringify());
 }
 
-function modalsChave(){
-    getBlocos("Criar");
-    getPisos("Criar");
-    getBlocos("Editar");
-    getPisos("Editar");
+function getMateriais(){
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open("GET", document.location.origin + "/lerMateriais", true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            
+            return ;
+        }
+    }
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify());
+    
+}
+
+function adicionarObjeto(tipo,nobjeto,qnt){
+    alert(tipo);
+    alert(nobjeto);
+    alert(qnt);
+
+}
+
+function getChaves(){
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open("GET", document.location.origin + "/lerChavesDisponiveis", true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            var tbody = document.getElementById("tbody_chaves");
+            xhr.response.chaves.forEach(function(chave){
+                var tr = document.createElement("tr");
+
+                /**** Row ****/
+                var td = document.createElement("td");
+                td.innerHTML=chave._NChave;
+                td.title="Número";
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement("td");
+                td.innerHTML=chave._Sala;
+                td.title="Sala";
+                
+                td.addEventListener("click", function () {
+                    adicionarObjeto("Chave",chave._NChave,1);
+                });
+                tr.appendChild(td);
+
+                
+                tbody.appendChild(tr);
+            })
+            return ;
+        }
+    }
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify());
+}
+
+function modalsRequisicoes(){
+    getMateriais();
+    getChaves();
+}
+function abrirRequisicao(){
+    var nutilizador=getCookie("_NUtilizador");
+    var json = { "nutilizador": nutilizador};
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open("POST", document.location.origin + "/abrirRequisicao", true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            document.getElementById("RefLista").innerHTML="Lista Nº "+xhr.response.NLista;
+            abrirLinhasRequisicao(xhr.response.NLista);
+            return ;
+        }
+    }
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(json));
+}
+function abrirLinhasRequisicao(nlista){
+    var json = { "nlista": nlista};
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+    xhr.open("POST", document.location.origin + "/abrirLinhasRequisicao", true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            //alert(xhr.response.Message);
+            tbody = document.getElementById("tbody_requisicoes");
+            tbody.innerHTML="";
+            xhr.response.linhas.forEach(function(linha){
+                var tr = document.createElement("tr");
+
+                /**** Row ****/
+                var td = document.createElement("td");
+                td.innerHTML=linha._NLinha;
+                td.title="Número";
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement("td");
+                td.innerHTML=linha._Qnt;
+                td.title="Quantidade";
+                tr.appendChild(td);
+                
+            
+                /**** Row ****/
+                var td = document.createElement("td");
+                td.innerHTML=linha._NObjeto;
+                tr.appendChild(td);
+                 td.title=linha._Tipo;
+                
+                 
+
+                /* Row */
+                var td = document.createElement("td");
+                td.id=""+linha._NLista+"_"+linha._NLinha;
+                var iconTrash = document.createElement("i");
+                iconTrash.className="fa fa-trash";
+                var a = document.createElement("a");
+                a.appendChild(iconTrash);
+                a.addEventListener("click", apagarLinha());
+                td.appendChild(a);
+                td.style.textAlign="center";
+                
+                tr.appendChild(td);
+
+                
+                tbody.appendChild(tr);
+            })
+
+            return ;
+        }
+    }
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(json));
+}
+function apagarLinha(){
+    
+    return;
 }

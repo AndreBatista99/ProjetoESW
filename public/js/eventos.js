@@ -1,4 +1,9 @@
+
 $( document ).ready(function() {
+    lerEventos();
+});
+
+function lerEventos(){
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
 
@@ -11,6 +16,7 @@ $( document ).ready(function() {
             //alert(xhr.response.Message);
             var i = 1;
             var tbody = document.getElementById("tbody_eventos");
+            tbody.innerHTML="";
             xhr.response.eventos.forEach(function(elem){
                 //alert(elem._local);
                 var tr = document.createElement("tr");
@@ -18,19 +24,23 @@ $( document ).ready(function() {
                     th.scope="row";
                     th.textContent=""+(i++);
                     tr.appendChild(th);
+                    td.id="Numero;"
                     /* Row */
                     var td = document.createElement("td");
                     td.textContent=elem._Titulo;
+                    td.id="Titulo;"
                     tr.appendChild(td);
                     
                     /* Row */
                     var td = document.createElement("td");
                     td.textContent=elem._Local;
+                    td.id="Local;"
                     tr.appendChild(td);
                     
                     /* Row */
                     var td = document.createElement("td");
                     td.textContent=elem._Data+' '+elem._Horario;
+                    td.id="Horario;"
                     tr.appendChild(td);
                     
                     /* Row */
@@ -55,10 +65,57 @@ $( document ).ready(function() {
     
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify());
+}
 
-});
+
 function deleteEvent(){
     alert('a');
 }
+
+
+function criarEvento() {
+    if (!havePermission("Professor") && !havePermission("Admin")) {
+        alert("Não tem permissoes");
+        location.reload();
+        return;
+    }
+
+    var titulo = document.getElementById("Criar_Titulo").value;
+    var data = document.getElementById("Criar_Data").value;
+    var horario = document.getElementById("Criar_Horario").value;
+    var local = document.getElementById("Criar_Local").value;
+    var descricao = document.getElementById("Criar_Descricao").value;
+
+    var json = { "titulo": titulo, "data": data, "horario": horario, "local": local, "descricao": descricao };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "json";
+
+    xhr.open("POST", document.location.origin + "/criarEvento", true);
+    document.getElementById("ChangeName").innerText="A Criar Evento";
+    blockScreen();
+
+    xhr.onload = function (){
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            closeAllModals();
+            lerEventos();
+            $("#loadMe").modal("hide");
+        } else {
+            alert("Erro");
+        }
+    }
+
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify(json));
+};
+ 
+function blockScreen(){
+    $("#loadMe").modal({
+      backdrop: "static", //remove ability to close modal with click
+      keyboard: false, //remove option to close with keyboard
+      show: true //Display loader!
+    });
+}
+ 
 
 
