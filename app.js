@@ -35,10 +35,13 @@ app.use(bodyParser());
   //Requisitar
     app.use('/abrirRequisicao',indexRouter.abrirRequisicao);
     app.use('/abrirLinhasRequisicao',indexRouter.abrirLinhasRequisicao);
+    app.use('/adicionarObjeto',indexRouter.adicionarObjeto);
+    app.use('/apagarLinhaRequisicao',indexRouter.apagarLinhaRequisicao);
   //Entregar
 //Gestão
   //Materiais
     app.use('/lerMateriais',indexRouter.lerMateriais);
+    app.use('/lerMateriaisDisponiveis',indexRouter.lerMateriaisDisponiveis);
     app.use('/criarMaterial',indexRouter.criarMaterial);
     app.use('/updateMaterial',indexRouter.updateMaterial);
     app.use('/changeStock',indexRouter.changeStock);

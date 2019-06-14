@@ -237,6 +237,59 @@ function lerMateriais(req, res) {
 }
 module.exports.lerMateriais = lerMateriais;
 
+function lerMateriaisDisponiveis(req, res) {
+  Material.find({}, (err, materiais) => {
+    if (err) {
+      console.log(err);
+      res.json({ "Message": "SystemError" });
+      return
+    }
+    if (materiais.length > 0) {
+      materiais.sort((a, b) => {
+        return a._NMaterial - b._NMaterial;
+      });
+      ListaRequisicao.find({ "_DataRequisicao": { "$ne": NULLDATE }, "_DataEntrega": NULLDATE }, (err, listasrequisicoes) => {
+        console.log(listasrequisicoes);
+        var arrNListas = [];
+        var i = 0;
+        for (i = 0; i < listasrequisicoes.length; i++) {
+          arrNListas[i] = listasrequisicoes[i]._NLista;
+        }
+        LinhaRequisicao.find({ "_NLista": arrNListas }, (err, linhasrequisicao) => {
+          console.log(linhasrequisicao);
+          var counter = 0;
+          var qntDisponivel = [];
+          materiais.forEach(function (elem) {
+            qntDisponivel[counter] = 0;
+            var qntReq = 0;
+            var arrlinhasrequisicao = linhasrequisicao.map(element => {
+              return {
+                _NLista: element._NLista,
+                _NObjeto: element._NObjeto,
+                _Tipo: element._Tipo,
+                _Qnt: element._Qnt
+              }
+            })
+            var novoArrayLinhasRequisicao = arrlinhasrequisicao.filter((linha) => {
+              return linha._NObjeto === elem._NMaterial && linha._Tipo === "Material";
+            });
+            novoArrayLinhasRequisicao.forEach(material => {
+              qntReq += material._Qnt;
+            });
+            qntDisponivel[counter] = (elem._Stock - qntReq);
+            counter++;
+            if (counter == materiais.length) {
+              res.json({ "Message": "Success", "materiais": materiais, "qntdisponivel": qntDisponivel });
+              console.log("Dados listados");
+              return;
+            }
+          });
+        });
+      });
+    }
+  });
+}
+module.exports.lerMateriaisDisponiveis = lerMateriaisDisponiveis;
 
 function criarMaterial(req, res) {
   if (req.body.nome == "" || req.body.stock == "") {
@@ -325,7 +378,7 @@ function lerChaves(req, res) {
 module.exports.lerChaves = lerChaves;
 
 function lerChavesDisponiveis(req, res) {
-  Chave.find({"_Estado":1}, (err, res2) => {
+  Chave.find({ "_Estado": 1 }, (err, res2) => {
     if (err) {
       console.log(err);
       res.json({ "Message": "SystemError" });
@@ -433,19 +486,19 @@ function updateChave(req, res) {
       res.json({ "Message": "SystemError" });
       return;
     } else {
-      if (estado==-1 && res2._Estado!=-1){
-        estado=-1;
-      }else if(res2[0]._Estado==-1 && estado!=-1){
-        estado=1;
-      }else{
+      if (estado == -1 && res2._Estado != -1) {
+        estado = -1;
+      } else if (res2[0]._Estado == -1 && estado != -1) {
+        estado = 1;
+      } else {
         estado = res2[0]._Estado;
       }
-      Chave.findOneAndUpdate(query, {"_Sala": stringSala, "_Estado": estado }, function (err, doc) {
+      Chave.findOneAndUpdate(query, { "_Sala": stringSala, "_Estado": estado }, function (err, doc) {
         if (err) {
           console.log(err);
           return;
         }
-        res.json({ "Message:": "Success", "Sala": stringSala});
+        res.json({ "Message:": "Success", "Sala": stringSala });
         return;
       });
     }
@@ -455,27 +508,26 @@ function updateChave(req, res) {
 module.exports.updateChave = updateChave;
 
 function abrirRequisicao(req, res) {
-  nutilizador=req.body.nutilizador;
-  var query = {"_Dono":nutilizador,"_DataRequisicao": NULLDATE};
+  nutilizador = req.body.nutilizador;
+  var query = { "_Dono": nutilizador, "_DataRequisicao": NULLDATE };
   ListaRequisicao.find(query, (err, res2) => {
-    if(res2.length==0){
+    if (res2.length == 0) {
       console.log("Criar Lista");
-        ListaRequisicao.find({}).sort('_NLista').exec(function (err, docs) {
-        if(docs.length==0){
+      ListaRequisicao.find({}).sort('_NLista').exec(function (err, docs) {
+        if (docs.length == 0) {
           console.log("empty");
-          var nextNLista=1;
-        }else{
+          var nextNLista = 1;
+        } else {
           var nextNLista = parseInt(docs[docs.length - 1]._NLista);
           nextNLista += 1;
         }
         var novaLista = new ListaRequisicao({ "_NLista": nextNLista, "_Dono": nutilizador, "_DataRequisicao": NULLDATE, "_DataEntrega": NULLDATE });
         ListaRequisicao.create(novaLista);
-        res.json({ "Message": "ListaCriada","NLista":nextNLista });
+        res.json({ "Message": "ListaCriada", "NLista": nextNLista });
         return;
       });
-    }else{
-      console.log("Já tem lista");
-      res.json({ "Message": "ExistingList","NLista" : res2[0]._NLista });
+    } else {
+      res.json({ "Message": "ExistingList", "NLista": res2[0]._NLista });
       return;
     }
 
@@ -484,18 +536,54 @@ function abrirRequisicao(req, res) {
 module.exports.abrirRequisicao = abrirRequisicao;
 
 function abrirLinhasRequisicao(req, res) {
-  nlista=req.body.nlista;
-  var query = {"_NLista":nlista};
-  var i= 1;
+  nlista = req.body.nlista;
+  var query = { "_NLista": nlista };
+
   LinhaRequisicao.find(query, (err, res2) => {
-    var i = 0;
-    for(var i=0;i<res2.length;i++ ){
-      console.log(res2[i]._NObjeto);
-      res2[i].NomeObjeto="Exemplo";
+    if (res2.length == 0) {
+      res.json({ "Message": "DontHaveLines" });
+      return;
     }
-    console.log(res2);
-    res.json({ "Message": "Success","linhas" : res2 });      
-    return;
+    var nomesObjetos = [];
+    var i = 1;
+    res2.forEach(function (elem) {
+      switch (elem._Tipo) {
+        case "Material":
+          var subquery = { "_NMaterial": elem._NObjeto };
+          Material.find(subquery, (err2, res3) => {
+            if (err2) {
+              console.log(err2);
+              res.json({ "Message": "SystemError" });
+            } else {
+              nomesObjetos[elem._NLinha] = res3[0]._Nome;
+              i++;
+              if (i == res2.length + 1) {
+                res.json({ "Message": "Success", "linhas": res2, "nomesObjetos": nomesObjetos });
+                return;
+              }
+            }
+          });
+          break;
+        case "Chave":
+          var subquery = { "_NChave": elem._NObjeto };
+          Chave.find(subquery, (err2, res3) => {
+            if (err2) {
+              console.log(err2);
+              res.json({ "Message": "SystemError" });
+            } else {
+              nomesObjetos[elem._NLinha] = res3[0]._Sala;
+              i++;
+              if (i == res2.length + 1) {
+                res.json({ "Message": "Success", "linhas": res2, "nomesObjetos": nomesObjetos });
+                return;
+              }
+            }
+          });
+          break;
+      }
+
+    });
+
   });
 }
 module.exports.abrirLinhasRequisicao = abrirLinhasRequisicao;
@@ -518,3 +606,145 @@ function criarEvento(req, res) {
   });
 }
 module.exports.criarEvento = criarEvento;
+
+
+function adicionarObjeto(req, res) {
+
+  var nlista = req.body.nlista;
+  var tipo = req.body.tipo;
+  var nobjeto = req.body.nobjeto;
+  var qnt = req.body.qnt;
+
+  if (qnt <= 0) {
+    res.json({ "Message": "InvalidQnt" });
+    return;
+  }
+  if (tipo == "Chave" && qnt != 1) {
+    res.json({ "Message": "InvalidQnt" });
+    return;
+  }
+  switch (tipo) {
+    case "Material":
+      Material.find({ "_NMaterial": nobjeto }, (err, material) => {
+        if (err) {
+          console.log(err);
+          res.json({ "Message": "SystemError" });
+        } else {
+          if (material.length == 0) {
+            res.json({ "Message": "ObjetoIndisponivel" });
+            return;
+          } else {
+            //Teste
+            LinhaRequisicao.find({ "_NObjeto": nobjeto, "_Tipo": "Material" }, (err, linhasrequisicao) => {
+              var qntDisponivel = material[0]._Stock;
+              var qntReq = 0;
+              var counter = 0;
+              if (linhasrequisicao.length == 0) {
+                if (qntDisponivel - qnt < 0) {
+                  res.json({ "Message": "NotEnoughMaterials" });
+                  return;
+                }
+                LinhaRequisicao.find({ "_NLista": nlista }).sort('_NLinha').exec(function (err, alllines) {
+                  if (alllines.length == 0) {
+                    var nextNLinha = 1;
+                  } else {
+                    var nextNLinha = parseInt(alllines[alllines.length - 1]._NLinha);
+                    nextNLinha += 1;
+                  }
+                  var novaLinha = new LinhaRequisicao({
+                    "_NLista": nlista, "_NLinha": nextNLinha,
+                    "_Tipo": "Material", "_NObjeto": nobjeto, "_Qnt": qnt, "_DataEntrega": NULLDATE
+                  });
+                  LinhaRequisicao.create(novaLinha);
+                  res.json({ "Message": "Success" });
+                  return;
+                });
+              }
+              linhasrequisicao.forEach(element => {
+                qntReq += element._Qnt;
+                counter++;
+                if (counter == linhasrequisicao.length) {
+                  //Continuar Código
+                  qntDisponivel -= qntReq;
+                  console.log("Este material tem " + qntDisponivel + " Disponiveis");
+                  if (qntDisponivel - qnt < 0) {
+                    res.json({ "Message": "NotEnoughMaterials" });
+                    return;
+                  }
+                  var arrlinhasrequisicao = linhasrequisicao.map(element => {
+                    return {
+                      _NLista: element._NLista,
+                      _NLinha: element._NLinha,
+                      _Qnt: element._Qnt
+                    }
+                  })
+                  var testexpto = arrlinhasrequisicao.filter((linha) => {
+                    return linha._NLista == nlista;
+                  });
+                  if (testexpto.length == 0) {
+                    var NLinhaNova = 1;
+                  } else {
+                    var NLinhaNova = testexpto[0]._NLinha;
+                  }
+                  query = { "_NLista": nlista, "_NLinha": NLinhaNova, "_NObjeto": nobjeto };
+                  LinhaRequisicao.findOneAndUpdate(query, { "_Qnt": parseInt(testexpto[0]._Qnt) + parseInt(qnt) }, function (err, doc) {
+                    if (err || !doc) return res.send(500, { error: err });
+                    res.json({ "Message:": "Success" });
+                    return;
+                  });
+                }
+              });
+            });
+          }
+        }
+
+      });
+      break;
+    case "Chave":
+      Chave.find({ "_Estado": 1, "_NChave": nobjeto }, (err, res2) => {
+        if (err) {
+          console.log(err);
+          res.json({ "Message": "SystemError" });
+        } else {
+          if (res2.length == 0) {
+            res.json({ "Message": "ObjetoIndisponivel" });
+            return;
+          } else {
+            LinhaRequisicao.find({ "_NLista": nlista }).sort('_NLinha').exec(function (err, docs) {
+              var nextNLinha = parseInt(docs[docs.length - 1]._NLinha);
+              nextNLinha += 1;
+              console.log(nextNLinha);
+              var novaLinha = new LinhaRequisicao({
+                "_NLista": nlista, "_NLinha": nextNLinha,
+                "_Tipo": "Chave", "_NObjeto": nobjeto, "_Qnt": 1, "_DataEntrega": NULLDATE
+              });
+              LinhaRequisicao.create(novaLinha);
+              res.json({ "Message": "Success" });
+              return;
+            });
+
+          }
+        }
+      });
+
+      break;
+  }
+}
+module.exports.adicionarObjeto = adicionarObjeto;
+
+
+function apagarLinhaRequisicao(req, res) {
+  var nlista = req.body.nlista;
+  var nlinha = req.body.nlinha;
+
+  var query = { '_NLista': nlista, '_NLinha': nlinha };
+  LinhaRequisicao.deleteOne(query, function (err) {
+    if (err) {
+      console.log("Erro-> " + err);
+    }
+    res.json({ "Message:": "Success" });
+    return;
+  })
+
+}
+module.exports.apagarLinhaRequisicao = apagarLinhaRequisicao;

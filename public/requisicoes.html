@@ -92,20 +92,20 @@
 			<div class="row">
 				<div class="col-md-12 text-center BigTitle">
 					<h1 class="white typed">Requisições</h1>
-					<span class="typed-cursor">|</span>					
+					<span class="typed-cursor">|</span>
 					<h3 class="white" id="RefLista"></h3>
 				</div>
 				<div class="col-md-12">
 					<div class="col-md-3 text-left" style="padding:8px">
-						<button type="button" data-toggle="modal" data-target="#modal-AdicionarMaterial" style="margin:0px;"
-							class="custButton btn btn-primary BigButton" onclick=""><i class="fas fa-plus"
-								style="padding-right:10px"></i>Material</button>
+						<button type="button" data-toggle="modal" data-target="#modal-AdicionarMaterial"
+							style="margin:0px;" class="custButton btn btn-primary BigButton" onclick=""><i
+								class="fas fa-plus" style="padding-right:10px"></i>Material</button>
 					</div>
 
 					<div class="col-md-3 text-left" style="padding:8px">
-							<button type="button" data-toggle="modal" data-target="#modal-AdicionarChave" style="margin:0px;"
-							class="custButton btn btn-primary BigButton" onclick=""><i class="fas fa-plus"
-								style="padding-right:10px"></i>Chave</button>
+						<button type="button" data-toggle="modal" data-target="#modal-AdicionarChave"
+							style="margin:0px;" class="custButton btn btn-primary BigButton" onclick=""><i
+								class="fas fa-plus" style="padding-right:10px"></i>Chave</button>
 					</div>
 
 					<div class="col-md-4 text-left" style="padding-top:8px">
@@ -143,7 +143,23 @@
 							</tr>
 						</tbody>
 					</table>
+
 				</div>
+				<div class="col-lg-12 col-md-12">
+					<div class="col-lg-3 col-md-3 text-center" style="padding:8px">
+					</div>
+					<div class="col-lg-6 col-md-6 text-center" style="padding:8px">
+						<button type="button" onclick="fazerRequisicao();" style="margin:0px;" class="custButton btn btn-primary BigButton" onclick=""><i
+								class="fas fa-shopping-cart" style="padding-right:10px"></i>Requisitar</button>
+					</div>
+					<div class="col-lg-3 col-md-3 text-center" style="padding:8px">
+					</div>
+
+
+
+				</div>
+
+
 			</div>
 		</div>
 	</header>
@@ -210,22 +226,23 @@
 			</div>
 		</div>
 	</div>
-	<!--Criar Material-->
+	<!--Adicionar Chave-->
 	<div class="modal fade" id="modal-AdicionarChave" tabindex="-1" role="dialog" aria-labelledby="Adicionar Chave"
-		aria-hidden="true" >
+		aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content modal-popup"style="margin:auto;overflow:hidden">
+			<div class="modal-content modal-popup" style="margin:auto;overflow:hidden">
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white">Adicionar Chave</h3>
 				<div class="table-wrapper-scroll-y my-custom-scrollbar">
-					<table class="table table-bordered results" id="tableAddChave" title="Tabela de Chaves"style="overflow: auto">
+					<table class="table table-bordered results" id="tableAddChave" title="Tabela de Chaves"
+						style="overflow: auto">
 						<thead>
 							<tr>
 								<th><b>#</b></th>
 								<th style="text-align: center;" class="col-md-12 col-xs-12">Sala</th>
 							</tr>
 						</thead>
-						<tbody id="tbody_chaves" >
+						<tbody id="tbody_chaves">
 
 						</tbody>
 					</table>
@@ -234,6 +251,32 @@
 		</div>
 	</div>
 
+	<!--Adicionar Chave-->
+	<div class="modal fade" id="modal-AdicionarMaterial" tabindex="-1" role="dialog"
+		aria-labelledby="Adicionar Material" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content modal-popup" style="margin:auto;right:35%;overflow:hidden;width:1000px;">
+				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
+				<h3 class="white">Adicionar Materiais</h3>
+				<div class="table-wrapper-scroll-y my-custom-scrollbar">
+					<table class="table table-bordered results" id="tableAddMaterial" title="Tabela de Chaves"
+						style="overflow: auto">
+						<thead>
+							<tr>
+								<th><b>#</b></th>
+								<th style="text-align: center;" class="col-md-3 col-xs-3">Quantidade(Stock)</th>
+								<th style="text-align: center;" class="col-md-7 col-xs-7">Nome</th>
+								<th style="text-align: center;" class="col-md-2 col-xs-2">Escolher</th>
+							</tr>
+						</thead>
+						<tbody id="tbody_materiais">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
 	<!--Editar Material-->
 	<div class="modal fade" id="modal-EditarChave" tabindex="-1" role="dialog" aria-labelledby="Editar Chave"
 		aria-hidden="true">
@@ -242,16 +285,19 @@
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white">Editar Chave</h3>
 				<form action="" class="popup-form">
-					<input type="text" title="Numero de chave" id="Editar_NChave" class="form-control form-white" readonly>
+					<input type="text" title="Numero de chave" id="Editar_NChave" class="form-control form-white"
+						readonly>
 					<select title="Bloco" id="Editar_Bloco" class="form-control">
 
 					</select>
 					<select title="Piso" id="Editar_Piso" class="form-control">
 
 					</select>
-					<input type="text" id="Editar_NumeroSala" class="form-control form-white" placeholder="Número da sala">
-					
-					<input type="checkbox" class="form-check-input" style="width:30px;height:30px;border-radius:10%" id="Editar_Perdida">
+					<input type="text" id="Editar_NumeroSala" class="form-control form-white"
+						placeholder="Número da sala">
+
+					<input type="checkbox" class="form-check-input" style="width:30px;height:30px;border-radius:10%"
+						id="Editar_Perdida">
 					<label class="form-check-label" for="Editar_Perdida" style="font-size:30px">Foi perdida?</label>
 					<button type="button" onclick="editarChave();"
 						class="custButton btn btn-submit BigButton">Editar</button>
@@ -259,6 +305,7 @@
 			</div>
 		</div>
 	</div>
+
 	<!--Modal Block-->
 	<!-- Modal -->
 	<div class="modal fade" id="loadMe" tabindex="-1" role="dialog" aria-labelledby="loadMeLabel">
