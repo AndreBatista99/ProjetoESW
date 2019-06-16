@@ -399,6 +399,10 @@ function adicionarObjeto(tipo, nobjeto, qnt) {
                 alert("Quantidade inválida");
                 $("#loadMe").modal("hide");
                 return;
+            } else if (xhr.response.Message == "DuplicateKey") {
+                alert("Já tem esta chave nesta lista");
+                $("#loadMe").modal("hide");
+                return;
             }
 
             modalsRequisicoes();
@@ -434,7 +438,11 @@ function getChaves() {
 
                 /**** Row ****/
                 var td = document.createElement("td");
-                td.innerHTML = chave._Sala;
+                if (chave._Sala == "") {
+                    td.innerHTML = "Chave Mestra";
+                } else {
+                    td.innerHTML = chave._Sala;
+                }
                 td.title = "Sala";
 
                 td.addEventListener("click", function () {
@@ -514,7 +522,12 @@ function abrirLinhasRequisicao(nlista) {
                 /**** Row ****/
                 var td = document.createElement("td");
                 if (linha._Tipo == "Chave") {
-                    td.innerHTML = "Chave da sala " + xhr.response.nomesObjetos[linha._NLinha];
+                    if (xhr.response.nomesObjetos[linha._NLinha] == "") {
+                        td.innerHTML = "Chave Mestra";
+                    } else {
+                        td.innerHTML = "Chave da sala " + xhr.response.nomesObjetos[linha._NLinha];
+                    }
+
                 } else {
                     td.innerHTML = xhr.response.nomesObjetos[linha._NLinha];
                 }
@@ -551,7 +564,7 @@ function abrirLinhasRequisicao(nlista) {
     xhr.send(JSON.stringify(json));
 }
 function apagarLinha(nlista, nlinha) {
-    var json = { "nlista": nlista ,"nlinha": nlinha };
+    var json = { "nlista": nlista, "nlinha": nlinha };
     document.getElementById("ChangeName").innerText = "A apagar a linha nº" + nlinha;
     blockScreen();
     var xhr = new XMLHttpRequest();
@@ -568,18 +581,22 @@ function apagarLinha(nlista, nlinha) {
     xhr.send(JSON.stringify(json));
 }
 
-function fazerRequisicao(){
-    return;
-    var json = { "nlista": nlista ,"nlinha": nlinha };
-    document.getElementById("ChangeName").innerText = "fazer requisição" + nlinha;
+function fazerRequisicao() {
+    var nlista = document.getElementById("RefLista").innerHTML.split("Lista Nº ")[1];
+    var json = { "nlista": nlista };
+    document.getElementById("ChangeName").innerText = "A finalizar requisição";
     blockScreen();
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
-    xhr.open("POST", document.location.origin + "/apagarLinhaRequisicao", true);
+    xhr.open("POST", document.location.origin + "/fazerRequisicao", true);
     xhr.onload = function () {
-        abrirLinhasRequisicao(nlista);
-        modalsRequisicoes();
+        if (xhr.response.Message == "ChaveIndisponivel") {
+            alert("A chave "+xhr.response.Sala+" Está indiponivel");
+            $("#loadMe").modal("hide");
+            return;
+        }
         $("#loadMe").modal("hide");
+        location.reload();
         return;
     }
 

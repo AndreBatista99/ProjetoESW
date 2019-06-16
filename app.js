@@ -37,6 +37,7 @@ app.use(bodyParser());
     app.use('/abrirLinhasRequisicao',indexRouter.abrirLinhasRequisicao);
     app.use('/adicionarObjeto',indexRouter.adicionarObjeto);
     app.use('/apagarLinhaRequisicao',indexRouter.apagarLinhaRequisicao);
+    app.use('/fazerRequisicao',indexRouter.fazerRequisicao);
   //Entregar
 //Gestão
   //Materiais

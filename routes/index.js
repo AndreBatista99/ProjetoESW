@@ -635,64 +635,82 @@ function adicionarObjeto(req, res) {
             return;
           } else {
             //Teste
-            LinhaRequisicao.find({ "_NObjeto": nobjeto, "_Tipo": "Material" }, (err, linhasrequisicao) => {
-              var qntDisponivel = material[0]._Stock;
-              var qntReq = 0;
-              var counter = 0;
-              if (linhasrequisicao.length == 0) {
-                if (qntDisponivel - qnt < 0) {
-                  res.json({ "Message": "NotEnoughMaterials" });
-                  return;
-                }
-                LinhaRequisicao.find({ "_NLista": nlista }).sort('_NLinha').exec(function (err, alllines) {
-                  if (alllines.length == 0) {
-                    var nextNLinha = 1;
-                  } else {
-                    var nextNLinha = parseInt(alllines[alllines.length - 1]._NLinha);
-                    nextNLinha += 1;
-                  }
-                  var novaLinha = new LinhaRequisicao({
-                    "_NLista": nlista, "_NLinha": nextNLinha,
-                    "_Tipo": "Material", "_NObjeto": nobjeto, "_Qnt": qnt, "_DataEntrega": NULLDATE
-                  });
-                  LinhaRequisicao.create(novaLinha);
-                  res.json({ "Message": "Success" });
-                  return;
-                });
+            ListaRequisicao.find({ "_DataRequisicao": { "$ne": NULLDATE }, "_DataEntrega": NULLDATE }, (err, listasrequisicoes) => {
+              console.log(listasrequisicoes);
+              var arrNListas = [];
+              var i = 0;
+              for (i = 0; i < listasrequisicoes.length; i++) {
+                arrNListas[i] = listasrequisicoes[i]._NLista;
               }
-              linhasrequisicao.forEach(element => {
-                qntReq += element._Qnt;
-                counter++;
-                if (counter == linhasrequisicao.length) {
-                  //Continuar Código
-                  qntDisponivel -= qntReq;
-                  console.log("Este material tem " + qntDisponivel + " Disponiveis");
-                  if (qntDisponivel - qnt < 0) {
-                    res.json({ "Message": "NotEnoughMaterials" });
-                    return;
+              LinhaRequisicao.find({ "_NLista": arrNListas }, (err, linhasrequisicao) => {
+                console.log(linhasrequisicao);
+                var qntDisponivel = 0;
+                var qntReq = 0;
+                var arrlinhasrequisicao = linhasrequisicao.map(element => {
+                  return {
+                    _NLista: element._NLista,
+                    _NObjeto: element._NObjeto,
+                    _Tipo: element._Tipo,
+                    _Qnt: element._Qnt
                   }
-                  var arrlinhasrequisicao = linhasrequisicao.map(element => {
-                    return {
-                      _NLista: element._NLista,
-                      _NLinha: element._NLinha,
-                      _Qnt: element._Qnt
+                })
+                var novoArrayLinhasRequisicao = arrlinhasrequisicao.filter((linha) => {
+                  return linha._NObjeto === material[0]._NMaterial && linha._Tipo === "Material";
+                });
+                novoArrayLinhasRequisicao.forEach(material => {
+                  qntReq += material._Qnt;
+                });
+                qntDisponivel = (material[0]._Stock - qntReq);
+
+                query = { "_NLista": nlista, "_NObjeto": nobjeto, "_Tipo": "Material" };
+                LinhaRequisicao.find(query, (err, linha) => {
+                  if (linha.length > 0) {
+                    var newValue = parseInt(linha[0]._Qnt) + parseInt(qnt);
+                    if (newValue > qntDisponivel) {
+                      res.json({ "Message": "InvalidQnt" });
+                      return;
                     }
-                  })
-                  var testexpto = arrlinhasrequisicao.filter((linha) => {
-                    return linha._NLista == nlista;
-                  });
-                  if (testexpto.length == 0) {
-                    var NLinhaNova = 1;
+                    LinhaRequisicao.findOneAndUpdate(query, { "_Qnt": newValue }, function (err, doc) {
+                      if (err) {
+                        console.log(err);
+                        return;
+                      }
+                      res.json({ "Message:": "Success" });
+                      return;
+                    });
                   } else {
-                    var NLinhaNova = testexpto[0]._NLinha;
+
+                    //Não tem linha ainda
+                    if (qnt > qntDisponivel) {
+                      res.json({ "Message": "InvalidQnt" });
+                      return;
+                    }
+                    LinhaRequisicao.find({ "_NLista": nlista }).sort('_NLinha').exec(function (err, listaAtual) {
+
+                      if (listaAtual.length == 0) {
+                        var nextNLinha = 1;
+                      } else {
+                        var nextNLinha = parseInt(listaAtual[listaAtual.length - 1]._NLinha);
+                        nextNLinha += 1;
+                      }
+                      console.log(nextNLinha);
+                      var novaLinha = new LinhaRequisicao({
+                        "_NLista": nlista, "_NLinha": nextNLinha,
+                        "_Tipo": "Material", "_NObjeto": nobjeto, "_Qnt": qnt, "_DataEntrega": NULLDATE
+                      });
+                      LinhaRequisicao.create(novaLinha);
+                      res.json({ "Message": "Success" });
+                      return;
+
+
+                    });
                   }
-                  query = { "_NLista": nlista, "_NLinha": NLinhaNova, "_NObjeto": nobjeto };
-                  LinhaRequisicao.findOneAndUpdate(query, { "_Qnt": parseInt(testexpto[0]._Qnt) + parseInt(qnt) }, function (err, doc) {
-                    if (err || !doc) return res.send(500, { error: err });
-                    res.json({ "Message:": "Success" });
-                    return;
-                  });
-                }
+                });
+
+
+                //res.json({ "Message": "Success" });
+                //console.log("Dados listados");
+                //return;
               });
             });
           }
@@ -710,18 +728,31 @@ function adicionarObjeto(req, res) {
             res.json({ "Message": "ObjetoIndisponivel" });
             return;
           } else {
-            LinhaRequisicao.find({ "_NLista": nlista }).sort('_NLinha').exec(function (err, docs) {
-              var nextNLinha = parseInt(docs[docs.length - 1]._NLinha);
-              nextNLinha += 1;
-              console.log(nextNLinha);
-              var novaLinha = new LinhaRequisicao({
-                "_NLista": nlista, "_NLinha": nextNLinha,
-                "_Tipo": "Chave", "_NObjeto": nobjeto, "_Qnt": 1, "_DataEntrega": NULLDATE
-              });
-              LinhaRequisicao.create(novaLinha);
-              res.json({ "Message": "Success" });
-              return;
+            query = { "_NLista": nlista, "_NObjeto": nobjeto, "_Tipo": "Chave" };
+            LinhaRequisicao.find(query, (err, linha) => {
+              if (linha.length > 0) {
+                res.json({ "Message": "DuplicateKey" });
+                return;
+              } else {
+                LinhaRequisicao.find({ "_NLista": nlista }).sort('_NLinha').exec(function (err, docs) {
+                  if (docs.length == 0) {
+                    nextNLinha = 1;
+                  } else {
+                    var nextNLinha = parseInt(docs[docs.length - 1]._NLinha);
+                    nextNLinha += 1;
+                  }
+                  console.log(nextNLinha);
+                  var novaLinha = new LinhaRequisicao({
+                    "_NLista": nlista, "_NLinha": nextNLinha,
+                    "_Tipo": "Chave", "_NObjeto": nobjeto, "_Qnt": 1, "_DataEntrega": NULLDATE
+                  });
+                  LinhaRequisicao.create(novaLinha);
+                  res.json({ "Message": "Success" });
+                  return;
+                });
+              }
             });
+
 
           }
         }
@@ -748,3 +779,50 @@ function apagarLinhaRequisicao(req, res) {
 
 }
 module.exports.apagarLinhaRequisicao = apagarLinhaRequisicao;
+
+
+function fazerRequisicao(req, res) {
+  var nlista = req.body.nlista;
+  var query = { '_NLista': nlista };
+
+  query = { "_NLista": nlista };
+  LinhaRequisicao.find(query, (err, linha) => {
+    var counter=0;
+    linha.forEach(element => {
+      switch (element._Tipo) {
+        case "Material":
+
+            counter++;
+          break;
+        case "Chave":
+
+            Chave.findOneAndUpdate({"_NChave":element._NObjeto}, { "_Estado": 0 }, function (err, doc) {
+              if (err) {
+                console.log(err);
+                return;
+              }
+              if(doc._Estado!=1){
+                res.json({ "Message": "ChaveIndisponivel","Sala":doc._Sala });
+                return;
+
+              }
+              counter++;
+            });
+          break;
+      }
+      if(counter==linha.length){
+        ListaRequisicao.findOneAndUpdate(query, { "_DataRequisicao": new Date() }, function (err, doc) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          res.json({ "Message:": "Success" });
+          return;
+        });
+      }
+    });
+  });
+  
+}
+
+module.exports.fazerRequisicao = fazerRequisicao;
