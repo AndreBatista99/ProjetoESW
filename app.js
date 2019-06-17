@@ -26,6 +26,7 @@ app.use(bodyParser());
 //Eventos
   app.use('/lerEventos',indexRouter.lerEventos);
   app.use('/criarEvento',indexRouter.criarEvento);
+  app.use('/removerEvento',indexRouter.removerEvento);
 //Entradas e saidas
   app.use('/registarEntradaSaida',indexRouter.registarEntradaSaida);
 //Ocorrencias
