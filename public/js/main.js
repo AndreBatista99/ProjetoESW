@@ -223,3 +223,8 @@ $(document).ready(function() {
 	  else {$('.no-result').hide();}
 			});
   });
+  function checkEnter(e){
+	if (e.keyCode == 13) {
+        doLogin();
+    }
+  }
