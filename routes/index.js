@@ -787,30 +787,30 @@ function fazerRequisicao(req, res) {
 
   query = { "_NLista": nlista };
   LinhaRequisicao.find(query, (err, linha) => {
-    var counter=0;
+    var counter = 0;
     linha.forEach(element => {
       switch (element._Tipo) {
         case "Material":
 
-            counter++;
+          counter++;
           break;
         case "Chave":
 
-            Chave.findOneAndUpdate({"_NChave":element._NObjeto}, { "_Estado": 0 }, function (err, doc) {
-              if (err) {
-                console.log(err);
-                return;
-              }
-              if(doc._Estado!=1){
-                res.json({ "Message": "ChaveIndisponivel","Sala":doc._Sala });
-                return;
+          Chave.findOneAndUpdate({ "_NChave": element._NObjeto }, { "_Estado": 0 }, function (err, doc) {
+            if (err) {
+              console.log(err);
+              return;
+            }
+            if (doc._Estado != 1) {
+              res.json({ "Message": "ChaveIndisponivel", "Sala": doc._Sala });
+              return;
 
-              }
-              counter++;
-            });
+            }
+            counter++;
+          });
           break;
       }
-      if(counter==linha.length){
+      if (counter == linha.length) {
         ListaRequisicao.findOneAndUpdate(query, { "_DataRequisicao": new Date() }, function (err, doc) {
           if (err) {
             console.log(err);
@@ -822,7 +822,21 @@ function fazerRequisicao(req, res) {
       }
     });
   });
-  
+
 }
 
 module.exports.fazerRequisicao = fazerRequisicao;
+
+function removerEvento(req, res) {
+  var nevento = req.body.nevento;
+  Evento.deleteOne({ '_NEvento': nevento }, function (err) {
+    if (err) {
+      res.json({ "Message": "erro" });
+    } else {
+      res.json({ "Message": "ok" });
+    }
+  });
+
+}
+
+module.exports.removerEvento = removerEvento;
