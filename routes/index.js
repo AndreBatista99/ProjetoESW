@@ -594,13 +594,12 @@ function criarEvento(req, res) {
   var horario = req.body.horario;
   var local = req.body.local;
   var descricao = req.body.descricao;
-  return;
-  Chave.find({}).sort('_NChave').exec(function (err, docs) {
-    var nextNChave = parseInt(docs[docs.length - 1]._NChave);
-    nextNChave += 1;
-    console.log(nextNChave);
-    var novaChave = new Chave({ "_NChave": nextNChave, "_Tipo": "Regular", "_Sala": stringSala, "_Estado": 1 });
-    Chave.create(novaChave);
+  Evento.find({}).sort('_NEvento').exec(function (err, docs) {
+    var nextNEvento = parseInt(docs[docs.length - 1]._NEvento);
+    nextNEvento += 1;
+    console.log(nextNEvento);
+    var novoEvento = new Evento({ "_NEvento": nextNEvento,"_Titulo": titulo, "_Data": data, "_Horario": horario, "_Local": local, "_Descricao":descricao });
+    Evento.create(novoEvento);
     res.json({ "Message": "Success" });
     return;
   });
