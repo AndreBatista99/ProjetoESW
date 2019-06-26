@@ -7,7 +7,7 @@ $(document).ready(function () {
         modalsRequisicoes();
     } else {
         //DEBUGMODE
-        alert("Não tens permissão para ver as chaves, Faz login");
+        alert("Não tens permissão para fazer encomendas, Faz login");
         location.replace('index.html');
     }
 });

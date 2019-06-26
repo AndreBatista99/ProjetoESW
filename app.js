@@ -40,6 +40,8 @@ app.use(bodyParser());
     app.use('/apagarLinhaRequisicao',indexRouter.apagarLinhaRequisicao);
     app.use('/fazerRequisicao',indexRouter.fazerRequisicao);
   //Entregar
+    app.use('/listarRequisicoes',indexRouter.listarRequisicoes);
+    app.use('/entregarTudo',indexRouter.entregarTudo);
 //Gestão
   //Materiais
     app.use('/lerMateriais',indexRouter.lerMateriais);

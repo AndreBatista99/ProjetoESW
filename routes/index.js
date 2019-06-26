@@ -588,6 +588,44 @@ function abrirLinhasRequisicao(req, res) {
 }
 module.exports.abrirLinhasRequisicao = abrirLinhasRequisicao;
 
+
+function listarRequisicoes(req, res) {
+  nutilizador = req.body.nutilizador;
+  var query = { "_Dono": nutilizador };
+
+  ListaRequisicao.find(query, (err, listas) => {
+    if (listas.length == 0) {
+      res.json({ "Message": "DontHaveLists" });
+      return;
+    }
+    res.json({ "Message": "Success", "listas": listas });
+    return;
+  });
+}
+module.exports.listarRequisicoes = listarRequisicoes;
+
+
+function entregarTudo(req, res) {
+  nutilizador = req.body.nutilizador;
+  nlista = req.body.nlista;
+  var query = { "_Dono": nutilizador, "_NLista": nlista };
+  ListaRequisicao.find(query, (err, listas) => {
+    if (listas.length == 0) {
+      res.json({ "Message": "DontHaveLists" });
+      return;
+    }
+    LinhaRequisicao.updateMany({ "_NLista": nlista }, { "_DataEntrega": new Date() }, function (err, result) {
+      if (!err){
+        ListaRequisicao.findOneAndUpdate(query, { "_DataEntrega": new Date() }, function (err, result2) {
+          res.json({ "Message": "Success"});
+          return;
+        });
+      }
+    });
+  });
+}
+module.exports.entregarTudo = entregarTudo;
+
 function criarEvento(req, res) {
   var titulo = req.body.titulo;
   var data = req.body.data;
@@ -598,7 +636,7 @@ function criarEvento(req, res) {
     var nextNEvento = parseInt(docs[docs.length - 1]._NEvento);
     nextNEvento += 1;
     console.log(nextNEvento);
-    var novoEvento = new Evento({ "_NEvento": nextNEvento,"_Titulo": titulo, "_Data": data, "_Horario": horario, "_Local": local, "_Descricao":descricao });
+    var novoEvento = new Evento({ "_NEvento": nextNEvento, "_Titulo": titulo, "_Data": data, "_Horario": horario, "_Local": local, "_Descricao": descricao });
     Evento.create(novoEvento);
     res.json({ "Message": "Success" });
     return;
