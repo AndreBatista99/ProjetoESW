@@ -444,6 +444,7 @@ function getChaves() {
                     td.innerHTML = chave._Sala;
                 }
                 td.title = "Sala";
+                td.className="hoverOrange";
 
                 td.addEventListener("click", function () {
                     adicionarObjeto("Chave", chave._NChave, 1);

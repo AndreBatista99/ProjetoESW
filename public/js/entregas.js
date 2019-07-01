@@ -74,7 +74,7 @@ function listarRequisicoes() {
                 /**** Row ****/
                 var td = document.createElement("td");
 
-                const NULLDATE = "1900-01-01";
+                const NULLDATE = "null";
                 if (lista._DataEntrega.substr(0, 10) != NULLDATE) {
                     td.innerHTML = formatMongoDate(lista._DataEntrega);
                     td.style.color = "green";
@@ -116,7 +116,7 @@ function listarRequisicoes() {
 }
 
 function abrirLista(nlista) {
-    alert("Abrir Lista" + nlista);
+    location.replace('encomenda.html?nlista='+nlista);
     return;
 }
 function entregarTudo(nlista) {

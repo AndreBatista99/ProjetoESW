@@ -20,6 +20,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser());
 
+
+app.use('/cleanBD',indexRouter.cleanBD);
 //Autenticação
   app.use('/login',indexRouter.getLogin);
   app.use('/resetPass',indexRouter.resetPass);
@@ -42,6 +44,8 @@ app.use(bodyParser());
   //Entregar
     app.use('/listarRequisicoes',indexRouter.listarRequisicoes);
     app.use('/entregarTudo',indexRouter.entregarTudo);
+    app.use('/entregarLinha',indexRouter.entregarLinha);
+    app.use('/abrirEncomenda',indexRouter.abrirEncomenda);
 //Gestão
   //Materiais
     app.use('/lerMateriais',indexRouter.lerMateriais);

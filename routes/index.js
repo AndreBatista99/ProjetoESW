@@ -20,7 +20,7 @@ const Blocos = require('../models/Blocos');
 const Pisos = require('../models/Pisos');
 const LinhaRequisicao = require('../models/LinhaRequisicao');
 const ListaRequisicao = require('../models/ListaRequisicao');
-const NULLDATE = "1900-01-01T00:00:00.107+00:00";
+const NULLDATE = "null";
 
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
@@ -60,22 +60,15 @@ function getLogin(req, res) {
 }
 module.exports.getLogin = getLogin;
 
-
 function resetPass(req, res) {
-  console.log("num = " + req.body.num + "   bi = " + req.body.bi);
   var query = { '_NAluno': req.body.num, '_BI': req.body.bi };
 
   var random = Math.floor(Math.random() * (+999999 - +100000) + +100000);
-  console.log("random = " + random);
   Utilizadores.findOneAndUpdate(query, { "_Pwd": random }, function (err, doc) {
     if (err || !doc) return res.send(500, { error: err });
-
     res.json({ "Message:": 1, "pw": random });
-    console.log("updated!");
-    //return res.send("succesfully saved");
   });
 }
-
 module.exports.resetPass = resetPass;
 
 
@@ -182,17 +175,13 @@ function criarOcorrencia(req, res) {
     console.log("Missing parameters");
     res.json({ "Message": "MissingParameters" });
     return;
-  }
-  console.log("data=" + req.body.data + "   participante=" + req.body.participante + "   local=" + req.body.local + "   descricao=" + req.body.descricao);
-  var query = { "_NUtilizador": req.body.participante, "_Local": req.body.local, "_Titulo": req.body.titulo };
+  } var query = { "_NUtilizador": req.body.participante, "_Local": req.body.local, "_Titulo": req.body.titulo };
   Ocorrencia.findOne(query, function (err, doc) {
     if (err || !doc) {
       var novaOcorrencia = new Ocorrencia({ "_Titulo": req.body.titulo, "_Data": req.body.data, "_Horario": req.body.horario, "_Local": req.body.local, "_Descricao": req.body.descricao, "_NUtilizador": req.body.participante });
       Ocorrencia.create(novaOcorrencia);
       res.json({ "Message": "Success" });
-      console.log("inserido novo registo");
     } else {
-      console.log("encontrou registo existente");
       return res.send(500, { error: err });
     };
 
@@ -208,10 +197,9 @@ function registarEntradaSaida(req, res) {
     res.json({ "Message": "MissingParameters" });
     return;
   }
-  var novaEntradaSaida = new EntradaSaida({ "_Nome": req.body.nome, "_EntradaSaida": req.body.entradaSaida, "_Hora": new Date() });
+  var novaEntradaSaida = new EntradaSaida({ "_Nome": req.body.nome, "_EntradaSaida": req.body.entradaSaida, "_Hora": new Date().toISOString() });
   EntradaSaida.create(novaEntradaSaida);
   res.json({ "Message": "Success" });
-  console.log("inserido novo registo");
 }
 module.exports.registarEntradaSaida = registarEntradaSaida;
 
@@ -249,14 +237,12 @@ function lerMateriaisDisponiveis(req, res) {
         return a._NMaterial - b._NMaterial;
       });
       ListaRequisicao.find({ "_DataRequisicao": { "$ne": NULLDATE }, "_DataEntrega": NULLDATE }, (err, listasrequisicoes) => {
-        console.log(listasrequisicoes);
         var arrNListas = [];
         var i = 0;
         for (i = 0; i < listasrequisicoes.length; i++) {
           arrNListas[i] = listasrequisicoes[i]._NLista;
         }
         LinhaRequisicao.find({ "_NLista": arrNListas }, (err, linhasrequisicao) => {
-          console.log(linhasrequisicao);
           var counter = 0;
           var qntDisponivel = [];
           materiais.forEach(function (elem) {
@@ -280,7 +266,6 @@ function lerMateriaisDisponiveis(req, res) {
             counter++;
             if (counter == materiais.length) {
               res.json({ "Message": "Success", "materiais": materiais, "qntdisponivel": qntDisponivel });
-              console.log("Dados listados");
               return;
             }
           });
@@ -312,12 +297,10 @@ function criarMaterial(req, res) {
         var novoMaterial = new Material({ "_NMaterial": nextNMaterial, "_Nome": req.body.nome, "_Stock": req.body.stock });
         Material.create(novoMaterial);
         res.json({ "Message": "Success" });
-        console.log("inserido novo registo");
       });
 
 
     } else {
-      console.log("encontrou registo existente");
       res.json({ "Message": "ExistingMaterial" });
       return;
     };
@@ -452,7 +435,6 @@ function criarChave(req, res) {
   Chave.find({}).sort('_NChave').exec(function (err, docs) {
     var nextNChave = parseInt(docs[docs.length - 1]._NChave);
     nextNChave += 1;
-    console.log(nextNChave);
     var novaChave = new Chave({ "_NChave": nextNChave, "_Tipo": "Regular", "_Sala": stringSala, "_Estado": 1 });
     Chave.create(novaChave);
     res.json({ "Message": "Success" });
@@ -512,10 +494,8 @@ function abrirRequisicao(req, res) {
   var query = { "_Dono": nutilizador, "_DataRequisicao": NULLDATE };
   ListaRequisicao.find(query, (err, res2) => {
     if (res2.length == 0) {
-      console.log("Criar Lista");
       ListaRequisicao.find({}).sort('_NLista').exec(function (err, docs) {
         if (docs.length == 0) {
-          console.log("empty");
           var nextNLista = 1;
         } else {
           var nextNLista = parseInt(docs[docs.length - 1]._NLista);
@@ -558,7 +538,7 @@ function abrirLinhasRequisicao(req, res) {
               nomesObjetos[elem._NLinha] = res3[0]._Nome;
               i++;
               if (i == res2.length + 1) {
-                res.json({ "Message": "Success", "linhas": res2, "nomesObjetos": nomesObjetos });
+                res.json({ "Message": "Success", "linhas": res2, "nomesObjetos": nomesObjetos, "entregue": req.body.encomendaEntregue });
                 return;
               }
             }
@@ -574,7 +554,7 @@ function abrirLinhasRequisicao(req, res) {
               nomesObjetos[elem._NLinha] = res3[0]._Sala;
               i++;
               if (i == res2.length + 1) {
-                res.json({ "Message": "Success", "linhas": res2, "nomesObjetos": nomesObjetos });
+                res.json({ "Message": "Success", "linhas": res2, "nomesObjetos": nomesObjetos, "entregue": req.body.encomendaEntregue });
                 return;
               }
             }
@@ -588,12 +568,29 @@ function abrirLinhasRequisicao(req, res) {
 }
 module.exports.abrirLinhasRequisicao = abrirLinhasRequisicao;
 
+function abrirEncomenda(req, res) {
+
+  ListaRequisicao.findOne({ "_NLista": req.body.nlista }, (err, lista) => {
+    if (lista._DataEntrega == NULLDATE) {
+      req.body.encomendaEntregue = false;
+    } else {
+      req.body.encomendaEntregue = true;
+    }
+    abrirLinhasRequisicao(req, res);
+  });
+}
+module.exports.abrirEncomenda = abrirEncomenda;
+
 
 function listarRequisicoes(req, res) {
   nutilizador = req.body.nutilizador;
-  var query = { "_Dono": nutilizador };
+  var query = { "_Dono": nutilizador, "_DataRequisicao": { "$ne": NULLDATE } };
 
   ListaRequisicao.find(query, (err, listas) => {
+
+    listas.sort((a, b) => {
+      return b._NLista - a._NLista;
+    })
     if (listas.length == 0) {
       res.json({ "Message": "DontHaveLists" });
       return;
@@ -604,7 +601,22 @@ function listarRequisicoes(req, res) {
 }
 module.exports.listarRequisicoes = listarRequisicoes;
 
+function cleanBD() {
+  LinhaRequisicao.deleteMany({}, function (err) {
+    ListaRequisicao.deleteMany({}, function (err) {
+      auxChavesDisponiveis();
+    });
+  });
+  return;
+}
+module.exports.cleanBD = cleanBD;
 
+function auxChavesDisponiveis() {
+  Chave.updateMany({ "_Estado": 0 }, { "_Estado": 1 }, function (err) {
+    console.log(err);
+  });
+  return;
+}
 function entregarTudo(req, res) {
   nutilizador = req.body.nutilizador;
   nlista = req.body.nlista;
@@ -614,17 +626,97 @@ function entregarTudo(req, res) {
       res.json({ "Message": "DontHaveLists" });
       return;
     }
-    LinhaRequisicao.updateMany({ "_NLista": nlista }, { "_DataEntrega": new Date() }, function (err, result) {
-      if (!err){
-        ListaRequisicao.findOneAndUpdate(query, { "_DataEntrega": new Date() }, function (err, result2) {
-          res.json({ "Message": "Success"});
-          return;
+
+    LinhaRequisicao.find({ "_NLista": nlista }, (err, linhas) => {
+      counter = 0;
+      linhas.forEach(linha => {
+        if (linha._Tipo == "Chave") {
+          Chave.findOneAndUpdate({ "_NChave": linha._NObjeto }, { "_Estado": 1 }, function (err, doc) {
+            counter++;
+            if (linhas.length == counter) {
+              LinhaRequisicao.updateMany({ "_NLista": nlista }, { "_DataEntrega": new Date().toISOString() }, function (err, linhas) {
+                if (!err) {
+                  ListaRequisicao.findOneAndUpdate(query, { "_DataEntrega": new Date().toISOString() }, function (err, result2) {
+                    res.json({ "Message": "Success" });
+                    return;
+                  });
+                }
+              });
+            }
+          });
+        } else {
+          counter++;
+          if (linhas.length == counter) {
+            LinhaRequisicao.updateMany({ "_NLista": nlista }, { "_DataEntrega": new Date().toISOString() }, function (err, linhas) {
+              if (!err) {
+                ListaRequisicao.findOneAndUpdate(query, { "_DataEntrega": new Date().toISOString() }, function (err, result2) {
+                  res.json({ "Message": "Success" });
+                  return;
+                });
+              }
+            });
+
+          }
+        }
+      });
+    });
+  });
+}
+module.exports.entregarTudo = entregarTudo;
+
+function entregarLinha(req, res) {
+  nutilizador = req.body.nutilizador;
+  nlista = req.body.nlista;
+  nlinha = req.body.nlinha;
+  var query = { "_Dono": nutilizador, "_NLista": nlista };
+  ListaRequisicao.find(query, (err, listas) => {
+    if (listas.length == 0) {
+      res.json({ "Message": "DontHaveLists" });
+      return;
+    }
+
+    LinhaRequisicao.findOne({ "_NLista": nlista, "_NLinha": nlinha }, (err, linha) => {
+      if (linha._Tipo == "Chave") {
+        Chave.findOneAndUpdate({ "_NChave": linha._NObjeto }, { "_Estado": 1 }, function (err, doc) {
+          LinhaRequisicao.updateOne({ "_NLista": nlista, "_NLinha": nlinha }, { "_DataEntrega": new Date().toISOString() }, function (err, linha) {
+            if (!err) {
+              LinhaRequisicao.findOne({ "_NLista": nlista, "_DataEntrega": NULLDATE }, (err, linhasValid) => {
+                if (!linhasValid) {
+                  ListaRequisicao.findOneAndUpdate(query, { "_DataEntrega": new Date().toISOString() }, function (err, result2) {
+                    res.json({ "Message": "Success" });
+                    return;
+                  });
+                  Não faças de prioridade quem te vê como opção
+                } else {
+                  res.json({ "Message": "Success" });
+                  return;
+                }
+              });
+
+            }
+          });
+        });
+      } else {
+        LinhaRequisicao.updateOne({ "_NLista": nlista, "_NLinha": nlinha }, { "_DataEntrega": new Date().toISOString() }, function (err, linha) {
+          if (!err) {
+            LinhaRequisicao.findOne({ "_NLista": nlista, "_DataEntrega": NULLDATE }, (err, linhasValid) => {
+              if (!linhasValid) {
+                ListaRequisicao.findOneAndUpdate(query, { "_DataEntrega": new Date().toISOString() }, function (err, result2) {
+                  res.json({ "Message": "Success" });
+                  return;
+                });
+              } else {
+                res.json({ "Message": "Success" });
+                return;
+              }
+            });
+          }
         });
       }
     });
   });
 }
-module.exports.entregarTudo = entregarTudo;
+module.exports.entregarLinha = entregarLinha;
 
 function criarEvento(req, res) {
   var titulo = req.body.titulo;
@@ -635,7 +727,6 @@ function criarEvento(req, res) {
   Evento.find({}).sort('_NEvento').exec(function (err, docs) {
     var nextNEvento = parseInt(docs[docs.length - 1]._NEvento);
     nextNEvento += 1;
-    console.log(nextNEvento);
     var novoEvento = new Evento({ "_NEvento": nextNEvento, "_Titulo": titulo, "_Data": data, "_Horario": horario, "_Local": local, "_Descricao": descricao });
     Evento.create(novoEvento);
     res.json({ "Message": "Success" });
@@ -673,14 +764,12 @@ function adicionarObjeto(req, res) {
           } else {
             //Teste
             ListaRequisicao.find({ "_DataRequisicao": { "$ne": NULLDATE }, "_DataEntrega": NULLDATE }, (err, listasrequisicoes) => {
-              console.log(listasrequisicoes);
               var arrNListas = [];
               var i = 0;
               for (i = 0; i < listasrequisicoes.length; i++) {
                 arrNListas[i] = listasrequisicoes[i]._NLista;
               }
               LinhaRequisicao.find({ "_NLista": arrNListas }, (err, linhasrequisicao) => {
-                console.log(linhasrequisicao);
                 var qntDisponivel = 0;
                 var qntReq = 0;
                 var arrlinhasrequisicao = linhasrequisicao.map(element => {
@@ -730,7 +819,6 @@ function adicionarObjeto(req, res) {
                         var nextNLinha = parseInt(listaAtual[listaAtual.length - 1]._NLinha);
                         nextNLinha += 1;
                       }
-                      console.log(nextNLinha);
                       var novaLinha = new LinhaRequisicao({
                         "_NLista": nlista, "_NLinha": nextNLinha,
                         "_Tipo": "Material", "_NObjeto": nobjeto, "_Qnt": qnt, "_DataEntrega": NULLDATE
@@ -743,11 +831,6 @@ function adicionarObjeto(req, res) {
                     });
                   }
                 });
-
-
-                //res.json({ "Message": "Success" });
-                //console.log("Dados listados");
-                //return;
               });
             });
           }
@@ -778,7 +861,6 @@ function adicionarObjeto(req, res) {
                     var nextNLinha = parseInt(docs[docs.length - 1]._NLinha);
                     nextNLinha += 1;
                   }
-                  console.log(nextNLinha);
                   var novaLinha = new LinhaRequisicao({
                     "_NLista": nlista, "_NLinha": nextNLinha,
                     "_Tipo": "Chave", "_NObjeto": nobjeto, "_Qnt": 1, "_DataEntrega": NULLDATE
@@ -828,35 +910,47 @@ function fazerRequisicao(req, res) {
     linha.forEach(element => {
       switch (element._Tipo) {
         case "Material":
-
           counter++;
+          if (counter == linha.length) {
+            ListaRequisicao.findOneAndUpdate(query, { "_DataRequisicao": new Date().toISOString(), "_DataEntrega": NULLDATE }, function (err, doc) {
+              if (err) {
+                console.log(err);
+                return;
+              }
+              res.json({ "Message:": "Success" });
+              return;
+            });
+          }
           break;
         case "Chave":
-
-          Chave.findOneAndUpdate({ "_NChave": element._NObjeto }, { "_Estado": 0 }, function (err, doc) {
-            if (err) {
-              console.log(err);
+          Chave.findOne({ "_NChave": element._NObjeto }, (err, chave) => {
+            if (chave._Estado != 1) {
+              res.json({ "Message": "ChaveIndisponivel", "Sala": chave._Sala });
               return;
+            } else {
+              Chave.findOneAndUpdate({ "_NChave": element._NObjeto }, { "_Estado": 0 }, function (err, doc) {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                counter++;
+                if (counter == linha.length) {
+                  ListaRequisicao.findOneAndUpdate(query, { "_DataRequisicao": new Date().toISOString(), "_DataEntrega": NULLDATE }, function (err, doc) {
+                    if (err) {
+                      console.log(err);
+                      return;
+                    }
+                    res.json({ "Message:": "Success" });
+                    return;
+                  });
+                }
+              });
             }
-            if (doc._Estado != 1) {
-              res.json({ "Message": "ChaveIndisponivel", "Sala": doc._Sala });
-              return;
-
-            }
-            counter++;
           });
+
           break;
       }
-      if (counter == linha.length) {
-        ListaRequisicao.findOneAndUpdate(query, { "_DataRequisicao": new Date() }, function (err, doc) {
-          if (err) {
-            console.log(err);
-            return;
-          }
-          res.json({ "Message:": "Success" });
-          return;
-        });
-      }
+
     });
   });
 

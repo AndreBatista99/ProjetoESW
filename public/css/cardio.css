@@ -1226,7 +1226,14 @@ footer .social-footer li:hover a {
 	transition: all 0.5s ease;
 	cursor:pointer;
 }
-
+.hoverOrange:hover{
+	color:rgb(255, 151, 53);
+	font-weight: bold;
+	/*font-size:1.2em;*/
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	cursor:pointer;
+}
 #dropdownMenuLink:focus{
 
 	background-color: transparent;
