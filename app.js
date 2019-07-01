@@ -34,6 +34,8 @@ app.use('/cleanBD',indexRouter.cleanBD);
 //Ocorrencias
   app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
   app.use('/lerOcorrencias',indexRouter.lerOcorrencias);
+  app.use('/imprimirRelatorio',indexRouter.imprimirRelatorio);
+  
 //Requisições
   //Requisitar
     app.use('/abrirRequisicao',indexRouter.abrirRequisicao);

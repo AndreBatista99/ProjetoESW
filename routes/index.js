@@ -169,6 +169,94 @@ function lerOcorrencias(req, res) {
 };
 module.exports.lerOcorrencias = lerOcorrencias;
 
+function imprimirRelatorio(req, res) {
+  var date = req.body.date;
+
+  Ocorrencia.find({ "_Data": date }, (err, res2) => {
+    if (err) {
+      console.log(err);
+      res.json({ "Message": "SystemError" });
+    } else {
+      if (res2.length > 0) {
+        var creatorNum = 0;
+        var creatorName = [];
+        res2.forEach(function (elem) {
+          Utilizadores.find({ '_NUtilizador': elem._NUtilizador }, (err2, res3) => {
+            if (err2) {
+              res.json({ "Message": "SystemError" });
+              return;
+            } else {
+              if (res3.length > 0) {
+                creatorName[creatorNum++] = res3[0]._Nome;
+              } else {
+                res.json({ "Message": "WrongUser" });
+                return;
+              }
+            }
+            if (creatorNum == res2.length) {
+              var Ocorrencias = res2;
+              var CriadorOcorrencias = creatorName;
+              //Fim Listar Ocorrencias
+              //Inicio Eventos
+              Evento.find({ "_Data": date }, (err, eventos) => {
+                if (err) {
+                  console.log(err);
+                  res.json({ "Message": "SystemError" });
+                } else {
+                  if (eventos.length > 0) {
+                    var Eventos = eventos;
+                    //Fim Eventos
+
+                    res.json({
+                      "Message": "Success",
+                      "Ocorrencias": Ocorrencias,
+                      "CriadorOcorrencias": CriadorOcorrencias,
+                      "Eventos": Eventos
+                    });
+
+                  } else{
+                    res.json({
+                      "Message": "Success",
+                      "Ocorrencias": Ocorrencias,
+                      "CriadorOcorrencias": CriadorOcorrencias
+                    });
+                  }
+                }
+              });
+            }
+          });
+
+        });
+      } else{
+        //Inicio Eventos
+        Evento.find({ "_Data": date }, (err, eventos) => {
+          if (err) {
+            console.log(err);
+            res.json({ "Message": "SystemError" });
+          } else {
+            if (eventos.length > 0) {
+              var Eventos = eventos;
+              //Fim Eventos
+
+              res.json({
+                "Message": "Success",
+                "Eventos": Eventos
+              });
+
+            } else{
+              res.json({
+                "Message": "Success"
+              });
+              console.log('Não tem dados');
+            }
+          }
+        });
+      }
+    }
+  });
+};
+module.exports.imprimirRelatorio = imprimirRelatorio;
+
 
 function criarOcorrencia(req, res) {
   if (req.body.participante == "" || req.body.titulo == "" || req.body.local == "") {
@@ -724,8 +812,12 @@ function criarEvento(req, res) {
   var local = req.body.local;
   var descricao = req.body.descricao;
   Evento.find({}).sort('_NEvento').exec(function (err, docs) {
-    var nextNEvento = parseInt(docs[docs.length - 1]._NEvento);
-    nextNEvento += 1;
+    if(docs.length==0){
+      nextNEvento=1;
+    }else{
+      var nextNEvento = parseInt(docs[docs.length - 1]._NEvento);
+      nextNEvento += 1;
+    }
     var novoEvento = new Evento({ "_NEvento": nextNEvento, "_Titulo": titulo, "_Data": data, "_Horario": horario, "_Local": local, "_Descricao": descricao });
     Evento.create(novoEvento);
     res.json({ "Message": "Success" });

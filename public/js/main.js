@@ -181,6 +181,8 @@ function closeAllModals(){
 	$('#modal-EditarChave').modal('hide');
 	$('#modal-AdicionarChave').modal('hide');
 	$('#modal-AdicionarMaterial').modal('hide');
+	$('#PrintReportDatePicker').modal('hide');
+	
 
 }
 function changeMode(mode){

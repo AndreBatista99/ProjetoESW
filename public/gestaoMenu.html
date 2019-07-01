@@ -6,7 +6,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Gestão</title>
-	<meta name="description" content="Cardio is a free one page template made exclusively for Codrops by Luka Cvetinovic" />
+	<meta name="description"
+		content="Cardio is a free one page template made exclusively for Codrops by Luka Cvetinovic" />
 	<meta name="keywords" content="html template, css, free, one page, gym, fitness, web design" />
 	<meta name="author" content="Luka Cvetinovic for Codrops" />
 	<!-- Favicons (created with http://realfavicongenerator.net/)-->
@@ -29,11 +30,14 @@
 	<link rel="stylesheet" type="text/css" href="css/animate.css">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.1.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css"
+		integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 	<!-- Elegant Icons -->
 	<link rel="stylesheet" type="text/css" href="fonts/eleganticons/et-icons.css">
 	<!-- Main style -->
 	<link rel="stylesheet" type="text/css" href="css/cardio.css">
+	<!-- PrintJS -->
+	<link rel="stylesheet" type="text/css" href="https://printjs-4de6.kxcdn.com/print.min.css">
 </head>
 
 <body>
@@ -44,13 +48,15 @@
 		<div class="container">
 			<!-- Brand and toggle get grouped for better mobile display -->
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+					data-target="#bs-example-navbar-collapse-1">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html"><img src="img/logo.png" data-active-url="img/logo-active.png" alt=""></a>
+				<a class="navbar-brand" href="index.html"><img src="img/logo.png" data-active-url="img/logo-active.png"
+						alt=""></a>
 			</div>
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -66,9 +72,12 @@
 					</li>
 					<li id="loggedIn" style="display:none">
 						<div class="dropdown show">
-							<a style="color:orange" class="custButton  btn btn-secondary dropdown-toggle list-item" href="#" role="button" id="LoggedUsername" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
-							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item list-item"  >Logout</a>
+							<a style="color:orange" class="custButton  btn btn-secondary dropdown-toggle list-item"
+								href="#" role="button" id="LoggedUsername" data-toggle="dropdown" aria-haspopup="true"
+								aria-expanded="false">Username</a>
+							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;"
+								aria-labelledby="dropdownMenuLink">
+								<a class="dropdown-item list-item">Logout</a>
 							</div>
 						</div>
 					</li>
@@ -85,16 +94,22 @@
 					<h1 class="white typed">Gestão</h1>
 					<span class="typed-cursor">|</span>
 				</div>
-				
+
 				<div class="col-md-12 text-center">
 					<h3 class="light white">O que pretende gerir?</h3><br>
 					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
+
 					</div>
 					<div class="col-lg-6 col-md-8 col-sm-12 text-center">
-						<button type="button" class="custButton btn btn-button BigButton"  onclick="location.replace('gestaoMateriais.html');">Materiais</button>
-						<button type="button" class="custButton btn btn-button BigButton"  onclick="location.replace('gestaoChaves.html');">Salas / Chaves</button><br>
-						<button type="button" class="custButton btn btn-button BigButton"  onclick="cleanBD();">Clean BD</button>
-					
+						<button type="button" class="custButton btn btn-button BigButton"
+							onclick="location.replace('gestaoMateriais.html');">Materiais</button>
+						<button type="button" class="custButton btn btn-button BigButton"
+							onclick="location.replace('gestaoChaves.html');">Salas / Chaves</button><br>
+						<button type="button" class="custButton btn btn-button BigButton" onclick="cleanBD();">Clean
+							BD</button><br>
+						<button type="button" class="custButton btn btn-button BigButton"
+						data-toggle="modal" data-target="#PrintReportDatePicker"">Imprimir Relatorio</button>
+
 					</div>
 					<div class="col-lg-3 col-md-2 col-sm-0 text-center">
 					</div>
@@ -108,11 +123,14 @@
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white">Login</h3>
 				<form action="" class="popup-form">
-					<input type="text" id="LoginStudentNumber" class="form-control form-white" placeholder="Número de aluno" name="studentNumber" onkeypress="return checkEnter(event)">
-					<input type="password" id="LoginPassword" class="form-control form-white" placeholder="Password" name="password" onkeypress="return checkEnter(event)">
+					<input type="text" id="LoginStudentNumber" class="form-control form-white"
+						placeholder="Número de aluno" name="studentNumber" onkeypress="return checkEnter(event)">
+					<input type="password" id="LoginPassword" class="form-control form-white" placeholder="Password"
+						name="password" onkeypress="return checkEnter(event)">
 					<button type="button" onclick="doLogin()" class="custButton btn btn-submit">Entrar</button>
-					<button type="button"  class="custButton btn btn-submit">Utilizar Cartão</button>
-					<button type="button"  data-toggle="modal" data-target="#modal2" class="custButton btn close-link btn-submit">Recuperar Pass</button>
+					<button type="button" class="custButton btn btn-submit">Utilizar Cartão</button>
+					<button type="button" data-toggle="modal" data-target="#modal2"
+						class="custButton btn close-link btn-submit">Recuperar Pass</button>
 				</form>
 			</div>
 		</div>
@@ -123,32 +141,48 @@
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white" id="recuperarPasswordLabel">Recuperar password</h3>
 				<form action="" id="RecuperarPassForm" class="popup-form">
-					<input type="text" id="RecoveryStudentNumber" name="RecoveryStudentNumber" class="form-control form-white" placeholder="Número de aluno">
-					<input type="text" id="RecoveryBINumber" name="RecoveryBINumber" class="form-control form-white" placeholder="BI">
-					<button type="button" onclick="resetPass()" class="custButton btn btn-submit" data-toggle="modal">Recuperar</button>
+					<input type="text" id="RecoveryStudentNumber" name="RecoveryStudentNumber"
+						class="form-control form-white" placeholder="Número de aluno">
+					<input type="text" id="RecoveryBINumber" name="RecoveryBINumber" class="form-control form-white"
+						placeholder="BI">
+					<button type="button" onclick="resetPass()" class="custButton btn btn-submit"
+						data-toggle="modal">Recuperar</button>
 				</form>
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="PrintReportDatePicker" tabindex="-1" role="dialog" aria-labelledby="EscolherData"
+		aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content modal-popup">
+				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
+				<h3 class="white" id="recuperarPasswordLabel">Data do relatório</h3>
+				<input type="date" id="DataRelatorio" class="form-control form-white">
+				<button type="button" onclick="printReport();" class="custButton btn btn-submit"
+					data-toggle="modal">Imprimir</button>
+			</div>
+		</div>
+	</div>
 
-	<div class="modal fade" id="modal_validation" tabindex="-5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="modal_validation" tabindex="-5" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header" >
+				<div class="modal-header">
 					<div class="row">
 						<div class="col-lg-10 col-md-10 col-sm-10">
 							<h4 class="modal-title" id="modal-title-login">Validação de login</h4>
 						</div>
 						<div class="col-lg-2 col-md-2 col-sm-2">
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true" style="font-size:30px">&times;</span>
+								<span aria-hidden="true" style="font-size:30px">&times;</span>
 							</button>
 						</div>
 					</div>
 				</div>
-				<div class="modal-body" >
+				<div class="modal-body">
 					<p id="Wrong-Combination" style="color:red;display:none">
-							<i class="fas fa-exclamation-triangle"></i> Combinação inválida 
+						<i class="fas fa-exclamation-triangle"></i> Combinação inválida
 					</p>
 				</div>
 				<div class="modal-footer">
@@ -156,6 +190,47 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<div id="printDiv" style="display:none">
+		<h1 style="text-align: center">Relatório do dia <span id="dailyReport"></span></h1>
+		<h4>Neste relatório será gerado todos os registos de Ocorrencias e Eventos relacionados com esta data</h4>
+		<!--Ocorrencias-->
+		<div id="OcorrenciasDiarias">
+			<h1 style="text-align:center">Ocorrencias</h1>
+			<h3 style="text-align: center;display:none" id="zeroOcorrencias">Não existem ocorrências para este dia</h3>
+			<table class="table table-bordered  results" id="TableOcorrencias" title="Ocorrência">
+				<thead>
+					<tr>
+						<th style="width:20%">#</th>
+						<th style="text-align: center;width:20%">Titulo</th>
+						<th style="text-align: center;width:20%"" class=" col-md-2 col-xs-2">Participante</th>
+						<th style="text-align: center;width:20%" class="col-md-3 col-xs-3">Local</th>
+						<th style="text-align: center;width:20%" class="col-md-3 col-xs-3">Data</th>
+					</tr>
+				</thead>
+				<tbody id="tbody_ocorrencias">
+				</tbody>
+			</table>
+		</div>
+		<!--Eventos-->
+		<div id="EventosDiarios">
+			<br><br>
+			<h1 style="text-align:center">Evento</h1>
+			<h3 style="text-align: center;display:none" id="zeroEventos">Não existem eventos para este dia</h3>
+			<table class="table table-bordered results" id="TableEventos" title="Evento">
+				<thead>
+					<tr>
+						<th style="width:20%">#</th>
+						<th style="text-align: center;width:20%" class="col-md-6 col-xs-6">Nome</th>
+						<th style="text-align: center;width:20%" class="col-md-3 col-xs-3">Local</th>
+						<th style="text-align: center;width:20%" class="col-md-3 col-xs-3">Data</th>
+					</tr>
+				</thead>
+				<tbody id="tbody_eventos">
+				</tbody>
+			</table>
+		</div>
+
 	</div>
 	<!-- Holder for mobile navigation -->
 	<div class="mobile-nav">
@@ -172,6 +247,8 @@
 	<script src="js/typewriter.js"></script>
 	<script src="js/jquery.onepagenav.js"></script>
 	<script src="js/main.js"></script>
+	<!-- PrintJS -->
+	<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
 </body>
 
 </html>

@@ -94,7 +94,6 @@ function criarOcorrencia() {
     xhr.open("POST", document.location.origin + "/criarOcorrencia", true);
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
-            alert('Criado com sucesso');
             closeAllModals();
             lerOcorrencias();
         } else {
@@ -105,3 +104,4 @@ function criarOcorrencia() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(json));
 };
+
