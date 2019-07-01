@@ -686,7 +686,6 @@ function entregarLinha(req, res) {
                     res.json({ "Message": "Success" });
                     return;
                   });
-                  Não faças de prioridade quem te vê como opção
                 } else {
                   res.json({ "Message": "Success" });
                   return;
