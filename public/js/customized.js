@@ -189,6 +189,7 @@ function RegistarEntradaSaida() {
 }
 function printReport() {
     if (!havePermission('Admin')) {
+        alert('Não tem permissoes');
         return;
     }
     var date = document.getElementById("DataRelatorio").value;
