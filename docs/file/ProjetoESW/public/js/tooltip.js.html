@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">ProjetoESW/public/js/tooltip.js | projetoesw</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">ProjetoESW/public/js/tooltip.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">;(function ($, Formstone, undefined) {
+
+	&quot;use strict&quot;;
+
+	/**
+	 * @method private
+	 * @name construct
+	 * @description Builds instance.
+	 * @param data [object] &quot;Instance data&quot;
+	 */
+
+	function construct(data) {
+		this.on(Events.mouseEnter, data, onMouseEnter);
+	}
+
+	/**
+	 * @method private
+	 * @name destruct
+	 * @description Tears down instance.
+	 * @param data [object] &quot;Instance data&quot;
+	 */
+
+	function destruct(data) {
+		removeTooltip();
+
+		this.off(Events.namespace);
+	}
+
+	/**
+	 * @method private
+	 * @name onMouseEnter
+	 * @description Handles mouse enter event.
+	 * @param e [object] &quot;Event data&quot;
+	 */
+
+	function onMouseEnter(e) {
+		removeTooltip();
+
+		var data = e.data;
+
+		data.left = e.pageX;
+		data.top  = e.pageY;
+
+		buildTooltip(data);
+	}
+
+	/**
+	 * @method private
+	 * @name onMouseLeave
+	 * @description Handles mouse leave event.
+	 * @param e [object] &quot;Event data&quot;
+	 */
+
+	function onMouseLeave(e) {
+		var data = e.data;
+
+		Functions.clearTimer(data.timer);
+
+		removeTooltip();
+	}
+
+	/**
+	 * @method private
+	 * @name onMouseLeave
+	 * @description Handles mouse move event.
+	 * @param e [object] &quot;Event data&quot;
+	 */
+
+	function onMouseMove(e) {
+		positionTooltip(e.pageX, e.pageY);
+	}
+
+	/**
+	 * @method private
+	 * @name buildTooltip
+	 * @description Builds new tooltip instance.
+	 * @param data [object] &quot;Instance data&quot;
+	 */
+
+	function buildTooltip(data) {
+		removeTooltip();
+
+		var html = &apos;&apos;;
+
+		html += &apos;&lt;div class=&quot;&apos;;
+		html += [RawClasses.base, RawClasses[data.direction] ].join(&quot; &quot;);
+		html += &apos;&quot;&gt;&apos;;
+		html += &apos;&lt;div class=&quot;&apos; + RawClasses.content + &apos;&quot;&gt;&apos;;
+		html += data.formatter.call(data.$el, data);
+		html += &apos;&lt;span class=&quot;&apos; + RawClasses.caret + &apos;&quot;&gt;&lt;/span&gt;&apos;;
+		html += &apos;&lt;/div&gt;&apos;;
+		html += &apos;&lt;/div&gt;&apos;;
+
+		Instance = {
+			$tooltip    : $(html),
+			$el         : data.$el
+		};
+
+		Formstone.$body.append(Instance.$tooltip);
+
+		var $content = Instance.$tooltip.find(Classes.content),
+			$caret   = Instance.$tooltip.find(Classes.caret),
+
+			offset = data.$el.offset(),
+			height = data.$el.outerHeight(),
+			width  = data.$el.outerWidth(),
+
+			tooltipLeft     = 0,
+			tooltipTop      = 0,
+			contentLeft     = 0,
+			contentTop      = 0,
+			caretLeft       = false,
+			caretTop        = false,
+
+			caretHeight     = $caret.outerHeight(true),
+			caretWidth      = $caret.outerWidth(true),
+			contentHeight   = $content.outerHeight(true),
+			contentWidth    = $content.outerWidth(true);
+
+		// position content
+		if (data.direction === &quot;right&quot; || data.direction === &quot;left&quot;) {
+			caretTop   = (contentHeight - caretHeight) / 2;
+			contentTop = -contentHeight / 2;
+
+			if (data.direction === &quot;right&quot;) {
+				contentLeft = data.margin;
+			} else if (data.direction === &quot;left&quot;) {
+				contentLeft = -(contentWidth + data.margin);
+			}
+		} else {
+			caretLeft = (contentWidth - caretWidth) / 2;
+			contentLeft = -contentWidth / 2;
+
+			if (data.direction === &quot;bottom&quot;) {
+				contentTop = data.margin;
+			} else if (data.direction === &quot;top&quot;) {
+				contentTop = -(contentHeight + data.margin);
+			}
+		}
+
+		// Modify Dom
+		$content.css({
+			top:  contentTop,
+			left: contentLeft
+		});
+
+		$caret.css({
+			top:  caretTop,
+			left: caretLeft
+		});
+
+		// Position tooltip
+		if (data.follow) {
+			data.$el.on(Events.mouseMove, data, onMouseMove);
+		} else {
+			if (data.match) {
+				if (data.direction === &quot;right&quot; || data.direction === &quot;left&quot;) {
+					tooltipTop = data.top; // mouse pos
+
+					if (data.direction === &quot;right&quot;) {
+						tooltipLeft = offset.left + width;
+					} else if (data.direction === &quot;left&quot;) {
+						tooltipLeft = offset.left;
+					}
+				} else {
+					tooltipLeft = data.left; // mouse pos
+
+					if (data.direction === &quot;bottom&quot;) {
+						tooltipTop = offset.top + height;
+					} else if (data.direction === &quot;top&quot;) {
+						tooltipTop = offset.top;
+					}
+				}
+			} else {
+				if (data.direction === &quot;right&quot; || data.direction === &quot;left&quot;) {
+					tooltipTop = offset.top + (height / 2);
+
+					if (data.direction === &quot;right&quot;) {
+						tooltipLeft = offset.left + width;
+					} else if (data.direction === &quot;left&quot;) {
+						tooltipLeft = offset.left;
+					}
+				} else {
+					tooltipLeft = offset.left + (width / 2);
+
+					if (data.direction === &quot;bottom&quot;) {
+						tooltipTop = offset.top + height;
+					} else if (data.direction === &quot;top&quot;) {
+						tooltipTop = offset.top;
+					}
+				}
+			}
+
+			positionTooltip(tooltipLeft, tooltipTop);
+		}
+
+		data.timer = Functions.startTimer(data.timer, data.delay, function() {
+			Instance.$tooltip.addClass(RawClasses.visible);
+		});
+
+		data.$el.one(Events.mouseLeave, data, onMouseLeave);
+	}
+
+	/**
+	 * @method private
+	 * @name positionTooltip
+	 * @description Positions active tooltip instance.
+	 * @param left [int] &quot;Left position&quot;
+	 * @param top [int] &quot;Top position&quot;
+	 */
+
+	function positionTooltip(left, top) {
+		if (Instance) {
+			Instance.$tooltip.css({
+				left : left,
+				top  : top
+			});
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name removeTooltip
+	 * @description Removes active tooltip instance.
+	 */
+
+	function removeTooltip() {
+		if (Instance) {
+			Instance.$el.off( [Events.mouseMove, Events.mouseLeave].join(&quot; &quot;) );
+
+			Instance.$tooltip.remove();
+			Instance = null;
+		}
+	}
+
+	/**
+	 * @method private
+	 * @name format
+	 * @description Formats tooltip text.
+	 * @return [string] &quot;Tooltip text&quot;
+	 */
+
+	function format(data) {
+		return this.data(&quot;title&quot;);
+	}
+
+	/**
+	 * @plugin
+	 * @name Tooltip
+	 * @description A jQuery plugin for simple tooltips.
+	 * @type widget
+	 * @dependency core.js
+	 */
+
+	var Plugin = Formstone.Plugin(&quot;tooltip&quot;, {
+			widget: true,
+
+			/**
+			 * @options
+			 * @param delay [int] &lt;0&gt; &quot;Hover delay&quot;
+			 * @param direction [string] &lt;&apos;top&apos;&gt; &quot;Tooltip direction&quot;
+			 * @param follow [boolean] &lt;false&gt; &quot;Flag to follow mouse&quot;
+			 * @param formatter [function] &lt;$.noop&gt; &quot;Text format function&quot;
+			 * @param margin [int] &lt;15&gt; &quot;Tooltip margin&quot;
+			 * @param match [boolean] &lt;false&gt; &quot;Flag to match mouse position&quot;
+			 */
+
+			defaults: {
+				delay        : 0,
+				direction    : &quot;top&quot;,
+				follow       : false,
+				formatter    : format,
+				margin       : 15,
+				match        : false
+			},
+
+			classes: [
+				&quot;content&quot;,
+				&quot;caret&quot;,
+				&quot;visible&quot;,
+				&quot;top&quot;,
+				&quot;bottom&quot;,
+				&quot;right&quot;,
+				&quot;left&quot;
+			],
+
+			methods: {
+				_construct    : construct,
+				_destruct     : destruct
+			}
+		}),
+
+		// Localize References
+
+		Classes       = Plugin.classes,
+		RawClasses    = Classes.raw,
+		Events        = Plugin.events,
+		Functions     = Plugin.functions,
+
+		// Singleton
+
+		Instance     = null;
+
+})(jQuery, Formstone);</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>
