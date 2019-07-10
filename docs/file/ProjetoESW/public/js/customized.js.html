@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">ProjetoESW/public/js/customized.js | projetoesw</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">ProjetoESW/public/js/customized.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">$(document).ready(function () {
+    console.log(&quot;ready!&quot;);
+    if (isLogged()) {
+        document.getElementById(&quot;loggedIn&quot;).style.display = &quot;block&quot;;
+        document.getElementById(&quot;LoggedUsername&quot;).textContent = getCookie(&quot;_Nome&quot;);
+    } else {
+        document.getElementById(&quot;notLoggedIn&quot;).style.display = &quot;block&quot;;
+    }
+    /*
+    if (typeof getCookie(&quot;_TipoUtilizador&quot;) !== &apos;undefined&apos;){
+        if (getCookie(&quot;_TipoUtilizador&quot;) !== &apos;&apos;){
+            document.getElementById(&quot;loggedIn&quot;).style.display=&quot;block&quot;;
+            document.getElementById(&quot;LoggedUsername&quot;).textContent=getCookie(&quot;_Nome&quot;);
+        }else{
+            document.getElementById(&quot;notLoggedIn&quot;).style.display=&quot;block&quot;;
+        }
+    }else{
+        document.getElementById(&quot;notLoggedIn&quot;).style.display=&quot;block&quot;;
+    }*/
+});
+
+
+function doLogin() {
+    document.getElementById(&quot;Wrong-Combination&quot;).style.display = &quot;none&quot;;
+    var num = document.getElementById(&quot;LoginStudentNumber&quot;).value;
+    var pw = document.getElementById(&quot;LoginPassword&quot;).value;
+    var json = { &quot;num&quot;: num, &quot;pw&quot;: pw };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/login&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if (xhr.response.Message == &quot;WrongCombination&quot;) {
+                $(&apos;#modal_validation&apos;).modal(&apos;show&apos;);
+                document.getElementById(&quot;Wrong-Combination&quot;).style.display = &quot;block&quot;;
+            } else if (xhr.response.Message == &quot;SystemError&quot;) {
+                alert(&quot;Erro de sistema&quot;);
+            } else if (xhr.response.Message == &quot;Success&quot;) {
+                setCookie(&quot;_id&quot;, xhr.response._id, 10);
+                setCookie(&quot;_NUtilizador&quot;, xhr.response._NUtilizador, 10);
+                setCookie(&quot;_Nome&quot;, xhr.response._Nome, 10);
+                setCookie(&quot;_Email&quot;, xhr.response._Email, 10);
+                setCookie(&quot;_BI&quot;, xhr.response._BI, 10);
+                setCookie(&quot;_Pwd&quot;, xhr.response._Pwd, 10);
+                setCookie(&quot;_NAluno&quot;, xhr.response._NAluno, 10);
+                setCookie(&quot;_TipoUtilizador&quot;, xhr.response._TipoUtilizador, 10);
+                setCookie(&quot;_Turma&quot;, xhr.response._Turma, 10);
+                setCookie(&quot;_Estado&quot;, xhr.response._Estado, 10);
+                window.location.replace(&quot;entradas.html&quot;);
+            }
+        } else {
+            console.error(users);
+        }
+    }
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+};
+function doLogout() {
+    setCookie(&quot;_id&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_NUtilizador&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_Nome&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_Email&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_BI&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_Pwd&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_NAluno&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_TipoUtilizador&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_Turma&quot;, &quot;&quot;, 0);
+    setCookie(&quot;_Estado&quot;, &quot;&quot;, 0);
+    window.location.replace(&quot;entradas.html&quot;);
+}
+
+
+function setCookie(cname, cvalue, mins) {
+    var d = new Date();
+    var debug = true;
+    var time = mins * 60 * 1000;
+    if (debug) {
+        time *= 10;
+    }
+    d.setTime(d.getTime() + (time));
+    var expires = &quot;expires=&quot; + d.toUTCString();
+    document.cookie = cname + &quot;=&quot; + cvalue + &quot;;&quot; + expires + &quot;;path=/&quot;;
+}
+
+function getCookie(cname) {
+    var name = cname + &quot;=&quot;;
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(&apos;;&apos;);
+    for (var i = 0; i &lt; ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == &apos; &apos;) {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return &quot;&quot;;
+}
+
+function isLogged() {
+    if (typeof getCookie(&quot;_TipoUtilizador&quot;) !== &apos;undefined&apos;) {
+        if (getCookie(&quot;_TipoUtilizador&quot;) !== &apos;&apos;) {
+            return true;
+        }
+    }
+    return false;
+}
+function cleanBD() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/cleanBD&quot;, true);
+    xhr.onload = function () {
+        alert(&apos;Done&apos;);
+        return;
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send();
+}
+
+function havePermission(Permission) {
+    if (!isLogged) {
+        alert(&quot;Fa&#xE7;a o login primeiro&quot;);
+        return false;
+    }
+    if (getCookie(&quot;_TipoUtilizador&quot;) == Permission) {
+        return true;
+    }
+    return false;
+}
+
+
+function resetPass() {
+    if (isLogged) {
+        alert(&quot;Already logged in&quot;);
+        return;
+    }
+    var num = document.getElementById(&quot;RecoveryStudentNumber&quot;).value;
+    var bi = document.getElementById(&quot;RecoveryBINumber&quot;).value;
+    var json = { &quot;num&quot;: num, &quot;bi&quot;: bi };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/resetPass&quot;, true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            var form = document.getElementById(&quot;RecuperarPassForm&quot;);
+            var h3 = document.createElement(&quot;h3&quot;);
+            document.getElementById(&quot;recuperarPasswordLabel&quot;).textContent = &quot;Nova Password!&quot;
+            h3.textContent = xhr.response.pw;
+            form.innerHTML = &quot;&quot;;
+            form.appendChild(h3);
+            console.log(xhr.response.pw);
+
+
+        } else {
+            console.error(&quot;dados incorretos&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+};
+
+function RegistarEntradaSaida() {
+    var nome = document.getElementById(&quot;EntradaSaidaNome&quot;).value;
+    var entradaSaida = document.getElementById(&quot;entradaSaida&quot;).value;
+
+    var json = { &quot;nome&quot;: nome, &quot;entradaSaida&quot;: entradaSaida };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/registarEntradaSaida&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            alert(&apos;Registado com sucesso&apos;);
+        } else {
+            alert(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+
+}
+function printReport() {
+    if (!havePermission(&apos;Admin&apos;)) {
+        alert(&apos;N&#xE3;o tem permissoes&apos;);
+        return;
+    }
+    var date = document.getElementById(&quot;DataRelatorio&quot;).value;
+    var div = document.getElementById(&quot;printDiv&quot;);
+    //div.innerHTML=&quot;&quot;;
+    
+    document.getElementById(&quot;zeroOcorrencias&quot;).style.display=&quot;none&quot;;
+    document.getElementById(&quot;zeroEventos&quot;).style.display=&quot;none&quot;;
+    document.getElementById(&quot;dailyReport&quot;).innerHTML = date;
+
+    var json = { &quot;date&quot;: date };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/imprimirRelatorio&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if (!xhr.response.Ocorrencias) {
+                var table = document.getElementById(&quot;TableOcorrencias&quot;);
+                table.innerHTML=&quot;&quot;;
+                document.getElementById(&quot;zeroOcorrencias&quot;).style.display=&quot;block&quot;;
+            }else{
+                //Ocorrencias
+                var i = 1;
+                var tbody = document.getElementById(&quot;tbody_ocorrencias&quot;);
+                tbody.innerText = &quot;&quot;;
+                xhr.response.Ocorrencias.forEach(function (elem) {
+                    var tr = document.createElement(&quot;tr&quot;);
+                    var th = document.createElement(&quot;th&quot;);
+                    th.scope = &quot;row&quot;;
+                    th.textContent = &quot;&quot; + (i++);
+                    th.title = &quot;N&#xFA;mero&quot;;
+                    tr.appendChild(th);
+                    /* Row */
+                    var td = document.createElement(&quot;td&quot;);
+                    td.textContent = elem._Titulo;
+                    td.title = &quot;T&#xED;tulo&quot;;
+                    tr.appendChild(td);
+
+                    /* Row */
+                    var td = document.createElement(&quot;td&quot;);
+                    td.textContent = xhr.response.CriadorOcorrencias[i - 2];
+                    td.title = &quot;Participante&quot;;
+                    tr.appendChild(td);
+
+                    /* Row */
+                    var td = document.createElement(&quot;td&quot;);
+                    td.textContent = elem._Local;
+                    td.title = &quot;Local&quot;;
+                    tr.appendChild(td);
+
+                    /* Row */
+                    var td = document.createElement(&quot;td&quot;);
+                    td.textContent = elem._Data + &apos; &apos; + elem._Horario;
+                    td.title = &quot;Hor&#xE1;rio&quot;;
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
+                });
+            }
+
+            if (!xhr.response.Eventos) {
+                var table = document.getElementById(&quot;TableEventos&quot;);
+                table.innerHTML=&quot;&quot;;
+                document.getElementById(&quot;zeroEventos&quot;).style.display=&quot;block&quot;;
+            }else{
+            //Eventos
+            var tbody = document.getElementById(&quot;tbody_eventos&quot;);
+            tbody.innerHTML = &quot;&quot;;
+            var i=1;
+            xhr.response.Eventos.forEach(function (elem) {
+                //alert(elem._local);
+                var tr = document.createElement(&quot;tr&quot;);
+                var th = document.createElement(&quot;th&quot;);
+                th.scope = &quot;row&quot;;
+                th.textContent = &quot;&quot; + (i++);
+                tr.appendChild(th);
+                th.id = &quot;Numero;&quot;
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.textContent = elem._Titulo;
+                td.id = &quot;Titulo;&quot;
+                tr.appendChild(td);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.textContent = elem._Local;
+                td.id = &quot;Local;&quot;
+                tr.appendChild(td);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.textContent = elem._Data + &apos; &apos; + elem._Horario;
+                td.id = &quot;Horario;&quot;
+                tr.appendChild(td);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.id = &quot;&quot; + elem._id
+                td.className = &quot;event_delete&quot;
+                var iconTrash = document.createElement(&quot;i&quot;);
+                iconTrash.className = &quot;fa fa-trash&quot;;
+                var a = document.createElement(&quot;a&quot;);
+                a.appendChild(iconTrash);
+                a.addEventListener(&quot;click&quot;, function () {
+                    deleteEvent(elem._NEvento);
+                });
+                td.appendChild(a);
+                td.style.textAlign = &quot;center&quot;;
+
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+            });
+        }
+
+
+
+            div.style.display = &quot;block&quot;;
+            printJS(&apos;printDiv&apos;, &apos;html&apos;);
+            div.style.display = &quot;none&quot;;
+        } else {
+            alert(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

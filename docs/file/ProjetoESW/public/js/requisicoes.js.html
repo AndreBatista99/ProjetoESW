@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">ProjetoESW/public/js/requisicoes.js | projetoesw</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">ProjetoESW/public/js/requisicoes.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">$(document).ready(function () {
+    if (isLogged()) {
+        //lerChaves();
+        document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A carregar as requisi&#xE7;&#xF5;es&quot;;
+        blockScreen();
+        abrirRequisicao();
+        modalsRequisicoes();
+    } else {
+        //DEBUGMODE
+        alert(&quot;N&#xE3;o tens permiss&#xE3;o para fazer encomendas, Faz login&quot;);
+        location.replace(&apos;index.html&apos;);
+    }
+});
+
+
+function lerChaves() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;GET&quot;, document.location.origin + &quot;/lerChaves&quot;, true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            var tbody = document.getElementById(&quot;tbody_chaves&quot;);
+            tbody.innerText = &quot;&quot;;
+            document.getElementById(&quot;searchboxtext&quot;).value = &quot;&quot;;
+            document.getElementById(&quot;searchboxcounter&quot;).innerText = &quot;&quot;;
+            var counter = 0;
+            xhr.response.chaves.forEach(function (elem) {
+                counter++;
+                var tr = document.createElement(&quot;tr&quot;);
+                var th = document.createElement(&quot;th&quot;);
+                th.scope = &quot;row&quot;;
+                th.textContent = elem._NChave;
+                th.title = &quot;N&#xFA;mero&quot;;
+                tr.appendChild(th);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                if (elem._Tipo == &quot;Mestra&quot;) {
+                    td.textContent = &quot;Chave Mestra&quot;;
+                    td.style.fontWeight = &quot;900&quot;;
+                } else {
+                    td.textContent = elem._Sala;
+                }
+                td.id = &quot;Sala_&quot; + elem._NChave;
+                td.title = &quot;Sala&quot;;
+                tr.appendChild(td);
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                var img = document.createElement(&quot;img&quot;);
+                td.style.textAlign = &quot;center&quot;;
+                switch (elem._Estado) {
+                    case -1:
+                        img.src = &quot;../img/icon_perdida.png&quot;;
+                        img.title = &quot;Perdida&quot;;
+                        td.title = &quot;Perdida&quot;;
+                        break;
+
+                    case 0:
+                        img.src = &quot;../img/icon_requisitada.png&quot;;
+                        img.title = &quot;Requisitada&quot;;
+                        td.title = &quot;Requisitada&quot;;
+                        break;
+
+                    case 1:
+                        img.src = &quot;../img/icon_disponivel.png&quot;;
+                        img.title = &quot;Dsponivel&quot;;
+                        td.title = &quot;Disponivel&quot;;
+                        break;
+
+                }
+                td.appendChild(img);
+                td.id = &quot;Estado_&quot; + elem._NChave;
+                tr.appendChild(td);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                if (elem._Tipo != &quot;Mestra&quot;) {
+                    var i = document.createElement(&quot;i&quot;);
+                    i.className = &quot;far fa-edit hoverBlue&quot;;
+                    i.title = &quot;Editar&quot;;
+                    i.setAttribute(&quot;data-toggle&quot;, &quot;modal&quot;);
+                    i.setAttribute(&quot;data-target&quot;, &quot;#modal-EditarChave&quot;);
+
+                    i.addEventListener(&quot;click&quot;, function () {
+                        openEditor(elem._NChave);
+                    });
+                    td.appendChild(i);
+                }
+
+                td.title = &quot;Ac&#xE7;&#xF5;es&quot;;
+                td.style.textAlign = &quot;center&quot;;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                /*
+                         &lt;i class=&quot;far fa-edit hoverBlue&quot; title=&quot;Editar&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                         &lt;i class=&quot;fas fa-inbox hoverBlue&quot; title=&quot;Pedido de Stock&quot;&gt;&lt;/i&gt;
+                     &lt;/td&gt;
+                 */
+            });
+            if (counter == xhr.response.chaves.length) {
+                setTimeout(function () { $(&quot;#loadMe&quot;).modal(&quot;hide&quot;); }, 1000);
+            }
+
+        } else {
+            alert(&apos;Error&apos;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify());
+
+}
+
+function changeStock(nmaterial, mode, value, isVisual) {
+    if (!havePermission(&quot;Professor&quot;) &amp;&amp; !havePermission(&quot;Admin&quot;)) {
+        alert(&quot;N&#xE3;o tem permissoes&quot;);
+        return;
+    }
+    if (mode !== &apos;update&apos; &amp;&amp; mode !== &quot;+&quot; &amp;&amp; mode !== &quot;-&quot;) {
+        alert(&quot;modo invalido&quot;);
+        return;
+    }
+    var json = { &quot;nmaterial&quot;: nmaterial, &quot;mode&quot;: mode, &quot;value&quot;: value };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/changeStock&quot;, true);
+
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A alterar stock de &quot; + document.getElementById(&quot;Nome_&quot; + nmaterial).innerText;
+    blockScreen();
+    xhr.onload = function () {
+
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if (isVisual) {
+                if (document.getElementById(&quot;Stock_&quot; + nmaterial).value == xhr.response._Stock &amp;&amp; xhr.response._Stock &gt; 0) {
+                    $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                    return;
+                }
+                if (xhr.response._Stock &lt;= 0) {
+                    //alert(&quot;Material Eliminado&quot;);
+                    lerMateriais();
+                    return;
+                }
+                nomeMaterial = document.getElementById(&quot;Nome_&quot; + nmaterial).innerText;
+                document.getElementById(&quot;Stock_&quot; + nmaterial).value = xhr.response._Stock;
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                //alert(&quot;Stock de &apos;&quot; + nomeMaterial + &quot;&apos; alterado&quot;);
+            }
+            return;
+        } else {
+            console.error(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+
+}
+
+function openEditor(nchave) {
+    if (!havePermission(&quot;Professor&quot;) &amp;&amp; !havePermission(&quot;Admin&quot;)) {
+        alert(&quot;N&#xE3;o tem permissoes&quot;);
+        return;
+    }
+    sala = document.getElementById(&quot;Sala_&quot; + nchave).innerHTML;
+    /*if(sala=&quot;Chave Mestra&quot;){
+        return;
+    }*/
+    bloco = sala.slice(0, 1);
+    piso = sala.slice(1, 2);
+    numerosala = sala.slice(2, 4);
+    estado = document.getElementById(&quot;Estado_&quot; + nchave).title;
+    document.getElementById(&quot;Editar_NChave&quot;).value = nchave;
+    document.getElementById(&quot;Editar_Bloco&quot;).value = bloco;
+    document.getElementById(&quot;Editar_Piso&quot;).value = piso;
+    document.getElementById(&quot;Editar_NumeroSala&quot;).value = numerosala;
+    if (estado == &quot;Perdida&quot;) {
+        document.getElementById(&quot;Editar_Perdida&quot;).checked = true;
+    } else {
+        document.getElementById(&quot;Editar_Perdida&quot;).checked = false;
+    }
+
+}
+
+
+function editarChave() {
+    var nchave = document.getElementById(&quot;Editar_NChave&quot;).value;
+    var bloco = document.getElementById(&quot;Editar_Bloco&quot;).value;
+    var piso = document.getElementById(&quot;Editar_Piso&quot;).value;
+    var numerosala = document.getElementById(&quot;Editar_NumeroSala&quot;).value;
+    var estado = -2;
+    if (document.getElementById(&quot;Editar_Perdida&quot;).checked) {
+        var estado = -1;
+    }
+
+    var isnum = /^\d+$/.test(numerosala);
+    if (numerosala.length != 2 || !isnum) {
+        alert(&quot;O numero de sala s&#xF3; pode conter dois digitos&quot;);
+        return;
+    }
+    var json = { &quot;nchave&quot;: nchave, &quot;bloco&quot;: bloco, &quot;piso&quot;: piso, &quot;numerosala&quot;: numerosala, &quot;estado&quot;: estado };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/updateChave&quot;, true);
+
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A atualizar a chave &quot; + document.getElementById(&quot;Sala_&quot; + nchave).innerText;
+    blockScreen();
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            closeAllModals();
+            //document.getElementById(&quot;Nome_&quot; + nmaterial).innerText = xhr.response.nome
+            //document.getElementById(&quot;Stock_&quot; + nmaterial).value = xhr.response.stock;
+
+            lerChaves();
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+            return;
+        } else {
+            console.error(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+function criarChave() {
+    if (!havePermission(&quot;Professor&quot;) &amp;&amp; !havePermission(&quot;Admin&quot;)) {
+        alert(&quot;N&#xE3;o tem permissoes&quot;);
+        location.reload();
+        return;
+    }
+    var bloco = document.getElementById(&quot;Criar_Bloco&quot;).value;
+    var piso = document.getElementById(&quot;Criar_Piso&quot;).value;
+    var numerosala = document.getElementById(&quot;Criar_NumeroSala&quot;).value;
+
+    var isnum = /^\d+$/.test(numerosala);
+    if (numerosala.length != 2 || !isnum) {
+        alert(&quot;O numero de sala s&#xF3; pode conter dois digitos&quot;);
+        return;
+    }
+    var json = { &quot;bloco&quot;: bloco, &quot;piso&quot;: piso, &quot;numerosala&quot;: numerosala };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/criarChave&quot;, true);
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A Criar Chave&quot;;
+    blockScreen();
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            closeAllModals();
+            lerChaves();
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+        } else {
+            alert(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+};
+
+function blockScreen() {
+    $(&quot;#loadMe&quot;).modal({
+        backdrop: &quot;static&quot;, //remove ability to close modal with click
+        keyboard: false, //remove option to close with keyboard
+        show: true //Display loader!
+    });
+}
+function getBlocos(modo) {
+    //Criar ou Editar
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;GET&quot;, document.location.origin + &quot;/lerBlocos&quot;, true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            var selectBlocos = document.getElementById(modo + &quot;_Bloco&quot;);
+            xhr.response.blocos.forEach(function (bloco) {
+                var option = document.createElement(&quot;option&quot;);
+                option.value = bloco._Bloco;
+                option.innerHTML = bloco._Bloco;
+                selectBlocos.appendChild(option);
+            })
+            return;
+        }
+    }
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify());
+}
+function getPisos(modo) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;GET&quot;, document.location.origin + &quot;/lerPisos&quot;, true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            var selectPisos = document.getElementById(modo + &quot;_Piso&quot;);
+            xhr.response.pisos.forEach(function (piso) {
+                var option = document.createElement(&quot;option&quot;);
+                option.value = piso._NPiso;
+                option.innerHTML = piso._NPiso;
+                selectPisos.appendChild(option);
+            })
+            return;
+        }
+    }
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify());
+}
+
+function getMateriais() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;GET&quot;, document.location.origin + &quot;/lerMateriaisDisponiveis&quot;, true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            var tbody = document.getElementById(&quot;tbody_materiais&quot;);
+            tbody.innerHTML = &quot;&quot;;
+            var counter = 0;
+            xhr.response.materiais.forEach(function (material) {
+                var tr = document.createElement(&quot;tr&quot;);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = material._NMaterial;
+                td.title = &quot;N&#xFA;mero&quot;;
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.style.textAlign = &quot;left&quot;;
+                var input = document.createElement(&quot;input&quot;);
+                input.className = &quot;form-control&quot;;
+                input.style = &quot;display:inline-block;width:100px;padding:5px;font-size:20px;margin:0px 10px;&quot;;
+                input.type = &quot;number&quot;;
+                input.id = &quot;Qnt_&quot; + material._NMaterial;
+                input.value = 1;
+                td.title = &quot;Quantidade&quot;;
+                td.appendChild(input);
+                var span = document.createElement(&quot;span&quot;);
+                span.textContent = xhr.response.qntdisponivel[counter++];
+                td.appendChild(span);
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = material._Nome;
+                td.title = &quot;Nome&quot;;
+                tr.appendChild(td);
+
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                var i = document.createElement(&quot;i&quot;);
+                i.className = &quot;fas fa-cart-plus&quot;;
+                i.addEventListener(&quot;click&quot;, function () {
+                    adicionarObjeto(&quot;Material&quot;, material._NMaterial, document.getElementById(&quot;Qnt_&quot; + material._NMaterial).value);
+                });
+                td.appendChild(i);
+                td.title = &quot;Adicionar material a lista&quot;;
+
+
+
+                tr.appendChild(td);
+
+                tbody.appendChild(tr);
+            })
+            return;
+        }
+    }
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify());
+
+
+}
+
+function adicionarObjeto(tipo, nobjeto, qnt) {
+    var nlista = document.getElementById(&quot;RefLista&quot;).innerHTML.split(&quot;Lista N&#xBA; &quot;)[1];
+
+    var json = { &quot;nlista&quot;: nlista, &quot;tipo&quot;: tipo, &quot;nobjeto&quot;: nobjeto, &quot;qnt&quot;: qnt };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/adicionarObjeto&quot;, true);
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A Adicionar &quot; + tipo;
+    blockScreen();
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if (xhr.response.Message == &quot;InvalidQnt&quot;) {
+                alert(&quot;Quantidade inv&#xE1;lida&quot;);
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                return;
+            } else if (xhr.response.Message == &quot;NotEnoughMaterials&quot;) {
+                alert(&quot;Quantidade inv&#xE1;lida&quot;);
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                return;
+            } else if (xhr.response.Message == &quot;DuplicateKey&quot;) {
+                alert(&quot;J&#xE1; tem esta chave nesta lista&quot;);
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                return;
+            }
+
+            modalsRequisicoes();
+            closeAllModals();
+            abrirRequisicao();
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+        } else {
+            alert(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+
+}
+
+function getChaves() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;GET&quot;, document.location.origin + &quot;/lerChavesDisponiveis&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            var tbody = document.getElementById(&quot;tbody_chaves&quot;);
+            tbody.innerHTML = &quot;&quot;;
+            xhr.response.chaves.forEach(function (chave) {
+                var tr = document.createElement(&quot;tr&quot;);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = chave._NChave;
+                td.title = &quot;N&#xFA;mero&quot;;
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                if (chave._Sala == &quot;&quot;) {
+                    td.innerHTML = &quot;Chave Mestra&quot;;
+                } else {
+                    td.innerHTML = chave._Sala;
+                }
+                td.title = &quot;Sala&quot;;
+                td.className=&quot;hoverOrange&quot;;
+
+                td.addEventListener(&quot;click&quot;, function () {
+                    adicionarObjeto(&quot;Chave&quot;, chave._NChave, 1);
+                });
+                tr.appendChild(td);
+
+
+                tbody.appendChild(tr);
+            })
+            return;
+        }
+    }
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify());
+}
+
+function modalsRequisicoes() {
+    getMateriais();
+    getChaves();
+}
+function abrirRequisicao() {
+    var nutilizador = getCookie(&quot;_NUtilizador&quot;);
+    var json = { &quot;nutilizador&quot;: nutilizador };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/abrirRequisicao&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            document.getElementById(&quot;RefLista&quot;).innerHTML = &quot;Lista N&#xBA; &quot; + xhr.response.NLista;
+            abrirLinhasRequisicao(xhr.response.NLista);
+            return;
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+function abrirLinhasRequisicao(nlista) {
+    var json = { &quot;nlista&quot;: nlista };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/abrirLinhasRequisicao&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            //alert(xhr.response.Message);
+            tbody = document.getElementById(&quot;tbody_requisicoes&quot;);
+            tbody.innerHTML = &quot;&quot;;
+            if (xhr.response.Message == &quot;DontHaveLines&quot;) {
+                var tr = document.createElement(&quot;tr&quot;);
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.style.textAlign = &quot;center&quot;;
+                td.innerHTML = &quot;N&#xE3;o existem linhas de requisi&#xE7;&#xE3;o para esta lista&quot;;
+                td.title = &quot;Resultado&quot;;
+                td.colSpan = 4;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                return;
+            }
+            xhr.response.linhas.forEach(function (linha) {
+                var tr = document.createElement(&quot;tr&quot;);
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = linha._NLinha;
+                td.title = &quot;N&#xFA;mero&quot;;
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = linha._Qnt;
+                td.title = &quot;Quantidade&quot;;
+                tr.appendChild(td);
+
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                if (linha._Tipo == &quot;Chave&quot;) {
+                    if (xhr.response.nomesObjetos[linha._NLinha] == &quot;&quot;) {
+                        td.innerHTML = &quot;Chave Mestra&quot;;
+                    } else {
+                        td.innerHTML = &quot;Chave da sala &quot; + xhr.response.nomesObjetos[linha._NLinha];
+                    }
+
+                } else {
+                    td.innerHTML = xhr.response.nomesObjetos[linha._NLinha];
+                }
+                tr.appendChild(td);
+                td.title = linha._Tipo;
+
+
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.id = &quot;&quot; + linha._NLista + &quot;_&quot; + linha._NLinha;
+                var iconTrash = document.createElement(&quot;i&quot;);
+                iconTrash.className = &quot;fa fa-trash&quot;;
+                iconTrash.style.cursor = &quot;pointer&quot;;
+                var a = document.createElement(&quot;a&quot;);
+                a.appendChild(iconTrash);
+                a.addEventListener(&quot;click&quot;, function () {
+                    apagarLinha(linha._NLista, linha._NLinha);
+                });
+                td.appendChild(a);
+                td.style.textAlign = &quot;center&quot;;
+
+                tr.appendChild(td);
+
+
+                tbody.appendChild(tr);
+            })
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+            return;
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+function apagarLinha(nlista, nlinha) {
+    var json = { &quot;nlista&quot;: nlista, &quot;nlinha&quot;: nlinha };
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A apagar a linha n&#xBA;&quot; + nlinha;
+    blockScreen();
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/apagarLinhaRequisicao&quot;, true);
+    xhr.onload = function () {
+        abrirLinhasRequisicao(nlista);
+        modalsRequisicoes();
+        $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+        return;
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+
+function fazerRequisicao() {
+    var nlista = document.getElementById(&quot;RefLista&quot;).innerHTML.split(&quot;Lista N&#xBA; &quot;)[1];
+    var json = { &quot;nlista&quot;: nlista };
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A finalizar requisi&#xE7;&#xE3;o&quot;;
+    blockScreen();
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/fazerRequisicao&quot;, true);
+    xhr.onload = function () {
+        if (xhr.response.Message == &quot;ChaveIndisponivel&quot;) {
+            alert(&quot;A chave &quot;+xhr.response.Sala+&quot; Est&#xE1; indiponivel&quot;);
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+            return;
+        }
+        $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+        location.reload();
+        return;
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

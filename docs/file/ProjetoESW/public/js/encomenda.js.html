@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">ProjetoESW/public/js/encomenda.js | projetoesw</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">ProjetoESW/public/js/encomenda.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">$(document).ready(function () {
+
+    if (isLogged()) {
+        nlista = window.location.search.substring(1).split(&quot;=&quot;)[1];
+        if (!nlista) {
+            alert(&quot;N&#xE3;o existe lista selecionada&quot;);
+            location.replace(&apos;entregas.html&apos;);
+            return;
+        }
+        document.getElementById(&quot;RefLista&quot;).innerHTML = &quot;Lista N&#xBA; &quot; + nlista;
+        abrirEncomenda(nlista);
+        //listarRequisicoes();
+    } else {
+        //DEBUGMODE
+        alert(&quot;N&#xE3;o tens permiss&#xE3;o para ver encomendas, Faz login&quot;);
+        location.replace(&apos;index.html&apos;);
+    }
+});
+
+
+function blockScreen() {
+    $(&quot;#loadMe&quot;).modal({
+        backdrop: &quot;static&quot;, //remove ability to close modal with click
+        keyboard: false, //remove option to close with keyboard
+        show: true //Display loader!
+    });
+}
+
+function abrirEncomenda() {
+    var nutilizador = getCookie(&quot;_NUtilizador&quot;);
+    var json = { &quot;nutilizador&quot;: nutilizador, &quot;nlista&quot;: nlista };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A carregar a encomenda&quot;;
+    blockScreen();
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/abrirEncomenda&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            //alert(xhr.response.Message);
+            tbody = document.getElementById(&quot;tbody_encomenda&quot;);
+            tbody.innerHTML = &quot;&quot;;
+            if (xhr.response.Message == &quot;InvalidOrder&quot;) {
+                var tr = document.createElement(&quot;tr&quot;);
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.style.textAlign = &quot;center&quot;;
+                td.innerHTML = &quot;Encomenda Inv&#xE1;lida&quot;;
+                td.title = &quot;Resultado&quot;;
+                td.colSpan = 4;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                return;
+            } else if (xhr.response.Message == &quot;DontHaveLines&quot;) {
+                var tr = document.createElement(&quot;tr&quot;);
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.style.textAlign = &quot;center&quot;;
+                td.innerHTML = &quot;A encomenda est&#xE1; vazia&quot;;
+                td.title = &quot;Resultado&quot;;
+                td.colSpan = 4;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                return;
+            }
+            if(xhr.response.entregue==false){
+                document.getElementById(&quot;encomendaPorEntregar&quot;).style.display=&quot;block&quot;;
+                document.getElementById(&quot;encomendaEntregue&quot;).style.display=&quot;none&quot;;
+            }else if(xhr.response.entregue==true){
+                document.getElementById(&quot;encomendaEntregue&quot;).style.display=&quot;block&quot;;
+                document.getElementById(&quot;encomendaPorEntregar&quot;).style.display=&quot;none&quot;;
+            }
+            xhr.response.linhas.forEach(function (linha) {
+                var tr = document.createElement(&quot;tr&quot;);
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = linha._NLinha;
+                td.title = &quot;N&#xFA;mero&quot;;
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                var icon = document.createElement(&quot;i&quot;);
+                var nomeTipo=&quot;&quot;;
+                if(linha._Tipo==&quot;Chave&quot;){
+                    icon.className = &quot;fas fa-key hoverBlue&quot;;
+                    nomeTipo=&quot;Chave&quot;;
+                }else{
+                    if(linha._Qnt==1){
+                        icon.className = &quot;fas fa-cube hoverBlue&quot;;
+                        nomeTipo=&quot;Material&quot;;
+                    }else{
+                        icon.className = &quot;fas fa-cubes hoverBlue&quot;;
+                        nomeTipo=&quot;Materiais&quot;;
+                    }
+                }
+                icon.title=nomeTipo;
+                td.appendChild(icon);
+                td.style.textAlign=&quot;center&quot;;
+                td.title = &quot;Tipo&quot;;
+                td.id=&quot;Tipo_&quot;+linha._NLinha;
+                tr.appendChild(td);
+
+
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = linha._Qnt;
+                td.title = &quot;Quantidade&quot;;
+                tr.appendChild(td);
+
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                if (linha._Tipo == &quot;Chave&quot;) {
+                    if (xhr.response.nomesObjetos[linha._NLinha] == &quot;&quot;) {
+                        td.innerHTML = &quot;Chave Mestra&quot;;
+                    } else {
+                        td.innerHTML = &quot;Chave da sala &quot; + xhr.response.nomesObjetos[linha._NLinha];
+                    }
+
+                } else {
+                    td.innerHTML = xhr.response.nomesObjetos[linha._NLinha];
+                }
+                td.title = linha._Tipo;
+                tr.appendChild(td);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.id = &quot;&quot; + linha._NLista + &quot;_&quot; + linha._NLinha;
+                
+                var icon = document.createElement(&quot;i&quot;);
+                const NULLDATE = &quot;null&quot;;
+                if (linha._DataEntrega.substr(0, 10) != NULLDATE) {
+                    icon.className = &quot;fa fa-check&quot;;
+                    icon.style.color=&quot;green&quot;;
+                    icon.title=&quot;Entregue&quot;;
+                }else{
+                    icon.className = &quot;fas fa-cart-arrow-down hoverBlue&quot;;
+                    icon.title=&quot;Entregar &quot;+ nomeTipo;
+                    icon.style.cursor = &quot;pointer&quot;;
+                    icon.addEventListener(&quot;click&quot;, function () {
+                        entregarLinha(linha._NLista, linha._NLinha);
+                    });
+                }
+                td.appendChild(icon);
+                td.style.textAlign = &quot;center&quot;;
+
+                tr.appendChild(td);
+
+
+                
+
+
+                tbody.appendChild(tr);
+            })
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+            return;
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+
+function abrirLista(nlista) {
+    location.replace(&apos;encomenda.html?nlista=&apos; + nlista);
+    return;
+}
+function entregarLinha(nlista,nlinha){
+    var nutilizador = getCookie(&quot;_NUtilizador&quot;);
+    var json = { &quot;nlista&quot;: nlista,&quot;nlinha&quot;: nlinha, &quot;nutilizador&quot;: nutilizador };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    blockScreen();
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/entregarLinha&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if (xhr.response.Message == &quot;Success&quot;) {
+                abrirEncomenda(nlista);
+                return;
+            }
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+function entregarTudo() {
+    var nlista=window.location.search.substring(1).split(&quot;=&quot;)[1];
+    var nutilizador = getCookie(&quot;_NUtilizador&quot;);
+    var json = { &quot;nlista&quot;: nlista, &quot;nutilizador&quot;: nutilizador };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    blockScreen();
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/entregarTudo&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if (xhr.response.Message == &quot;Success&quot;) {
+                abrirEncomenda(nlista);
+                return;
+            }
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+function formatMongoDate(d) {
+    var v = [];
+    v[0] = d.substr(0, 4);
+    v[1] = getExtMonth(d.substr(5, 2));
+    v[2] = d.substr(8, 2);
+    v[3] = d.substr(11, 2);
+    v[4] = d.substr(14, 2);
+
+    return &quot;&quot; + v[2] + &quot; &quot; + v[1] + &quot; &quot; + v[0] + &quot;   -   &quot; + v[3] + &quot;:&quot; + v[4];
+}
+function getExtMonth(m) {
+    switch (m) {
+        case &quot;01&quot;:
+            return &quot;Jan&quot;;
+            break;
+        case &quot;02&quot;:
+            return &quot;Fev&quot;;
+            break;
+        case &quot;03&quot;:
+            return &quot;Mar&quot;;
+            break;
+        case &quot;04&quot;:
+            return &quot;Abr&quot;;
+            break;
+        case &quot;05&quot;:
+            return &quot;Mai&quot;;
+            break;
+        case &quot;06&quot;:
+            return &quot;Jun&quot;;
+            break;
+        case &quot;07&quot;:
+            return &quot;Jul&quot;;
+            break;
+        case &quot;08&quot;:
+            return &quot;Ago&quot;;
+            break;
+        case &quot;09&quot;:
+            return &quot;Set&quot;;
+            break;
+        case &quot;10&quot;:
+            return &quot;Out&quot;;
+            break;
+        case &quot;11&quot;:
+            return &quot;Nov&quot;;
+            break;
+        case &quot;12&quot;:
+            return &quot;Dez&quot;;
+            break;
+    }
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

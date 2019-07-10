@@ -162,10 +162,71 @@ jQuery(function($) {
 
 	$('.modal-popup .close-link').click(function(event){
 		event.preventDefault();
-		$('#modal1').modal('hide');
+		closeAllModals();
 	});
 
 	$(window).on("resize", function() {
 		$('.modal:visible').each(centerModal);
 	});
 });
+function closeAllModals(){
+	$('#modal1').modal('hide');
+	$('#modal2').modal('hide');
+	$('#modal3').modal('hide');
+	$('#modal-CriarEvento').modal('hide');
+	$('#modal-CriarOcorrencia').modal('hide');
+	$('#modal-CriarMaterial').modal('hide');
+	$('#modal-EditarMaterial').modal('hide');
+	$('#modal-CriarChave').modal('hide');
+	$('#modal-EditarChave').modal('hide');
+	$('#modal-AdicionarChave').modal('hide');
+	$('#modal-AdicionarMaterial').modal('hide');
+	$('#PrintReportDatePicker').modal('hide');
+	
+
+}
+function changeMode(mode){
+	document.getElementById("entradaSaida").value=mode;
+	document.getElementById("entradaSaida").textContent=mode;	
+}
+
+
+
+//Styled TableList
+
+$(document).ready(function() {
+	$(".search").keyup(function () {
+	  var searchTerm = $(".search").val();
+	  var listItem = $('.results tbody').children('tr');
+	  var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+	  var objectIdentifier = "item";
+	  objectIdentifier = document.getElementById("TableList").title;
+	  
+	$.extend($.expr[':'], {'containsi': function(elem, i, match, array){
+		  return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+	  }
+	});
+	  
+	$(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function(e){
+	  $(this).attr('visible','false');
+	});
+  
+	$(".results tbody tr:containsi('" + searchSplit + "')").each(function(e){
+	  $(this).attr('visible','true');
+	});
+  
+	var jobCount = $('.results tbody tr[visible="true"]').length;
+	if (jobCount>1||jobCount==0){
+		objectIdentifier+="s";
+	}
+	  $('.counter').text(jobCount + ' '+objectIdentifier);
+  
+	if(jobCount == '0') {$('.no-result').show();}
+	  else {$('.no-result').hide();}
+			});
+  });
+  function checkEnter(e){
+	if (e.keyCode == 13) {
+        doLogin();
+    }
+  }

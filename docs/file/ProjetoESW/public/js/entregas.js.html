@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">ProjetoESW/public/js/entregas.js | projetoesw</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">ProjetoESW/public/js/entregas.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">$(document).ready(function () {
+
+    if (isLogged()) {
+        listarRequisicoes();
+    } else {
+        //DEBUGMODE
+        alert(&quot;N&#xE3;o tens permiss&#xE3;o para ver as encomendas, Faz login&quot;);
+        location.replace(&apos;index.html&apos;);
+    }
+});
+
+
+function blockScreen() {
+    $(&quot;#loadMe&quot;).modal({
+        backdrop: &quot;static&quot;, //remove ability to close modal with click
+        keyboard: false, //remove option to close with keyboard
+        show: true //Display loader!
+    });
+}
+
+function listarRequisicoes() {
+    var nutilizador = getCookie(&quot;_NUtilizador&quot;);
+    var json = { &quot;nutilizador&quot;: nutilizador };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    document.getElementById(&quot;ChangeName&quot;).innerText = &quot;A carregar as requisi&#xE7;&#xF5;es&quot;;
+    blockScreen();
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/listarRequisicoes&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            //alert(xhr.response.Message);
+            tbody = document.getElementById(&quot;tbody_entregas&quot;);
+            tbody.innerHTML = &quot;&quot;;
+            if (xhr.response.Message == &quot;DontHaveLists&quot;) {
+                var tr = document.createElement(&quot;tr&quot;);
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.style.textAlign = &quot;center&quot;;
+                td.innerHTML = &quot;N&#xE3;o existem requisi&#xE7;&#xF5;es nesta conta&quot;;
+                td.title = &quot;Resultado&quot;;
+                td.colSpan = 4;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                return;
+            }
+            var counter=0;
+            xhr.response.listas.forEach(function (lista) {
+                var tr = document.createElement(&quot;tr&quot;);
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+                td.innerHTML = lista._NLista;
+                td.title = &quot;N&#xFA;mero&quot;;
+                td.className = &quot;hoverBlue&quot;;
+                td.addEventListener(&quot;click&quot;, function () {
+                    abrirLista(lista._NLista);
+                });
+                tr.appendChild(td);
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+
+                var fomatted_date = lista._DataRequisicao;
+                td.innerHTML = formatMongoDate(lista._DataRequisicao);
+                td.style.textAlign = &quot;center&quot;;
+                td.className = &quot;hoverBlue&quot;;
+                td.title = &quot;Data Requisi&#xE7;&#xE3;o&quot;;
+                td.addEventListener(&quot;click&quot;, function () {
+                    abrirLista(lista._NLista);
+                });
+                tr.appendChild(td);
+
+
+                /**** Row ****/
+                var td = document.createElement(&quot;td&quot;);
+
+                const NULLDATE = &quot;null&quot;;
+                if (lista._DataEntrega.substr(0, 10) != NULLDATE) {
+                    td.innerHTML = formatMongoDate(lista._DataEntrega);
+                    td.style.color = &quot;green&quot;;
+                } else {
+                    td.innerHTML = &quot;Por entregar&quot;;
+                    td.style.color = &quot;red&quot;;
+                }
+                td.style.fontWeight = &quot;900&quot;;
+                td.style.textAlign = &quot;center&quot;;
+                td.title = &quot;Data Entrega&quot;;
+                tr.appendChild(td);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                if (lista._DataEntrega.substr(0, 10) == NULLDATE) {
+                    var i = document.createElement(&quot;i&quot;);
+                    i.className = &quot;fas fa-box hoverBlue&quot;;
+                    td.style.textAlign = &quot;center&quot;;
+                    i.title = &quot;Entregar tudo&quot;;
+                    i.addEventListener(&quot;click&quot;, function () {
+                        entregarTudo(lista._NLista);
+                    });
+                    td.appendChild(i);
+                }
+
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                counter++;
+                if(xhr.response.listas.length==counter){
+                    $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                    return;
+                }
+            });
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+
+function abrirLista(nlista) {
+    location.replace(&apos;encomenda.html?nlista=&apos;+nlista);
+    return;
+}
+function entregarTudo(nlista) {
+    var nutilizador = getCookie(&quot;_NUtilizador&quot;);
+    var json = { &quot;nlista&quot;: nlista, &quot;nutilizador&quot;: nutilizador };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    blockScreen();
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/entregarTudo&quot;, true);
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if(xhr.response.Message==&quot;Success&quot;){
+                document.getElementById(&quot;searchboxcounter&quot;).innerHTML=&quot;&quot;;
+                listarRequisicoes();
+                return;
+            }
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+function formatMongoDate(d) {
+    var v = [];
+    v[0] = d.substr(0, 4);
+    v[1] = getExtMonth(d.substr(5, 2));
+    v[2] = d.substr(8, 2);
+    v[3] = d.substr(11, 2);
+    v[4] = d.substr(14, 2);
+
+    return &quot;&quot; + v[2] + &quot; &quot; + v[1] + &quot; &quot; + v[0] + &quot;   -   &quot; + v[3] + &quot;:&quot; + v[4];
+}
+function getExtMonth(m) {
+    switch (m) {
+        case &quot;01&quot;:
+            return &quot;Jan&quot;;
+            break;
+        case &quot;02&quot;:
+            return &quot;Fev&quot;;
+            break;
+        case &quot;03&quot;:
+            return &quot;Mar&quot;;
+            break;
+        case &quot;04&quot;:
+            return &quot;Abr&quot;;
+            break;
+        case &quot;05&quot;:
+            return &quot;Mai&quot;;
+            break;
+        case &quot;06&quot;:
+            return &quot;Jun&quot;;
+            break;
+        case &quot;07&quot;:
+            return &quot;Jul&quot;;
+            break;
+        case &quot;08&quot;:
+            return &quot;Ago&quot;;
+            break;
+        case &quot;09&quot;:
+            return &quot;Set&quot;;
+            break;
+        case &quot;10&quot;:
+            return &quot;Out&quot;;
+            break;
+        case &quot;11&quot;:
+            return &quot;Nov&quot;;
+            break;
+        case &quot;12&quot;:
+            return &quot;Dez&quot;;
+            break;
+    }
+}</code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

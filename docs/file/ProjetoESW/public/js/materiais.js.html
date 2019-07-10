@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl" href="../../../../">
+  <title data-ice="title">ProjetoESW/public/js/materiais.js | projetoesw</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+</head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+</header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  </ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><h1 data-ice="title">ProjetoESW/public/js/materiais.js</h1>
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">$(document).ready(function () {
+    if (isLogged()) {
+        lerMateriais();
+    } else {
+        alert(&quot;N&#xE3;o tens permiss&#xE3;o para ver os materiais, Faz login&quot;);
+        location.replace(&apos;index.html&apos;);
+    }
+});
+function lerMateriais() {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;GET&quot;, document.location.origin + &quot;/lerMateriais&quot;, true);
+
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            var tbody = document.getElementById(&quot;tbody_materiais&quot;);
+            tbody.innerText = &quot;&quot;;
+            document.getElementById(&quot;searchboxtext&quot;).value=&quot;&quot;;
+            document.getElementById(&quot;searchboxcounter&quot;).innerText=&quot;&quot;;
+            var counter=0;
+            xhr.response.materiais.forEach(function (elem) {
+                counter++;
+                var tr = document.createElement(&quot;tr&quot;);
+                var th = document.createElement(&quot;th&quot;);
+                th.scope = &quot;row&quot;;
+                th.textContent = elem._NMaterial;
+                th.title = &quot;N&#xFA;mero&quot;;
+                tr.appendChild(th);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.textContent = elem._Nome;
+                td.id = &quot;Nome_&quot; + elem._NMaterial;
+                td.title = &quot;Nome&quot;;
+                tr.appendChild(td);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                td.className = &quot;stockInput&quot;;
+                var i = document.createElement(&quot;i&quot;);
+                i.className = &quot;fas fa-minus hoverBlue&quot;;
+                i.title = &quot;Reduzir Stock&quot;;
+                i.addEventListener(&quot;click&quot;, function () {
+                    changeStock(elem._NMaterial, &apos;-&apos;, 1, true);
+                });
+                td.appendChild(i);
+                td.style.textAlign = &quot;center&quot;;
+                var input = document.createElement(&quot;input&quot;);
+                input.className = &quot;form-control&quot;;
+                input.style = &quot;display:inline-block;width:100px;padding:5px;font-size:20px;margin:0px 10px;&quot;;
+                input.type = &quot;number&quot;;
+                input.id = &quot;Stock_&quot; + elem._NMaterial;
+                input.value = elem._Stock;
+                input.addEventListener(&quot;blur&quot;, function () {
+                    changeStock(elem._NMaterial, &apos;update&apos;, input.value, true);
+                });
+                td.title = &quot;Stock&quot;;
+                td.appendChild(input);
+                var i = document.createElement(&quot;i&quot;);
+                i.className = &quot;fas fa-plus hoverBlue&quot;;
+                i.title = &quot;Aumentar Stock&quot;;
+                i.addEventListener(&quot;click&quot;, function () {
+                    changeStock(elem._NMaterial, &apos;+&apos;, 1, true);
+                });
+                td.appendChild(i);
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+
+                /* Row */
+                var td = document.createElement(&quot;td&quot;);
+                var i = document.createElement(&quot;i&quot;);
+                i.className = &quot;far fa-edit hoverBlue&quot;;
+                i.title = &quot;Editar&quot;;
+                i.setAttribute(&quot;data-toggle&quot;,&quot;modal&quot;);
+                i.setAttribute(&quot;data-target&quot;,&quot;#modal-EditarMaterial&quot;);
+                
+
+
+                i.addEventListener(&quot;click&quot;, function () {
+                    openEditor(elem._NMaterial);
+                });
+                td.appendChild(i);
+                td.title = &quot;Ac&#xE7;&#xF5;es&quot;;
+                td.style.textAlign = &quot;center&quot;;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                /*
+                         &lt;i class=&quot;far fa-edit hoverBlue&quot; title=&quot;Editar&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                         &lt;i class=&quot;fas fa-inbox hoverBlue&quot; title=&quot;Pedido de Stock&quot;&gt;&lt;/i&gt;
+                     &lt;/td&gt;
+ 
+ 
+                 */
+            });
+            if (counter==xhr.response.materiais.length){
+                setTimeout(function(){ $(&quot;#loadMe&quot;).modal(&quot;hide&quot;); }, 1000);
+            }
+
+        } else {
+            alert(&apos;Error&apos;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify());
+
+}
+
+function changeStock(nmaterial, mode, value, isVisual) {
+    if (!havePermission(&quot;Professor&quot;) &amp;&amp; !havePermission(&quot;Admin&quot;)) {
+        alert(&quot;N&#xE3;o tem permissoes&quot;);
+        return;
+    }
+    if (mode !== &apos;update&apos; &amp;&amp; mode !== &quot;+&quot; &amp;&amp; mode !== &quot;-&quot;) {
+        alert(&quot;modo invalido&quot;);
+        return;
+    }
+    var json = { &quot;nmaterial&quot;: nmaterial, &quot;mode&quot;: mode, &quot;value&quot;: value };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/changeStock&quot;, true);
+
+    document.getElementById(&quot;ChangeName&quot;).innerText=&quot;A alterar stock de &quot;+document.getElementById(&quot;Nome_&quot; + nmaterial).innerText;
+    blockScreen();
+    xhr.onload = function () {
+
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            if (isVisual) {
+                if (document.getElementById(&quot;Stock_&quot; + nmaterial).value == xhr.response._Stock &amp;&amp; xhr.response._Stock &gt; 0) {
+                    $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                    return;
+                }
+                nomeMaterial = document.getElementById(&quot;Nome_&quot; + nmaterial).innerText;
+                document.getElementById(&quot;Stock_&quot; + nmaterial).value = xhr.response._Stock;
+                $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+                //alert(&quot;Stock de &apos;&quot; + nomeMaterial + &quot;&apos; alterado&quot;);
+            }
+            return;
+        } else {
+            console.error(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+
+}
+
+function openEditor(nmaterial) {
+    if (!havePermission(&quot;Professor&quot;) &amp;&amp; !havePermission(&quot;Admin&quot;)) {
+        alert(&quot;N&#xE3;o tem permissoes&quot;);
+        return;
+    }
+    
+    var nome = document.getElementById(&quot;Nome_&quot;+nmaterial).innerHTML;
+    var stock = document.getElementById(&quot;Stock_&quot;+nmaterial).value;
+    document.getElementById(&quot;Edit_NMaterial&quot;).value = nmaterial;
+    document.getElementById(&quot;Edit_Nome&quot;).value = nome;
+    document.getElementById(&quot;Edit_Stock&quot;).value = stock;
+}
+
+
+function editarMaterial(){
+
+    var nmaterial = document.getElementById(&quot;Edit_NMaterial&quot;).value;
+    var nome = document.getElementById(&quot;Edit_Nome&quot;).value;
+    var stock = document.getElementById(&quot;Edit_Stock&quot;).value;
+    var json = { &quot;nmaterial&quot;: nmaterial, &quot;nome&quot;: nome, &quot;stock&quot;: stock };
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/updateMaterial&quot;, true);
+
+    document.getElementById(&quot;ChangeName&quot;).innerText=&quot;A atualizar o material &quot;+document.getElementById(&quot;Nome_&quot; + nmaterial).innerText;
+    blockScreen();
+    xhr.onload = function () {
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            closeAllModals();
+            document.getElementById(&quot;Nome_&quot; + nmaterial).innerText = xhr.response.nome
+            document.getElementById(&quot;Stock_&quot; + nmaterial).value = xhr.response.stock;
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);        
+            return;
+        } else {
+            console.error(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+}
+function criarMaterial() {
+    if (!havePermission(&quot;Professor&quot;) &amp;&amp; !havePermission(&quot;Admin&quot;)) {
+        alert(&quot;N&#xE3;o tem permissoes&quot;);
+        location.reload();
+        return;
+    }
+
+    var nome = document.getElementById(&quot;Criar_Nome&quot;).value;
+    var stock = document.getElementById(&quot;Criar_Stock&quot;).value;
+
+    var json = { &quot;nome&quot;: nome, &quot;stock&quot;: stock };
+
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = &quot;json&quot;;
+
+    xhr.open(&quot;POST&quot;, document.location.origin + &quot;/criarMaterial&quot;, true);
+    document.getElementById(&quot;ChangeName&quot;).innerText=&quot;A Criar Material&quot;;
+    blockScreen();
+
+    xhr.onload = function (){
+        if (xhr.readyState == 4 &amp;&amp; xhr.status == &quot;200&quot;) {
+            closeAllModals();
+            if(xhr.response.Message==&quot;ExistingMaterial&quot;){
+                alert(&quot;Esse objeto j&#xE1; existe&quot;);
+            }
+            lerMateriais();
+            
+            $(&quot;#loadMe&quot;).modal(&quot;hide&quot;);
+        } else {
+            alert(&quot;Erro&quot;);
+        }
+    }
+
+    xhr.setRequestHeader(&apos;Content-Type&apos;, &apos;application/json&apos;);
+    xhr.send(JSON.stringify(json));
+};
+ 
+function blockScreen(){
+    $(&quot;#loadMe&quot;).modal({
+      backdrop: &quot;static&quot;, //remove ability to close modal with click
+      keyboard: false, //remove option to close with keyboard
+      show: true //Display loader!
+    });
+}
+ </code></pre>
+
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.1.0)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

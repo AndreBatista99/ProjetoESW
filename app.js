@@ -3,9 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -18,9 +18,52 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser());
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
+app.use('/cleanBD',indexRouter.cleanBD);
+//Autenticação
+  app.use('/login',indexRouter.getLogin);
+  app.use('/resetPass',indexRouter.resetPass);
+//Eventos
+  app.use('/lerEventos',indexRouter.lerEventos);
+  app.use('/criarEvento',indexRouter.criarEvento);
+  app.use('/removerEvento',indexRouter.removerEvento);
+//Entradas e saidas
+  app.use('/registarEntradaSaida',indexRouter.registarEntradaSaida);
+//Ocorrencias
+  app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
+  app.use('/lerOcorrencias',indexRouter.lerOcorrencias);
+  app.use('/imprimirRelatorio',indexRouter.imprimirRelatorio);
+  
+//Requisições
+  //Requisitar
+    app.use('/abrirRequisicao',indexRouter.abrirRequisicao);
+    app.use('/abrirLinhasRequisicao',indexRouter.abrirLinhasRequisicao);
+    app.use('/adicionarObjeto',indexRouter.adicionarObjeto);
+    app.use('/apagarLinhaRequisicao',indexRouter.apagarLinhaRequisicao);
+    app.use('/fazerRequisicao',indexRouter.fazerRequisicao);
+  //Entregar
+    app.use('/listarRequisicoes',indexRouter.listarRequisicoes);
+    app.use('/entregarTudo',indexRouter.entregarTudo);
+    app.use('/entregarLinha',indexRouter.entregarLinha);
+    app.use('/abrirEncomenda',indexRouter.abrirEncomenda);
+//Gestão
+  //Materiais
+    app.use('/lerMateriais',indexRouter.lerMateriais);
+    app.use('/lerMateriaisDisponiveis',indexRouter.lerMateriaisDisponiveis);
+    app.use('/criarMaterial',indexRouter.criarMaterial);
+    app.use('/updateMaterial',indexRouter.updateMaterial);
+    app.use('/changeStock',indexRouter.changeStock);
+  //Chaves    
+    app.use('/lerBlocos',indexRouter.lerBlocos);
+    app.use('/lerPisos',indexRouter.lerPisos);
+    app.use('/lerChaves',indexRouter.lerChaves);
+    app.use('/lerChavesDisponiveis',indexRouter.lerChavesDisponiveis);
+    app.use('/criarChave',indexRouter.criarChave);
+    app.use('/updateChave',indexRouter.updateChave);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
