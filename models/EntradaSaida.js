@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var EntradaSaidaSchema = new mongoose.Schema({
   //_id:{type:String},
   _Nome:{type:String},
+  _NUtilizador:{type:Number},
   _EntradaSaida:{type:String},
   _Hora:{type:Date}
 }, {timestamps: true});

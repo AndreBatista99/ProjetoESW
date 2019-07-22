@@ -1,6 +1,9 @@
 
 $(document).ready(function () {
     lerEventos();
+    if (havePermission("Professor") || havePermission("Aluno") || havePermission("Admin")) {
+        document.getElementById("btnPopUpCriarEvento").style.display = "block";
+    }
 });
 
 function lerEventos() {

@@ -3,8 +3,10 @@ $(document).ready(function () {
     if (isLogged()) {
         document.getElementById("loggedIn").style.display = "block";
         document.getElementById("LoggedUsername").textContent = getCookie("_Nome");
+
     } else {
         document.getElementById("notLoggedIn").style.display = "block";
+        document.getElementById("btMenuRequisicoes").style.display = "none";
     }
     /*
     if (typeof getCookie("_TipoUtilizador") !== 'undefined'){
@@ -164,29 +166,57 @@ function resetPass() {
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.send(JSON.stringify(json));
 };
+function formatMongoDate(d) {
+    var v = [];
+    v[0] = d.substr(0, 4);
+    v[1] = getExtMonth(d.substr(5, 2));
+    v[2] = d.substr(8, 2);
+    v[3] = d.substr(11, 2);
+    v[4] = d.substr(14, 2);
 
-function RegistarEntradaSaida() {
-    var nome = document.getElementById("EntradaSaidaNome").value;
-    var entradaSaida = document.getElementById("entradaSaida").value;
-
-    var json = { "nome": nome, "entradaSaida": entradaSaida };
-
-    var xhr = new XMLHttpRequest();
-    xhr.responseType = "json";
-
-    xhr.open("POST", document.location.origin + "/registarEntradaSaida", true);
-    xhr.onload = function () {
-        if (xhr.readyState == 4 && xhr.status == "200") {
-            alert('Registado com sucesso');
-        } else {
-            alert("Erro");
-        }
-    }
-
-    xhr.setRequestHeader('Content-Type', 'application/json');
-    xhr.send(JSON.stringify(json));
-
+    return "" + v[2] + " " + v[1] + " " + v[0] + "   -   " + v[3] + ":" + v[4];
 }
+function getExtMonth(m) {
+    switch (m) {
+        case "01":
+            return "Jan";
+            break;
+        case "02":
+            return "Fev";
+            break;
+        case "03":
+            return "Mar";
+            break;
+        case "04":
+            return "Abr";
+            break;
+        case "05":
+            return "Mai";
+            break;
+        case "06":
+            return "Jun";
+            break;
+        case "07":
+            return "Jul";
+            break;
+        case "08":
+            return "Ago";
+            break;
+        case "09":
+            return "Set";
+            break;
+        case "10":
+            return "Out";
+            break;
+        case "11":
+            return "Nov";
+            break;
+        case "12":
+            return "Dez";
+            break;
+    }
+}
+
 function printReport() {
     if (!havePermission('Admin')) {
         alert('Não tem permissoes');
@@ -195,9 +225,9 @@ function printReport() {
     var date = document.getElementById("DataRelatorio").value;
     var div = document.getElementById("printDiv");
     //div.innerHTML="";
-    
-    document.getElementById("zeroOcorrencias").style.display="none";
-    document.getElementById("zeroEventos").style.display="none";
+
+    document.getElementById("zeroOcorrencias").style.display = "none";
+    document.getElementById("zeroEventos").style.display = "none";
     document.getElementById("dailyReport").innerHTML = date;
 
     var json = { "date": date };
@@ -210,9 +240,9 @@ function printReport() {
         if (xhr.readyState == 4 && xhr.status == "200") {
             if (!xhr.response.Ocorrencias) {
                 var table = document.getElementById("TableOcorrencias");
-                table.innerHTML="";
-                document.getElementById("zeroOcorrencias").style.display="block";
-            }else{
+                table.innerHTML = "";
+                document.getElementById("zeroOcorrencias").style.display = "block";
+            } else {
                 //Ocorrencias
                 var i = 1;
                 var tbody = document.getElementById("tbody_ocorrencias");
@@ -253,57 +283,57 @@ function printReport() {
 
             if (!xhr.response.Eventos) {
                 var table = document.getElementById("TableEventos");
-                table.innerHTML="";
-                document.getElementById("zeroEventos").style.display="block";
-            }else{
-            //Eventos
-            var tbody = document.getElementById("tbody_eventos");
-            tbody.innerHTML = "";
-            var i=1;
-            xhr.response.Eventos.forEach(function (elem) {
-                //alert(elem._local);
-                var tr = document.createElement("tr");
-                var th = document.createElement("th");
-                th.scope = "row";
-                th.textContent = "" + (i++);
-                tr.appendChild(th);
-                th.id = "Numero;"
-                /* Row */
-                var td = document.createElement("td");
-                td.textContent = elem._Titulo;
-                td.id = "Titulo;"
-                tr.appendChild(td);
+                table.innerHTML = "";
+                document.getElementById("zeroEventos").style.display = "block";
+            } else {
+                //Eventos
+                var tbody = document.getElementById("tbody_eventos");
+                tbody.innerHTML = "";
+                var i = 1;
+                xhr.response.Eventos.forEach(function (elem) {
+                    //alert(elem._local);
+                    var tr = document.createElement("tr");
+                    var th = document.createElement("th");
+                    th.scope = "row";
+                    th.textContent = "" + (i++);
+                    tr.appendChild(th);
+                    th.id = "Numero;"
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.textContent = elem._Titulo;
+                    td.id = "Titulo;"
+                    tr.appendChild(td);
 
-                /* Row */
-                var td = document.createElement("td");
-                td.textContent = elem._Local;
-                td.id = "Local;"
-                tr.appendChild(td);
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.textContent = elem._Local;
+                    td.id = "Local;"
+                    tr.appendChild(td);
 
-                /* Row */
-                var td = document.createElement("td");
-                td.textContent = elem._Data + ' ' + elem._Horario;
-                td.id = "Horario;"
-                tr.appendChild(td);
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.textContent = elem._Data + ' ' + elem._Horario;
+                    td.id = "Horario;"
+                    tr.appendChild(td);
 
-                /* Row */
-                var td = document.createElement("td");
-                td.id = "" + elem._id
-                td.className = "event_delete"
-                var iconTrash = document.createElement("i");
-                iconTrash.className = "fa fa-trash";
-                var a = document.createElement("a");
-                a.appendChild(iconTrash);
-                a.addEventListener("click", function () {
-                    deleteEvent(elem._NEvento);
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.id = "" + elem._id
+                    td.className = "event_delete"
+                    var iconTrash = document.createElement("i");
+                    iconTrash.className = "fa fa-trash";
+                    var a = document.createElement("a");
+                    a.appendChild(iconTrash);
+                    a.addEventListener("click", function () {
+                        deleteEvent(elem._NEvento);
+                    });
+                    td.appendChild(a);
+                    td.style.textAlign = "center";
+
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
                 });
-                td.appendChild(a);
-                td.style.textAlign = "center";
-
-                tr.appendChild(td);
-                tbody.appendChild(tr);
-            });
-        }
+            }
 
 
 

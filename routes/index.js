@@ -214,7 +214,7 @@ function imprimirRelatorio(req, res) {
                       "Eventos": Eventos
                     });
 
-                  } else{
+                  } else {
                     res.json({
                       "Message": "Success",
                       "Ocorrencias": Ocorrencias,
@@ -227,7 +227,7 @@ function imprimirRelatorio(req, res) {
           });
 
         });
-      } else{
+      } else {
         //Inicio Eventos
         Evento.find({ "_Data": date }, (err, eventos) => {
           if (err) {
@@ -243,7 +243,7 @@ function imprimirRelatorio(req, res) {
                 "Eventos": Eventos
               });
 
-            } else{
+            } else {
               res.json({
                 "Message": "Success"
               });
@@ -285,12 +285,51 @@ function registarEntradaSaida(req, res) {
     res.json({ "Message": "MissingParameters" });
     return;
   }
-  var novaEntradaSaida = new EntradaSaida({ "_Nome": req.body.nome, "_EntradaSaida": req.body.entradaSaida, "_Hora": new Date().toISOString() });
+  var novaEntradaSaida = new EntradaSaida({ "_Nome": req.body.nome, "_NUtilizador": req.body.nutilizador, "_EntradaSaida": req.body.entradaSaida, "_Hora": new Date().toISOString() });
   EntradaSaida.create(novaEntradaSaida);
   res.json({ "Message": "Success" });
 }
 module.exports.registarEntradaSaida = registarEntradaSaida;
 
+function verificarUtilizador(req, res) {
+  var nutilizador = req.body.nutilizador;
+  if (nutilizador == -1) {
+    res.json({ "Message": "Visitante" });
+    return;
+  }
+  var query = { '_NUtilizador': nutilizador };
+  EntradaSaida.find(query, (err, entradasSaidas) => {
+    if (err) {
+      console.log(err);
+      res.json({ "Message": "SystemError" });
+      return;
+    } else {
+      if (entradasSaidas.length == 0) {
+        console.log("1");
+        res.json({ "PorSair": false });
+        return;
+      }
+      if (entradasSaidas.length == 1) {
+        console.log("2");
+        res.json({ "PorSair": true, "ultimaEntrada": entradasSaidas[0]._Hora });
+        return;
+      }
+      entradasSaidas.sort((b, a) => {
+        return a._Hora - b._Hora;
+      })
+      console.log(entradasSaidas);
+      if (entradasSaidas[0]._EntradaSaida == "Saida") {
+        res.json({ "PorSair": false });
+        return;
+      } else {
+        res.json({ "PorSair": true, "ultimaEntrada": entradasSaidas[0]._Hora });
+        return;
+      }
+
+    }
+  });
+}
+module.exports.verificarUtilizador = verificarUtilizador;
 
 function lerMateriais(req, res) {
   Material.find({}, (err, res2) => {
@@ -812,9 +851,9 @@ function criarEvento(req, res) {
   var local = req.body.local;
   var descricao = req.body.descricao;
   Evento.find({}).sort('_NEvento').exec(function (err, docs) {
-    if(docs.length==0){
-      nextNEvento=1;
-    }else{
+    if (docs.length == 0) {
+      nextNEvento = 1;
+    } else {
       var nextNEvento = parseInt(docs[docs.length - 1]._NEvento);
       nextNEvento += 1;
     }

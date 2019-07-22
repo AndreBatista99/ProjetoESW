@@ -31,6 +31,7 @@ app.use('/cleanBD',indexRouter.cleanBD);
   app.use('/removerEvento',indexRouter.removerEvento);
 //Entradas e saidas
   app.use('/registarEntradaSaida',indexRouter.registarEntradaSaida);
+  app.use('/verificarUtilizador',indexRouter.verificarUtilizador);
 //Ocorrencias
   app.use('/criarOcorrencia',indexRouter.criarOcorrencia);
   app.use('/lerOcorrencias',indexRouter.lerOcorrencias);
