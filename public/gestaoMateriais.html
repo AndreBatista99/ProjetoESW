@@ -62,7 +62,7 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right main-nav">
 					<li><a href="entradas.html">Entradas</a></li>
-					<li id="btMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
+					<li id="btnMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
 					<li><a href="eventos.html">Eventos</a></li>
 					<li><a href="ocorrencias.html">Ocorrências</a></li>
 					<li id="btnMenuGestao"><a class="active" href="gestaoMenu.html">Gestão</a></li>
@@ -77,7 +77,8 @@
 								aria-expanded="false">Username</a>
 							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;"
 								aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item list-item">Logout</a>
+								<a class="dropdown-item list-item userOption"> <i class="fas fa-sign-out-alt"></i>
+									Logout</a>
 							</div>
 						</div>
 					</li>
@@ -210,15 +211,42 @@
 	<div class="modal fade" id="modal-CriarMaterial" tabindex="-1" role="dialog" aria-labelledby="Criar Material"
 		aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content modal-popup">
+			<div class="modal-content modal-popup" style="margin:auto;right:15%;width:750px;">
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white">Criar Material</h3>
-				<form action="" class="popup-form">
-					<input type="text" id="Criar_Nome" class="form-control form-white" placeholder="Nome">
-					<input type="number" id="Criar_Stock" class="form-control form-white" placeholder="Stock">
-					<button type="button" onclick="criarMaterial();"
-						class="custButton btn btn-submit BigButton">Criar</button>
-				</form>
+				<div class="container-fluid" style="margin:50px auto">
+					<div class="row">
+						<div class="col-lg-5">
+							<label style="font-size:30px;padding-top:20px;" for="Criar_Nome">Nome do
+								material</label><br>
+						</div>
+						<div class="col-lg-7">
+							<input type="text" id="Criar_Nome" class="form-control form-white" placeholder="Nome">
+
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-lg-5">
+							<label style="font-size:30px;padding-top:20px;" for="Criar_Stock">Stock</label><br>
+						</div>
+						<div class="col-lg-7">
+							<input type="number" id="Criar_Stock" class="form-control form-white" placeholder="Stock">
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+						</div>
+						<div class="col-lg-6">
+							<button type="button" onclick="criarMaterial();"
+								class="custButton btn btn-submit BigButton">Criar</button>
+						</div>
+						<div class="col-lg-3">
+						</div>
+					</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -227,16 +255,49 @@
 	<div class="modal fade" id="modal-EditarMaterial" tabindex="-1" role="dialog" aria-labelledby="Editar Material"
 		aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content modal-popup">
+			<div class="modal-content modal-popup" style="margin:auto;right:15%;width:750px;">
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white">Editar Material</h3>
-				<form action="" class="popup-form">
-					<input type="text" title="Numero de material" id="Edit_NMaterial" class="form-control form-white" readonly>
-					<input type="text" title="Nome" id="Edit_Nome" class="form-control form-white" placeholder="Nome">
-					<input type="number" title="Stock" id="Edit_Stock" class="form-control form-white" placeholder="Stock">
-					<button type="button" onclick="editarMaterial();"
-						class="custButton btn btn-submit BigButton">Editar</button>
-				</form>
+				<div class="container-fluid" style="margin:50px auto">
+					<input type="text" title="Numero de material" style="display:none" id="Edit_NMaterial"
+						class="form-control form-white" readonly>
+					<div class="row">
+						<div class="col-lg-5">
+							<label style="font-size:30px;padding-top:20px;" for="Edit_Nome">Nome do
+								material</label><br>
+						</div>
+						<div class="col-lg-7">
+							<input type="text" title="Nome" id="Edit_Nome" class="form-control form-white"
+								placeholder="Nome">
+
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-lg-5">
+							<label style="font-size:30px;padding-top:20px;" for="Edit_Stock">Stock</label><br>
+						</div>
+						<div class="col-lg-7">
+							<input type="number" title="Stock" id="Edit_Stock" class="form-control form-white"
+								placeholder="Stock">
+
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+						</div>
+						<div class="col-lg-6">
+							<button type="button" onclick="editarMaterial();"
+								class="custButton btn btn-submit BigButton">Editar</button>
+						</div>
+						<div class="col-lg-3">
+						</div>
+					</div>
+				</div>
+
+
+
+
 			</div>
 		</div>
 	</div>

@@ -8325,10 +8325,10 @@
                                                       }
                                                     },
                                                     "extra": {
-                                                      "rawValue": "fas fa-key hoverBlue",
-                                                      "raw": "\"fas fa-key hoverBlue\""
+                                                      "rawValue": "fas fa-key tableBtn",
+                                                      "raw": "\"fas fa-key tableBtn\""
                                                     },
-                                                    "value": "fas fa-key hoverBlue"
+                                                    "value": "fas fa-key tableBtn"
                                                   }
                                                 }
                                               },
@@ -8627,10 +8627,10 @@
                                                             }
                                                           },
                                                           "extra": {
-                                                            "rawValue": "fas fa-cube hoverBlue",
-                                                            "raw": "\"fas fa-cube hoverBlue\""
+                                                            "rawValue": "fas fa-cube tableBtn",
+                                                            "raw": "\"fas fa-cube tableBtn\""
                                                           },
-                                                          "value": "fas fa-cube hoverBlue"
+                                                          "value": "fas fa-cube tableBtn"
                                                         }
                                                       }
                                                     },
@@ -8814,10 +8814,10 @@
                                                             }
                                                           },
                                                           "extra": {
-                                                            "rawValue": "fas fa-cubes hoverBlue",
-                                                            "raw": "\"fas fa-cubes hoverBlue\""
+                                                            "rawValue": "fas fa-cubes tableBtn",
+                                                            "raw": "\"fas fa-cubes tableBtn\""
                                                           },
-                                                          "value": "fas fa-cubes hoverBlue"
+                                                          "value": "fas fa-cubes tableBtn"
                                                         }
                                                       }
                                                     },
@@ -12777,10 +12777,10 @@
                                                       }
                                                     },
                                                     "extra": {
-                                                      "rawValue": "fas fa-cart-arrow-down hoverBlue",
-                                                      "raw": "\"fas fa-cart-arrow-down hoverBlue\""
+                                                      "rawValue": "fas fa-cart-arrow-down tableBtn",
+                                                      "raw": "\"fas fa-cart-arrow-down tableBtn\""
                                                     },
-                                                    "value": "fas fa-cart-arrow-down hoverBlue"
+                                                    "value": "fas fa-cart-arrow-down tableBtn"
                                                   }
                                                 }
                                               },
@@ -36333,7 +36333,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "fas fa-key hoverBlue",
+      "value": "fas fa-key tableBtn",
       "start": 3582,
       "end": 3604,
       "loc": {
@@ -36910,7 +36910,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "fas fa-cube hoverBlue",
+      "value": "fas fa-cube tableBtn",
       "start": 3751,
       "end": 3774,
       "loc": {
@@ -37252,7 +37252,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "fas fa-cubes hoverBlue",
+      "value": "fas fa-cubes tableBtn",
       "start": 3892,
       "end": 3916,
       "loc": {
@@ -44174,7 +44174,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "fas fa-cart-arrow-down hoverBlue",
+      "value": "fas fa-cart-arrow-down tableBtn",
       "start": 5639,
       "end": 5673,
       "loc": {

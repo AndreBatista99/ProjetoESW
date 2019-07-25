@@ -4572,10 +4572,10 @@
                                                 }
                                               },
                                               "extra": {
-                                                "rawValue": "hoverBlue",
-                                                "raw": "\"hoverBlue\""
+                                                "rawValue": "tableBtn",
+                                                "raw": "\"tableBtn\""
                                               },
-                                              "value": "hoverBlue"
+                                              "value": "tableBtn"
                                             }
                                           }
                                         },
@@ -5585,10 +5585,10 @@
                                                 }
                                               },
                                               "extra": {
-                                                "rawValue": "hoverBlue",
-                                                "raw": "\"hoverBlue\""
+                                                "rawValue": "tableBtn",
+                                                "raw": "\"tableBtn\""
                                               },
-                                              "value": "hoverBlue"
+                                              "value": "tableBtn"
                                             }
                                           }
                                         },
@@ -8110,10 +8110,10 @@
                                                       }
                                                     },
                                                     "extra": {
-                                                      "rawValue": "fas fa-box hoverBlue",
-                                                      "raw": "\"fas fa-box hoverBlue\""
+                                                      "rawValue": "fas fa-box tableBtn",
+                                                      "raw": "\"fas fa-box tableBtn\""
                                                     },
-                                                    "value": "fas fa-box hoverBlue"
+                                                    "value": "fas fa-box tableBtn"
                                                   }
                                                 }
                                               },
@@ -22959,7 +22959,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "hoverBlue",
+      "value": "tableBtn",
       "start": 2017,
       "end": 2028,
       "loc": {
@@ -24769,7 +24769,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "hoverBlue",
+      "value": "tableBtn",
       "start": 2501,
       "end": 2512,
       "loc": {
@@ -29287,7 +29287,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "fas fa-box hoverBlue",
+      "value": "fas fa-box tableBtn",
       "start": 3617,
       "end": 3639,
       "loc": {

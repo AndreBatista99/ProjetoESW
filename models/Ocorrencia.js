@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var OcorrenciaSchema = new mongoose.Schema({
   //_id:{type:String},
+  _NOcorrencia:{type:Number},
   _Titulo:{type:String},
   _Data:{type:String},
   _Horario:{type:String},

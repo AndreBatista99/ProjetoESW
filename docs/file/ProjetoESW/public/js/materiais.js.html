@@ -74,7 +74,7 @@ function lerMateriais() {
                 var td = document.createElement(&quot;td&quot;);
                 td.className = &quot;stockInput&quot;;
                 var i = document.createElement(&quot;i&quot;);
-                i.className = &quot;fas fa-minus hoverBlue&quot;;
+                i.className = &quot;fas fa-minus tableBtn&quot;;
                 i.title = &quot;Reduzir Stock&quot;;
                 i.addEventListener(&quot;click&quot;, function () {
                     changeStock(elem._NMaterial, &apos;-&apos;, 1, true);
@@ -93,7 +93,7 @@ function lerMateriais() {
                 td.title = &quot;Stock&quot;;
                 td.appendChild(input);
                 var i = document.createElement(&quot;i&quot;);
-                i.className = &quot;fas fa-plus hoverBlue&quot;;
+                i.className = &quot;fas fa-plus tableBtn&quot;;
                 i.title = &quot;Aumentar Stock&quot;;
                 i.addEventListener(&quot;click&quot;, function () {
                     changeStock(elem._NMaterial, &apos;+&apos;, 1, true);
@@ -105,7 +105,7 @@ function lerMateriais() {
                 /* Row */
                 var td = document.createElement(&quot;td&quot;);
                 var i = document.createElement(&quot;i&quot;);
-                i.className = &quot;far fa-edit hoverBlue&quot;;
+                i.className = &quot;far fa-edit tableBtn&quot;;
                 i.title = &quot;Editar&quot;;
                 i.setAttribute(&quot;data-toggle&quot;,&quot;modal&quot;);
                 i.setAttribute(&quot;data-target&quot;,&quot;#modal-EditarMaterial&quot;);
@@ -121,8 +121,8 @@ function lerMateriais() {
                 tr.appendChild(td);
                 tbody.appendChild(tr);
                 /*
-                         &lt;i class=&quot;far fa-edit hoverBlue&quot; title=&quot;Editar&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
-                         &lt;i class=&quot;fas fa-inbox hoverBlue&quot; title=&quot;Pedido de Stock&quot;&gt;&lt;/i&gt;
+                         &lt;i class=&quot;far fa-edit tableBtn&quot; title=&quot;Editar&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+                         &lt;i class=&quot;fas fa-inbox tableBtn&quot; title=&quot;Pedido de Stock&quot;&gt;&lt;/i&gt;
                      &lt;/td&gt;
  
  

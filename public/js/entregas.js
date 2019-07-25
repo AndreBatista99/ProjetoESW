@@ -44,14 +44,14 @@ function listarRequisicoes() {
                 $("#loadMe").modal("hide");
                 return;
             }
-            var counter=0;
+            var counter = 0;
             xhr.response.listas.forEach(function (lista) {
                 var tr = document.createElement("tr");
                 /**** Row ****/
                 var td = document.createElement("td");
                 td.innerHTML = lista._NLista;
                 td.title = "Número";
-                td.className = "hoverBlue";
+                td.className = "tableBtn";
                 td.addEventListener("click", function () {
                     abrirLista(lista._NLista);
                 });
@@ -63,7 +63,7 @@ function listarRequisicoes() {
                 var fomatted_date = lista._DataRequisicao;
                 td.innerHTML = formatMongoDate(lista._DataRequisicao);
                 td.style.textAlign = "center";
-                td.className = "hoverBlue";
+                td.className = "tableBtn";
                 td.title = "Data Requisição";
                 td.addEventListener("click", function () {
                     abrirLista(lista._NLista);
@@ -76,12 +76,22 @@ function listarRequisicoes() {
 
                 const NULLDATE = "null";
                 if (lista._DataEntrega.substr(0, 10) != NULLDATE) {
-                    td.innerHTML = formatMongoDate(lista._DataEntrega);
-                    td.style.color = "green";
+                    var divToAdd = document.createElement("div");
+                    divToAdd.innerHTML = formatMongoDate(lista._DataEntrega);
+                    divToAdd.className = "alert alert-success";
+                    divToAdd.title="Já foi entregue na data de "+formatMongoDate(lista._DataEntrega);
+                    divToAdd.style.margin = "0px";
+                    divToAdd.style.padding = "7px";
                 } else {
-                    td.innerHTML = "Por entregar";
-                    td.style.color = "red";
+                    //td.innerHTML = "Por entregar";
+                    var divToAdd = document.createElement("div");
+                    divToAdd.innerHTML = "Por entregar";
+                    divToAdd.title="Não foi entregue";
+                    divToAdd.className = "alert alert-danger";
+                    divToAdd.style.margin = "0px";
+                    divToAdd.style.padding = "7px";
                 }
+                td.appendChild(divToAdd);
                 td.style.fontWeight = "900";
                 td.style.textAlign = "center";
                 td.title = "Data Entrega";
@@ -91,7 +101,7 @@ function listarRequisicoes() {
                 var td = document.createElement("td");
                 if (lista._DataEntrega.substr(0, 10) == NULLDATE) {
                     var i = document.createElement("i");
-                    i.className = "fas fa-box hoverBlue";
+                    i.className = "fas fa-box tableBtn tableBtn";
                     td.style.textAlign = "center";
                     i.title = "Entregar tudo";
                     i.addEventListener("click", function () {
@@ -103,7 +113,7 @@ function listarRequisicoes() {
                 tr.appendChild(td);
                 tbody.appendChild(tr);
                 counter++;
-                if(xhr.response.listas.length==counter){
+                if (xhr.response.listas.length == counter) {
                     $("#loadMe").modal("hide");
                     return;
                 }
@@ -116,7 +126,7 @@ function listarRequisicoes() {
 }
 
 function abrirLista(nlista) {
-    location.replace('encomenda.html?nlista='+nlista);
+    location.replace('encomenda.html?nlista=' + nlista);
     return;
 }
 function entregarTudo(nlista) {
@@ -128,8 +138,8 @@ function entregarTudo(nlista) {
     xhr.open("POST", document.location.origin + "/entregarTudo", true);
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
-            if(xhr.response.Message=="Success"){
-                document.getElementById("searchboxcounter").innerHTML="";
+            if (xhr.response.Message == "Success") {
+                document.getElementById("searchboxcounter").innerHTML = "";
                 listarRequisicoes();
                 return;
             }

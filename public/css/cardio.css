@@ -789,8 +789,12 @@ footer .social-footer li:hover a {
 	padding: 45px 30px;
 	text-align: center;
 	background: url('../img/popup.jpg');
+	background-repeat:cover, no-repeat;
+	background-size: 100% 100%, cover;
 	box-shadow: none;
-	border-radius: 2px;
+	border-radius: 20px;
+	color:white;
+
 }
 
 .modal-popup a.close-link {
@@ -1178,6 +1182,18 @@ footer .social-footer li:hover a {
 	font-size:18px;
 	margin:0px;
 }
+.userOption{
+	padding-left:10px;
+	font-size:25px;
+}
+.userOption:hover{
+	font-size:30px;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	cursor:pointer;
+	color:red;
+	font-weight: bold;
+}
 .list-item:hover{
 	font-size:19px;
 	cursor:pointer;
@@ -1185,12 +1201,7 @@ footer .social-footer li:hover a {
 	-webkit-transition: all 0.5s ease;
 	transition: all 0.5s ease;
 }
-.BigButton{
-	font-size:35px;
-	font-weight: bold;
-	text-transform: uppercase;
-	letter-spacing: 2px;
-}
+
 
 .results tr[visible='false'],
 .no-result{
@@ -1218,7 +1229,7 @@ footer .social-footer li:hover a {
 	margin-bottom:40px;
 }
 
-.hoverBlue:hover{
+.tableBtn:hover{
 	color:rgb(53, 147, 255);
 	font-weight: bold;
 	/*font-size:1.2em;*/
@@ -1234,22 +1245,65 @@ footer .social-footer li:hover a {
 	transition: all 0.5s ease;
 	cursor:pointer;
 }
+
+.tableBtn{
+	color:white;
+}
+
+.tableBtn:hover{
+	color:rgb(255, 151, 53);
+	font-weight: bold;
+	/*font-size:1.2em;*/
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	cursor:pointer;
+}
+
+.hoverWhite:hover{
+	color:#FFF;
+	font-weight: bold;
+	/*font-size:1.2em;*/
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	cursor:pointer;
+}
+
+.BigButton{
+	font-size:35px;
+	font-weight: bold;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+.BigButton:hover{
+	background:rgb(255, 151, 53);
+	opacity: 0.9;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+}
+
+
+
+
+
 #dropdownMenuLink:focus{
 
 	background-color: transparent;
 }
 
 .dropdown-menu{
-	background-color:transparent;
+	background-color:white;
 	left:40px;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
+	
 }
 
 .dropdown-item{
 
 	background-color:transparent;
-	color: white;
-	
-	
+	color: black;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
 }
 
 @media (max-width:400px){

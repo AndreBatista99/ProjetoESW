@@ -66,7 +66,7 @@ function resetPass(req, res) {
   var random = Math.floor(Math.random() * (+999999 - +100000) + +100000);
   Utilizadores.findOneAndUpdate(query, { "_Pwd": random }, function (err, doc) {
     if (err || !doc) return res.send(500, { error: err });
-    res.json({ "Message:": 1, "pw": random });
+    res.json({ "Message": 1, "pw": random });
   });
 }
 module.exports.resetPass = resetPass;
@@ -99,7 +99,7 @@ function changeStock(req, res) {
           console.log(err);
           return;
         }
-        res.json({ "Message:": "Success", "_Stock": valorAtual });
+        res.json({ "Message": "Success", "_Stock": valorAtual });
         return;
       });
     }
@@ -162,8 +162,11 @@ function lerOcorrencias(req, res) {
           });
 
         });
-      } else
-        console.log('Erro de leitura');
+      } else {
+        res.json({ "Message": "NoLines" });
+        return;
+
+      }
     }
   });
 };
@@ -266,9 +269,18 @@ function criarOcorrencia(req, res) {
   } var query = { "_NUtilizador": req.body.participante, "_Local": req.body.local, "_Titulo": req.body.titulo };
   Ocorrencia.findOne(query, function (err, doc) {
     if (err || !doc) {
-      var novaOcorrencia = new Ocorrencia({ "_Titulo": req.body.titulo, "_Data": req.body.data, "_Horario": req.body.horario, "_Local": req.body.local, "_Descricao": req.body.descricao, "_NUtilizador": req.body.participante });
-      Ocorrencia.create(novaOcorrencia);
-      res.json({ "Message": "Success" });
+      Ocorrencia.find({}).sort('_NOcorrencia').exec(function (err, docs) {
+        if (docs.length == 0) {
+          nextNOcorrencia = 1;
+        } else {
+          var nextNOcorrencia = parseInt(docs[docs.length - 1]._NOcorrencia);
+          nextNOcorrencia += 1;
+        }
+        var novaOcorrencia = new Ocorrencia({ "_NOcorrencia":nextNOcorrencia,"_Titulo": req.body.titulo, "_Data": req.body.data, "_Horario": req.body.horario, "_Local": req.body.local, "_Descricao": req.body.descricao, "_NUtilizador": req.body.participante });
+        Ocorrencia.create(novaOcorrencia);
+        res.json({ "Message": "Success" });
+      });
+
     } else {
       return res.send(500, { error: err });
     };
@@ -280,6 +292,7 @@ module.exports.criarOcorrencia = criarOcorrencia;
 
 
 function registarEntradaSaida(req, res) {
+
   if (req.body.nome == "" || req.body.entradaSaida == "") {
     console.log("Missing parameters");
     res.json({ "Message": "MissingParameters" });
@@ -456,7 +469,7 @@ function updateMaterial(req, res) {
           console.log(err);
           return;
         }
-        res.json({ "Message:": "Success", "nome": req.body.nome, "stock": req.body.stock });
+        res.json({ "Message": "Success", "nome": req.body.nome, "stock": req.body.stock });
         return;
       });
     }
@@ -561,7 +574,12 @@ function criarChave(req, res) {
   var stringSala = "" + bloco + piso + numerosala;
   Chave.find({}).sort('_NChave').exec(function (err, docs) {
     var nextNChave = parseInt(docs[docs.length - 1]._NChave);
-    nextNChave += 1;
+    if (docs.length == 0) {
+      var nextNChave = 1;
+    } else {
+      var nextNChave = parseInt(docs[docs.length - 1]._NChave);
+      nextNChave += 1;
+    }
     var novaChave = new Chave({ "_NChave": nextNChave, "_Tipo": "Regular", "_Sala": stringSala, "_Estado": 1 });
     Chave.create(novaChave);
     res.json({ "Message": "Success" });
@@ -607,7 +625,7 @@ function updateChave(req, res) {
           console.log(err);
           return;
         }
-        res.json({ "Message:": "Success", "Sala": stringSala });
+        res.json({ "Message": "Success", "Sala": stringSala });
         return;
       });
     }
@@ -931,7 +949,7 @@ function adicionarObjeto(req, res) {
                         console.log(err);
                         return;
                       }
-                      res.json({ "Message:": "Success" });
+                      res.json({ "Message": "Success" });
                       return;
                     });
                   } else {
@@ -1022,7 +1040,7 @@ function apagarLinhaRequisicao(req, res) {
     if (err) {
       console.log("Erro-> " + err);
     }
-    res.json({ "Message:": "Success" });
+    res.json({ "Message": "Success" });
     return;
   })
 
@@ -1036,6 +1054,10 @@ function fazerRequisicao(req, res) {
 
   query = { "_NLista": nlista };
   LinhaRequisicao.find(query, (err, linha) => {
+    if (linha.length < 1) {
+      res.json({ "Message": "NoLines" });
+      return;
+    }
     var counter = 0;
     linha.forEach(element => {
       switch (element._Tipo) {
@@ -1047,7 +1069,7 @@ function fazerRequisicao(req, res) {
                 console.log(err);
                 return;
               }
-              res.json({ "Message:": "Success" });
+              res.json({ "Message": "Success" });
               return;
             });
           }
@@ -1070,7 +1092,7 @@ function fazerRequisicao(req, res) {
                       console.log(err);
                       return;
                     }
-                    res.json({ "Message:": "Success" });
+                    res.json({ "Message": "Success" });
                     return;
                   });
                 }
@@ -1101,3 +1123,17 @@ function removerEvento(req, res) {
 }
 
 module.exports.removerEvento = removerEvento;
+
+function removerOcorrencia(req, res) {
+  var nocorrencia = req.body.nocorrencia;
+  Ocorrencia.deleteOne({ '_NOcorrencia': nocorrencia }, function (err) {
+    if (err) {
+      res.json({ "Message": "erro" });
+    } else {
+      res.json({ "Message": "ok" });
+    }
+  });
+
+}
+
+module.exports.removerOcorrencia = removerOcorrencia;

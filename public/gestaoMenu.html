@@ -62,7 +62,7 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right main-nav">
 					<li><a href="entradas.html">Entradas</a></li>
-					<li id="btMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
+					<li id="btnMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
 					<li><a href="eventos.html">Eventos</a></li>
 					<li><a href="ocorrencias.html">Ocorrências</a></li>
 					<li id="btnMenuGestao"><a class="active" href="gestaoMenu.html">Gestão</a></li>
@@ -77,7 +77,7 @@
 								aria-expanded="false">Username</a>
 							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;"
 								aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item list-item">Logout</a>
+								<a class="dropdown-item list-item userOption"> <i class="fas fa-sign-out-alt"></i> Logout</a>
 							</div>
 						</div>
 					</li>
@@ -101,11 +101,11 @@
 
 					</div>
 					<div class="col-lg-6 col-md-8 col-sm-12 text-center">
-						<button type="button" class="custButton btn btn-button BigButton"
+						<button type="button" class="custButton btn btn-button BigButton "
 							onclick="location.replace('gestaoMateriais.html');">Materiais</button>
-						<button type="button" class="custButton btn btn-button BigButton"
+						<button type="button" class="custButton btn btn-button BigButton "
 							onclick="location.replace('gestaoChaves.html');">Salas / Chaves</button><br>
-						<button type="button" class="custButton btn btn-button BigButton"
+						<button type="button" class="custButton btn btn-button BigButton " id="btnToPrint"
 						data-toggle="modal" data-target="#PrintReportDatePicker"">Imprimir Relatorio</button>
 
 					</div>
@@ -156,7 +156,7 @@
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white" id="recuperarPasswordLabel">Data do relatório</h3>
 				<input type="date" id="DataRelatorio" class="form-control form-white">
-				<button type="button" onclick="printReport();" class="custButton btn btn-submit"
+				<button type="button" onclick="printReport();" class="custButton btn btn-submit" style="font-size:25px"
 					data-toggle="modal">Imprimir</button>
 			</div>
 		</div>

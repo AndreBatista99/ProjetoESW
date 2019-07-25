@@ -74,7 +74,7 @@ function lerChaves() {
                 var td = document.createElement("td");
                 if(elem._Tipo!="Mestra"){
                     var i = document.createElement("i");
-                    i.className = "far fa-edit hoverBlue";
+                    i.className = "far fa-edit tableBtn";
                     i.title = "Editar";
                     i.setAttribute("data-toggle","modal");
                     i.setAttribute("data-target","#modal-EditarChave");
@@ -90,8 +90,8 @@ function lerChaves() {
                 tr.appendChild(td);
                 tbody.appendChild(tr);
                 /*
-                         <i class="far fa-edit hoverBlue" title="Editar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
-                         <i class="fas fa-inbox hoverBlue" title="Pedido de Stock"></i>
+                         <i class="far fa-edit tableBtn" title="Editar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                         <i class="fas fa-inbox tableBtn" title="Pedido de Stock"></i>
                      </td>
  
  
@@ -194,6 +194,10 @@ function editarChave(){
     }
 
     var isnum = /^\d+$/.test(numerosala);
+    if(numerosala.length==0){
+        alert("É obrigatório ter o número da sala especificado");
+        return;
+    }
     if(numerosala.length!=2||!isnum){
         alert("O numero de sala só pode conter dois digitos");
         return;
@@ -233,8 +237,12 @@ function criarChave() {
     var numerosala = document.getElementById("Criar_NumeroSala").value;
     
     var isnum = /^\d+$/.test(numerosala);
+    if(numerosala.length==0){
+        alert("É obrigatório ter o número da sala especificado");
+        return;
+    }
     if(numerosala.length!=2||!isnum){
-        alert("O numero de sala só pode conter dois digitos");
+        alert("O número de sala só pode conter dois digitos");
         return;
     }
     var json = { "bloco": bloco, "piso": piso, "numerosala": numerosala };

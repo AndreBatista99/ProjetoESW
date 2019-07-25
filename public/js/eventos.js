@@ -3,6 +3,9 @@ $(document).ready(function () {
     lerEventos();
     if (havePermission("Professor") || havePermission("Aluno") || havePermission("Admin")) {
         document.getElementById("btnPopUpCriarEvento").style.display = "block";
+        document.getElementById("theadAccao").style.display = "table-cell";
+        document.getElementById("MessageNoResults").colSpan  = "5";
+        
     }
 });
 
@@ -45,19 +48,22 @@ function lerEventos() {
                 td.id = "Horario;"
                 tr.appendChild(td);
 
-                /* Row */
-                var td = document.createElement("td");
-                td.id = "" + elem._id
-                td.className = "event_delete"
-                var iconTrash = document.createElement("i");
-                iconTrash.className = "fa fa-trash";
-                var a = document.createElement("a");
-                a.appendChild(iconTrash);
-                a.addEventListener("click", function () {
-                    deleteEvent(elem._NEvento);
-                });
-                td.appendChild(a);
-                td.style.textAlign = "center";
+
+                if (havePermission("Professor") || havePermission("Aluno") || havePermission("Admin")) {
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.id = "" + elem._id
+                    td.className = "event_delete"
+                    var iconTrash = document.createElement("i");
+                    iconTrash.className = "fa fa-trash tableBtn";
+                    var a = document.createElement("a");
+                    a.appendChild(iconTrash);
+                    a.addEventListener("click", function () {
+                        deleteEvent(elem._NEvento);
+                    });
+                    td.appendChild(a);
+                    td.style.textAlign = "center";
+                }
 
                 tr.appendChild(td);
                 tbody.appendChild(tr);
@@ -81,7 +87,7 @@ function deleteEvent(nevento) {
 
     xhr.onload = function () {
         if (xhr.readyState == 4 && xhr.status == "200") {
-            alert(xhr.response.Message);
+            alert("Evento apagado com sucesso");
             lerEventos();
         } else {
             alert('Error');
@@ -104,6 +110,29 @@ function criarEvento() {
     var horario = document.getElementById("Criar_Horario").value;
     var local = document.getElementById("Criar_Local").value;
     var descricao = document.getElementById("Criar_Descricao").value;
+
+    if (titulo.length < 5) {
+        alert("Insira um titulo válido com pelo menos 5 letras");
+        document.getElementById("Criar_Titulo").focus();
+        return;
+    }
+    var DataAtual = new Date();
+    var DataProposta = new Date(data);
+    if (DataProposta != DataAtual && DataProposta > DataAtual) {
+        alert('Insira uma data igual ou superior a data atual');
+        return;
+    }
+    if (horario.length < 1) {
+        alert("Insira um horario válido");
+        document.getElementById("Criar_Horario").focus();
+        return;
+    }
+    if (local.length < 2) {
+        alert("Insira um local válido com pelo menos 2 letras");
+        document.getElementById("Criar_Local").focus();
+        return;
+    }
+
 
     var json = { "titulo": titulo, "data": data, "horario": horario, "local": local, "descricao": descricao };
 

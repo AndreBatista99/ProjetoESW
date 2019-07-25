@@ -4068,10 +4068,10 @@
                                                 }
                                               },
                                               "extra": {
-                                                "rawValue": "fas fa-minus hoverBlue",
-                                                "raw": "\"fas fa-minus hoverBlue\""
+                                                "rawValue": "fas fa-minus tableBtn",
+                                                "raw": "\"fas fa-minus tableBtn\""
                                               },
-                                              "value": "fas fa-minus hoverBlue"
+                                              "value": "fas fa-minus tableBtn"
                                             }
                                           }
                                         },
@@ -6198,10 +6198,10 @@
                                                 }
                                               },
                                               "extra": {
-                                                "rawValue": "fas fa-plus hoverBlue",
-                                                "raw": "\"fas fa-plus hoverBlue\""
+                                                "rawValue": "fas fa-plus tableBtn",
+                                                "raw": "\"fas fa-plus tableBtn\""
                                               },
-                                              "value": "fas fa-plus hoverBlue"
+                                              "value": "fas fa-plus tableBtn"
                                             }
                                           }
                                         },
@@ -7304,10 +7304,10 @@
                                                 }
                                               },
                                               "extra": {
-                                                "rawValue": "far fa-edit hoverBlue",
-                                                "raw": "\"far fa-edit hoverBlue\""
+                                                "rawValue": "far fa-edit tableBtn",
+                                                "raw": "\"far fa-edit tableBtn\""
                                               },
-                                              "value": "far fa-edit hoverBlue"
+                                              "value": "far fa-edit tableBtn"
                                             }
                                           }
                                         },
@@ -8429,7 +8429,7 @@
                                           "trailingComments": [
                                             {
                                               "type": "CommentBlock",
-                                              "value": "\r\n                         <i class=\"far fa-edit hoverBlue\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox hoverBlue\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
+                                              "value": "\r\n                         <i class=\"far fa-edit tableBtn\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox tableBtn\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
                                               "start": 3625,
                                               "end": 3874,
                                               "loc": {
@@ -8451,7 +8451,7 @@
                                     "trailingComments": [
                                       {
                                         "type": "CommentBlock",
-                                        "value": "\r\n                         <i class=\"far fa-edit hoverBlue\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox hoverBlue\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
+                                        "value": "\r\n                         <i class=\"far fa-edit tableBtn\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox tableBtn\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
                                         "start": 3625,
                                         "end": 3874,
                                         "loc": {
@@ -20619,7 +20619,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "\r\n                         <i class=\"far fa-edit hoverBlue\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox hoverBlue\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
+      "value": "\r\n                         <i class=\"far fa-edit tableBtn\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox tableBtn\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
       "start": 3625,
       "end": 3874,
       "loc": {
@@ -27967,7 +27967,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "fas fa-minus hoverBlue",
+      "value": "fas fa-minus tableBtn",
       "start": 1581,
       "end": 1605,
       "loc": {
@@ -31880,7 +31880,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "fas fa-plus hoverBlue",
+      "value": "fas fa-plus tableBtn",
       "start": 2569,
       "end": 2592,
       "loc": {
@@ -33950,7 +33950,7 @@
         "binop": null,
         "updateContext": null
       },
-      "value": "far fa-edit hoverBlue",
+      "value": "far fa-edit tableBtn",
       "start": 3067,
       "end": 3090,
       "loc": {
@@ -36040,7 +36040,7 @@
     },
     {
       "type": "CommentBlock",
-      "value": "\r\n                         <i class=\"far fa-edit hoverBlue\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox hoverBlue\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
+      "value": "\r\n                         <i class=\"far fa-edit tableBtn\" title=\"Editar\"></i>&nbsp;&nbsp;&nbsp;&nbsp;\r\n                         <i class=\"fas fa-inbox tableBtn\" title=\"Pedido de Stock\"></i>\r\n                     </td>\r\n \r\n \r\n                 ",
       "start": 3625,
       "end": 3874,
       "loc": {

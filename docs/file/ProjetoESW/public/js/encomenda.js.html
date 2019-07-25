@@ -120,14 +120,14 @@ function abrirEncomenda() {
                 var icon = document.createElement(&quot;i&quot;);
                 var nomeTipo=&quot;&quot;;
                 if(linha._Tipo==&quot;Chave&quot;){
-                    icon.className = &quot;fas fa-key hoverBlue&quot;;
+                    icon.className = &quot;fas fa-key tableBtn&quot;;
                     nomeTipo=&quot;Chave&quot;;
                 }else{
                     if(linha._Qnt==1){
-                        icon.className = &quot;fas fa-cube hoverBlue&quot;;
+                        icon.className = &quot;fas fa-cube tableBtn&quot;;
                         nomeTipo=&quot;Material&quot;;
                     }else{
-                        icon.className = &quot;fas fa-cubes hoverBlue&quot;;
+                        icon.className = &quot;fas fa-cubes tableBtn&quot;;
                         nomeTipo=&quot;Materiais&quot;;
                     }
                 }
@@ -173,7 +173,7 @@ function abrirEncomenda() {
                     icon.style.color=&quot;green&quot;;
                     icon.title=&quot;Entregue&quot;;
                 }else{
-                    icon.className = &quot;fas fa-cart-arrow-down hoverBlue&quot;;
+                    icon.className = &quot;fas fa-cart-arrow-down tableBtn&quot;;
                     icon.title=&quot;Entregar &quot;+ nomeTipo;
                     icon.style.cursor = &quot;pointer&quot;;
                     icon.addEventListener(&quot;click&quot;, function () {

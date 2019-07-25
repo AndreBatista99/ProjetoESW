@@ -87,7 +87,7 @@ function listarRequisicoes() {
                 var td = document.createElement(&quot;td&quot;);
                 td.innerHTML = lista._NLista;
                 td.title = &quot;N&#xFA;mero&quot;;
-                td.className = &quot;hoverBlue&quot;;
+                td.className = &quot;tableBtn&quot;;
                 td.addEventListener(&quot;click&quot;, function () {
                     abrirLista(lista._NLista);
                 });
@@ -99,7 +99,7 @@ function listarRequisicoes() {
                 var fomatted_date = lista._DataRequisicao;
                 td.innerHTML = formatMongoDate(lista._DataRequisicao);
                 td.style.textAlign = &quot;center&quot;;
-                td.className = &quot;hoverBlue&quot;;
+                td.className = &quot;tableBtn&quot;;
                 td.title = &quot;Data Requisi&#xE7;&#xE3;o&quot;;
                 td.addEventListener(&quot;click&quot;, function () {
                     abrirLista(lista._NLista);
@@ -127,7 +127,7 @@ function listarRequisicoes() {
                 var td = document.createElement(&quot;td&quot;);
                 if (lista._DataEntrega.substr(0, 10) == NULLDATE) {
                     var i = document.createElement(&quot;i&quot;);
-                    i.className = &quot;fas fa-box hoverBlue&quot;;
+                    i.className = &quot;fas fa-box tableBtn&quot;;
                     td.style.textAlign = &quot;center&quot;;
                     i.title = &quot;Entregar tudo&quot;;
                     i.addEventListener(&quot;click&quot;, function () {

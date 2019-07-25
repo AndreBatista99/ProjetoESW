@@ -38,7 +38,7 @@ function lerMateriais() {
                 var td = document.createElement("td");
                 td.className = "stockInput";
                 var i = document.createElement("i");
-                i.className = "fas fa-minus hoverBlue";
+                i.className = "fas fa-minus tableBtn";
                 i.title = "Reduzir Stock";
                 i.addEventListener("click", function () {
                     changeStock(elem._NMaterial, '-', 1, true);
@@ -57,7 +57,7 @@ function lerMateriais() {
                 td.title = "Stock";
                 td.appendChild(input);
                 var i = document.createElement("i");
-                i.className = "fas fa-plus hoverBlue";
+                i.className = "fas fa-plus tableBtn";
                 i.title = "Aumentar Stock";
                 i.addEventListener("click", function () {
                     changeStock(elem._NMaterial, '+', 1, true);
@@ -69,7 +69,7 @@ function lerMateriais() {
                 /* Row */
                 var td = document.createElement("td");
                 var i = document.createElement("i");
-                i.className = "far fa-edit hoverBlue";
+                i.className = "far fa-edit tableBtn";
                 i.title = "Editar";
                 i.setAttribute("data-toggle","modal");
                 i.setAttribute("data-target","#modal-EditarMaterial");
@@ -85,8 +85,8 @@ function lerMateriais() {
                 tr.appendChild(td);
                 tbody.appendChild(tr);
                 /*
-                         <i class="far fa-edit hoverBlue" title="Editar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
-                         <i class="fas fa-inbox hoverBlue" title="Pedido de Stock"></i>
+                         <i class="far fa-edit tableBtn" title="Editar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                         <i class="fas fa-inbox tableBtn" title="Pedido de Stock"></i>
                      </td>
  
  
@@ -109,6 +109,11 @@ function lerMateriais() {
 function changeStock(nmaterial, mode, value, isVisual) {
     if (!havePermission("Professor") && !havePermission("Admin")) {
         alert("Não tem permissoes");
+        return;
+    }
+    
+    if(value<0){
+        alert('O stock tem que ser igual ou superior a 0');
         return;
     }
     if (mode !== 'update' && mode !== "+" && mode !== "-") {
@@ -166,6 +171,16 @@ function editarMaterial(){
     var nmaterial = document.getElementById("Edit_NMaterial").value;
     var nome = document.getElementById("Edit_Nome").value;
     var stock = document.getElementById("Edit_Stock").value;
+
+    if (nome.length<5){
+        alert('O nome tem que estar preenchido e ter pelo menos 5 letras');
+        return;
+    }
+    if(stock<0 || stock==""){
+        alert('O stock tem que estar preenchido e ser igual ou superior a 0');
+        return;
+    }
+
     var json = { "nmaterial": nmaterial, "nome": nome, "stock": stock };
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
@@ -190,14 +205,22 @@ function editarMaterial(){
 }
 function criarMaterial() {
     if (!havePermission("Professor") && !havePermission("Admin")) {
-        alert("Não tem permissoes");
-        location.reload();
+        alert("Não tem permissoes");        
+        window.location.replace("entradas.html");
         return;
     }
 
     var nome = document.getElementById("Criar_Nome").value;
     var stock = document.getElementById("Criar_Stock").value;
 
+    if (nome.length<=5){
+        alert('O nome tem que estar preenchido e ter pelo menos 5 letras');
+        return;
+    }
+    if(stock<0){
+        alert('O stock tem que ser igual ou superior a 0');
+        return;
+    }
     var json = { "nome": nome, "stock": stock };
 
     var xhr = new XMLHttpRequest();

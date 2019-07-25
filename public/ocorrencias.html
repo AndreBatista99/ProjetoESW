@@ -64,10 +64,9 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right main-nav">
 					<li><a href="entradas.html">Entradas</a></li>
-					<li><a href="requisicoesMenu.html">Requisições</a></li>
-					<li><a href="eventos.html">Eventos</a></li>
-					<li id="btMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
-					
+					<li id="btnMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
+					<li><a href="eventos.html">Eventos</a></li>		
+					<li><a class="active" href="ocorrencias.html">Ocorrências</a></li>			
 					<li id="btnMenuGestao"><a href="gestaoMenu.html">Gestão</a></li>
 					<li><a href="contactos.html">Contactos</a></li>
 					<li id="notLoggedIn" style="display:none">
@@ -80,7 +79,7 @@
 								aria-expanded="false">Username</a>
 							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;"
 								aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item list-item">Logout</a>
+								<a class="dropdown-item list-item userOption"> <i class="fas fa-sign-out-alt"></i> Logout</a>
 							</div>
 						</div>
 					</li>
@@ -123,9 +122,10 @@
 								<th style="text-align: center;" class="col-md-2 col-xs-2">Participante</th>
 								<th style="text-align: center;" class="col-md-3 col-xs-3">Local</th>
 								<th style="text-align: center;" class="col-md-3 col-xs-3">Data</th>
+								<th id="actionsOcorrencias"style="text-align: center;display:none" class="col-md-3 col-xs-3">Acções</th>
 							</tr>
-							<tr class="warning no-result" style="text-align: center">
-								<td colspan="5" style="background-color: rgb(12, 31, 31)"><i class="fa fa-warning"></i>
+							<tr class="warning no-result" id="noResultsRow" style="text-align: center">
+								<td id="MessageNoResults" colspan="5" style="background-color: rgb(12, 31, 31)"><i class="fa fa-warning"></i>
 									Sem resultados</td>
 							</tr>
 						</thead>

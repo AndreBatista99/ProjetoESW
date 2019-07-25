@@ -84,14 +84,14 @@ function abrirEncomenda() {
                 var icon = document.createElement("i");
                 var nomeTipo="";
                 if(linha._Tipo=="Chave"){
-                    icon.className = "fas fa-key hoverBlue";
+                    icon.className = "fas fa-key tableBtn";
                     nomeTipo="Chave";
                 }else{
                     if(linha._Qnt==1){
-                        icon.className = "fas fa-cube hoverBlue";
+                        icon.className = "fas fa-cube tableBtn";
                         nomeTipo="Material";
                     }else{
-                        icon.className = "fas fa-cubes hoverBlue";
+                        icon.className = "fas fa-cubes tableBtn";
                         nomeTipo="Materiais";
                     }
                 }
@@ -134,10 +134,10 @@ function abrirEncomenda() {
                 const NULLDATE = "null";
                 if (linha._DataEntrega.substr(0, 10) != NULLDATE) {
                     icon.className = "fa fa-check";
-                    icon.style.color="green";
+                    icon.style.color="lime";
                     icon.title="Entregue";
                 }else{
-                    icon.className = "fas fa-cart-arrow-down hoverBlue";
+                    icon.className = "fas fa-cart-arrow-down tableBtn";
                     icon.title="Entregar "+ nomeTipo;
                     icon.style.cursor = "pointer";
                     icon.addEventListener("click", function () {

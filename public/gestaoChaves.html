@@ -62,7 +62,7 @@
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right main-nav">
 					<li><a href="entradas.html">Entradas</a></li>
-					<li id="btMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
+					<li id="btnMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
 					<li><a href="eventos.html">Eventos</a></li>
 					<li><a href="ocorrencias.html">Ocorrências</a></li>
 					<li id="btnMenuGestao"><a class="active" href="gestaoMenu.html">Gestão</a></li>
@@ -77,7 +77,8 @@
 								aria-expanded="false">Username</a>
 							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;"
 								aria-labelledby="dropdownMenuLink">
-								<a class="dropdown-item list-item">Logout</a>
+								<a class="dropdown-item list-item userOption"> <i class="fas fa-sign-out-alt"></i>
+									Logout</a>
 							</div>
 						</div>
 					</li>
@@ -220,7 +221,8 @@
 					<select title="Piso" id="Criar_Piso" class="form-control">
 
 					</select>
-					<input type="text" id="Criar_NumeroSala" class="form-control form-white" placeholder="Número da sala">
+					<input type="text" id="Criar_NumeroSala" class="form-control form-white"
+						placeholder="Número da sala">
 					<button type="button" onclick="criarChave();"
 						class="custButton btn btn-submit BigButton">Criar</button>
 				</form>
@@ -236,17 +238,42 @@
 				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
 				<h3 class="white">Editar Chave</h3>
 				<form action="" class="popup-form">
-					<input type="text" title="Numero de chave" id="Editar_NChave" class="form-control form-white" readonly>
-					<select title="Bloco" id="Editar_Bloco" class="form-control">
+					<input type="text" title="Numero de chave" id="Editar_NChave" class="form-control form-white"
+						style="display:none" readonly>
+					<div class="row">
+						<div class="col-lg-8">
+							<label style="font-size:30px;padding-top:35px;" for="Editar_Bloco">Bloco</label>
+						</div>
+						<div class="col-lg-4">
+							<select title="Bloco" id="Editar_Bloco" class="form-control">
+							</select>
 
-					</select>
-					<select title="Piso" id="Editar_Piso" class="form-control">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-8">
+							<label style="font-size:30px;padding-top:35px;" for="Editar_Piso">Piso</label>
+						</div>
+						<div class="col-lg-4">
+								<select title="Piso" id="Editar_Piso" class="form-control">
+								</select>
 
-					</select>
-					<input type="text" id="Editar_NumeroSala" class="form-control form-white" placeholder="Número da sala">
-					
-					<input type="checkbox" class="form-check-input" style="width:30px;height:30px;border-radius:10%" id="Editar_Perdida">
-					<label class="form-check-label" for="Editar_Perdida" style="font-size:30px">Foi perdida?</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-8">
+								<label style="font-size:30px;padding-top:35px;" for="Editar_NumeroSala">Número da sala</label><br>
+								<label  for="Editar_NumeroSala">(Dois Numeros)</label>
+						</div>
+						<div class="col-lg-4">
+								<input type="text" id="Editar_NumeroSala" class="form-control form-white"
+								placeholder="**">
+
+						</div>
+					</div>
+					<input type="checkbox" class="form-check-input" style="width:30px;height:30px;border-radius:10%"
+						id="Editar_Perdida">
+					<label class="form-check-label" title="Selecione esta opção caso a chave tenha sido perdida" for="Editar_Perdida" style="font-size:30px">Foi perdida?</label>
 					<button type="button" onclick="editarChave();"
 						class="custButton btn btn-submit BigButton">Editar</button>
 				</form>

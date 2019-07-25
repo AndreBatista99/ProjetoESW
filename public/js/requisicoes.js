@@ -1,6 +1,5 @@
 $(document).ready(function () {
     if (isLogged()) {
-        //lerChaves();
         document.getElementById("ChangeName").innerText = "A carregar as requisições";
         blockScreen();
         abrirRequisicao();
@@ -77,7 +76,7 @@ function lerChaves() {
                 var td = document.createElement("td");
                 if (elem._Tipo != "Mestra") {
                     var i = document.createElement("i");
-                    i.className = "far fa-edit hoverBlue";
+                    i.className = "far fa-edit tableBtn";
                     i.title = "Editar";
                     i.setAttribute("data-toggle", "modal");
                     i.setAttribute("data-target", "#modal-EditarChave");
@@ -93,8 +92,8 @@ function lerChaves() {
                 tr.appendChild(td);
                 tbody.appendChild(tr);
                 /*
-                         <i class="far fa-edit hoverBlue" title="Editar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
-                         <i class="fas fa-inbox hoverBlue" title="Pedido de Stock"></i>
+                         <i class="far fa-edit tableBtn" title="Editar"></i>&nbsp;&nbsp;&nbsp;&nbsp;
+                         <i class="fas fa-inbox tableBtn" title="Pedido de Stock"></i>
                      </td>
                  */
             });
@@ -355,7 +354,7 @@ function getMateriais() {
                 /**** Row ****/
                 var td = document.createElement("td");
                 var i = document.createElement("i");
-                i.className = "fas fa-cart-plus";
+                i.className = "fas fa-cart-plus hoverOrange";
                 i.addEventListener("click", function () {
                     adicionarObjeto("Material", material._NMaterial, document.getElementById("Qnt_" + material._NMaterial).value);
                 });
@@ -444,7 +443,7 @@ function getChaves() {
                     td.innerHTML = chave._Sala;
                 }
                 td.title = "Sala";
-                td.className="hoverOrange";
+                td.className = "hoverOrange";
 
                 td.addEventListener("click", function () {
                     adicionarObjeto("Chave", chave._NChave, 1);
@@ -541,7 +540,8 @@ function abrirLinhasRequisicao(nlista) {
                 var td = document.createElement("td");
                 td.id = "" + linha._NLista + "_" + linha._NLinha;
                 var iconTrash = document.createElement("i");
-                iconTrash.className = "fa fa-trash";
+                iconTrash.title="Apagar linha";
+                iconTrash.className = "fa fa-trash tableBtn";
                 iconTrash.style.cursor = "pointer";
                 var a = document.createElement("a");
                 a.appendChild(iconTrash);
@@ -591,14 +591,22 @@ function fazerRequisicao() {
     xhr.responseType = "json";
     xhr.open("POST", document.location.origin + "/fazerRequisicao", true);
     xhr.onload = function () {
-        if (xhr.response.Message == "ChaveIndisponivel") {
-            alert("A chave "+xhr.response.Sala+" Está indiponivel");
-            $("#loadMe").modal("hide");
-            return;
+        if (xhr.readyState == 4 && xhr.status == "200") {
+            if (xhr.response.Message == "NoLines") {
+                $("#loadMe").modal("hide");
+                alert('Escolha algo para requisitar');
+                return;
+            } else if (xhr.response.Message == "ChaveIndisponivel") {
+                $("#loadMe").modal("hide");
+                alert("A chave " + xhr.response.Sala + " Está indiponivel");
+                return;
+            }else{
+                $("#loadMe").modal("hide");
+                alert("Requisitado com sucesso");
+                location.reload();
+                return;
+            }
         }
-        $("#loadMe").modal("hide");
-        location.reload();
-        return;
     }
 
     xhr.setRequestHeader('Content-Type', 'application/json');
