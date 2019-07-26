@@ -129,7 +129,7 @@ function havePermission(Permission) {
 
 
 function resetPass() {
-    if (isLogged) {
+    if (isLogged()) {
         alert("Already logged in");
         return;
     }
