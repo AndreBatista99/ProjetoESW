@@ -130,11 +130,15 @@ function havePermission(Permission) {
 
 function resetPass() {
     if (isLogged()) {
-        alert("Already logged in");
+        alert("Já tem login efetuado");
         return;
     }
     var num = document.getElementById("RecoveryStudentNumber").value;
     var bi = document.getElementById("RecoveryBINumber").value;
+    if(num=="" || bi ==""){
+        alert("Preencha os campos necessários");
+        return;
+    }
     var json = { "num": num, "bi": bi };
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
@@ -147,13 +151,14 @@ function resetPass() {
             var h3 = document.createElement("h3");
             document.getElementById("recuperarPasswordLabel").textContent = "Nova Password!"
             h3.textContent = xhr.response.pw;
+            h3.style.color='white';
             form.innerHTML = "";
             form.appendChild(h3);
             console.log(xhr.response.pw);
 
 
         } else {
-            console.error("dados incorretos");
+            alert("Dados incorretos");
         }
     }
 
