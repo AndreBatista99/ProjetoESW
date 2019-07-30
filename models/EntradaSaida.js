@@ -5,7 +5,8 @@ var EntradaSaidaSchema = new mongoose.Schema({
   _Nome:{type:String},
   _NUtilizador:{type:Number},
   _EntradaSaida:{type:String},
-  _Hora:{type:Date}
+  _Data:{type:String},
+  _Horario:{type:String},
 }, {timestamps: true});
 
 module.exports = mongoose.model('EntradaSaida', EntradaSaidaSchema, 'EntradaSaida');

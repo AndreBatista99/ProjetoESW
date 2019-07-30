@@ -6,6 +6,14 @@ $(document).ready(function () {
     }
 });
 
+function formatMongoDate(d) {
+    var v = [];
+    v[0] = d.substr(0, 4);
+    v[1] = getExtMonth(d.substr(5, 2));
+    v[2] = d.substr(8, 2);
+
+    return "" + v[2] + " " + v[1] + " " + v[0] ;
+}
 
 function VerificarUtilizador() {
     var nutilizador = getCookie("_NUtilizador");
@@ -22,11 +30,11 @@ function VerificarUtilizador() {
             if (xhr.response.PorSair == true) {
                 document.getElementById("entradaSaida").value = "Saida";
                 document.getElementById("entradaSaida").textContent = "Saida";
-                if (!xhr.response.ultimaEntrada) {
+                if (!xhr.response.ultimaEntradaData) {
                     document.getElementById("estadoUtilizador").textContent = "Ainda não marcou nada";
 
                 } else {
-                    document.getElementById("estadoUtilizador").textContent = "Ainda não marcou saida desde " + formatMongoDate(xhr.response.ultimaEntrada);
+                    document.getElementById("estadoUtilizador").textContent = "Ainda não marcou saida desde " + formatMongoDate(xhr.response.ultimaEntradaData)+" - "+xhr.response.ultimaEntradaHorario;
                 }
                 document.getElementById("estadoUtilizador").style.display = "block";
 
@@ -50,6 +58,7 @@ function ValidarRegistarEntradaSaida() {
     var nutilizador = getCookie("_NUtilizador");
 
     var entradaSaida = document.getElementById("entradaSaida").value;
+
     var json = { "nutilizador": nutilizador };
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";
@@ -99,7 +108,18 @@ function RegistarEntradaSaida() {
         var nutilizador = getCookie("_NUtilizador");
     }
     //var nutilizador=
-    var json = { "nome": nome, "entradaSaida": entradaSaida, "nutilizador": nutilizador };
+
+    var d = new Date();
+    let data = d.toISOString().substr(0, 10);
+    var min= d.getMinutes();
+    if (min<10){
+        var horario = d.getHours()+":0"+d.getMinutes();
+    }else{
+        var horario = d.getHours()+":"+d.getMinutes();
+    }
+
+
+    var json = { "nome": nome, "entradaSaida": entradaSaida, "nutilizador": nutilizador, "data": data, "horario": horario };
 
     var xhr = new XMLHttpRequest();
     xhr.responseType = "json";

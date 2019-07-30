@@ -191,7 +191,7 @@
 	</div>
 	<div id="printDiv" style="display:none">
 		<h1 style="text-align: center">Relatório do dia <span id="dailyReport"></span></h1>
-		<h4>Neste relatório será gerado todos os registos de Ocorrencias e Eventos relacionados com esta data</h4>
+		<h4>Neste relatório será gerado todos os registos de Ocorrencias, Eventos e entradas/ saidas relacionadas com esta data</h4>
 		<!--Ocorrencias-->
 		<div id="OcorrenciasDiarias">
 			<h1 style="text-align:center">Ocorrencias</h1>
@@ -229,6 +229,24 @@
 			</table>
 		</div>
 		
+		<!--Entradas e saidas-->
+		<div id="EntradasSaidasDiarios">
+			<br><br>
+			<h1 style="text-align:center">Entradas e saidas </h1>
+			<h3 style="text-align: center;display:none" id="zeroEntradasSaidas">Não existem entradas e saidas para este dia</h3>
+			<table class="table table-bordered results" id="TableEntradasSaidas" title="Evento">
+				<thead>
+					<tr>
+						<th style="width:20%">#</th>
+						<th style="text-align: center;width:20%" class="col-md-6 col-xs-6">Nome</th>
+						<th style="text-align: center;width:20%" class="col-md-3 col-xs-3">Entrada / Saida</th>
+						<th style="text-align: center;width:20%" class="col-md-3 col-xs-3">Data</th>
+					</tr>
+				</thead>
+				<tbody id="tbody_EntradasSaidas">
+				</tbody>
+			</table>
+		</div>
 
 	</div>
 	<!-- Holder for mobile navigation -->

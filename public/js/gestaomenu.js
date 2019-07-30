@@ -117,21 +117,46 @@ function printReport() {
                     td.id = "Horario;"
                     tr.appendChild(td);
 
+
+                    tbody.appendChild(tr);
+                });
+            }
+
+            if (!xhr.response.EntradasSaidas) {
+                var table = document.getElementById("TableEntradasSaidas");
+                table.innerHTML = "";
+                document.getElementById("zeroEntradasSaidas").style.display = "block";
+            } else {
+                //Eventos
+                var tbody = document.getElementById("tbody_EntradasSaidas");
+                tbody.innerHTML = "";
+                var i = 1;
+                xhr.response.EntradasSaidas.forEach(function (elem) {
+                    //alert(elem._local);
+                    var tr = document.createElement("tr");
+                    var th = document.createElement("th");
+                    th.scope = "row";
+                    th.textContent = "" + (i++);
+                    tr.appendChild(th);
+                    th.id = "Numero;"
                     /* Row */
                     var td = document.createElement("td");
-                    td.id = "" + elem._id
-                    td.className = "event_delete"
-                    var iconTrash = document.createElement("i");
-                    iconTrash.className = "fa fa-trash";
-                    var a = document.createElement("a");
-                    a.appendChild(iconTrash);
-                    a.addEventListener("click", function () {
-                        deleteEvent(elem._NEvento);
-                    });
-                    td.appendChild(a);
-                    td.style.textAlign = "center";
-
+                    td.textContent = elem._Nome;
+                    td.id = "Nome;"
                     tr.appendChild(td);
+
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.textContent = elem._EntradaSaida;
+                    td.id = "EntradaSaida;"
+                    tr.appendChild(td);
+
+                    /* Row */
+                    var td = document.createElement("td");
+                    td.textContent = elem._Data+" - "+elem._Horario;
+                    td.id = "Data;"
+                    tr.appendChild(td);
+
                     tbody.appendChild(tr);
                 });
             }

@@ -209,19 +209,28 @@ function imprimirRelatorio(req, res) {
                   if (eventos.length > 0) {
                     var Eventos = eventos;
                     //Fim Eventos
+                    EntradaSaida.find({ "_Data": date }, (err, EntradasSaidas) => {
 
-                    res.json({
-                      "Message": "Success",
-                      "Ocorrencias": Ocorrencias,
-                      "CriadorOcorrencias": CriadorOcorrencias,
-                      "Eventos": Eventos
+                      res.json({
+                        "Message": "Success",
+                        "Ocorrencias": Ocorrencias,
+                        "CriadorOcorrencias": CriadorOcorrencias,
+                        "EntradasSaidas": EntradasSaidas,
+                        "Eventos": Eventos
+                      });
+                      return;
                     });
 
                   } else {
-                    res.json({
-                      "Message": "Success",
-                      "Ocorrencias": Ocorrencias,
-                      "CriadorOcorrencias": CriadorOcorrencias
+                    EntradaSaida.find({ "_Data": date }, (err, EntradasSaidas) => {
+
+                      res.json({
+                        "Message": "Success",
+                        "Ocorrencias": Ocorrencias,
+                        "CriadorOcorrencias": CriadorOcorrencias,
+                        "EntradasSaidas": EntradasSaidas,
+                      });
+                      return;
                     });
                   }
                 }
@@ -240,17 +249,27 @@ function imprimirRelatorio(req, res) {
             if (eventos.length > 0) {
               var Eventos = eventos;
               //Fim Eventos
-
-              res.json({
-                "Message": "Success",
-                "Eventos": Eventos
+              EntradaSaida.find({ "_Data": date }, (err, EntradasSaidas) => {
+                console.log(date);
+                res.json({
+                  "Message": "Success",
+                  "EntradasSaidas": EntradasSaidas,
+                  "Eventos": Eventos
+                });
+                return;
               });
 
             } else {
-              res.json({
-                "Message": "Success"
+              EntradaSaida.find({ "_Data": date }, (err, EntradasSaidas) => {
+
+                res.json({
+                  "Message": "Success",
+                  "EntradasSaidas": EntradasSaidas
+                });
+
+                console.log('Não tem dados');
+                return;
               });
-              console.log('Não tem dados');
             }
           }
         });
@@ -276,7 +295,7 @@ function criarOcorrencia(req, res) {
           var nextNOcorrencia = parseInt(docs[docs.length - 1]._NOcorrencia);
           nextNOcorrencia += 1;
         }
-        var novaOcorrencia = new Ocorrencia({ "_NOcorrencia":nextNOcorrencia,"_Titulo": req.body.titulo, "_Data": req.body.data, "_Horario": req.body.horario, "_Local": req.body.local, "_Descricao": req.body.descricao, "_NUtilizador": req.body.participante });
+        var novaOcorrencia = new Ocorrencia({ "_NOcorrencia": nextNOcorrencia, "_Titulo": req.body.titulo, "_Data": req.body.data, "_Horario": req.body.horario, "_Local": req.body.local, "_Descricao": req.body.descricao, "_NUtilizador": req.body.participante });
         Ocorrencia.create(novaOcorrencia);
         res.json({ "Message": "Success" });
       });
@@ -293,12 +312,15 @@ module.exports.criarOcorrencia = criarOcorrencia;
 
 function registarEntradaSaida(req, res) {
 
+  var data = req.body.data;
+  var horario = req.body.horario;
   if (req.body.nome == "" || req.body.entradaSaida == "") {
     console.log("Missing parameters");
     res.json({ "Message": "MissingParameters" });
     return;
   }
-  var novaEntradaSaida = new EntradaSaida({ "_Nome": req.body.nome, "_NUtilizador": req.body.nutilizador, "_EntradaSaida": req.body.entradaSaida, "_Hora": new Date().toISOString() });
+
+  var novaEntradaSaida = new EntradaSaida({ "_Nome": req.body.nome, "_NUtilizador": req.body.nutilizador, "_EntradaSaida": req.body.entradaSaida, "_Data": data, "_Horario": horario, });
   EntradaSaida.create(novaEntradaSaida);
   res.json({ "Message": "Success" });
 }
@@ -324,18 +346,18 @@ function verificarUtilizador(req, res) {
       }
       if (entradasSaidas.length == 1) {
         console.log("2");
-        res.json({ "PorSair": true, "ultimaEntrada": entradasSaidas[0]._Hora });
+        res.json({ "PorSair": true, "ultimaEntradaData": entradasSaidas[0]._Data, "ultimaEntradaHorario": entradasSaidas[0]._Horario });
         return;
       }
       entradasSaidas.sort((b, a) => {
-        return a._Hora - b._Hora;
+        return a.createdAt - b.createdAt;
       })
       console.log(entradasSaidas);
       if (entradasSaidas[0]._EntradaSaida == "Saida") {
         res.json({ "PorSair": false });
         return;
       } else {
-        res.json({ "PorSair": true, "ultimaEntrada": entradasSaidas[0]._Hora });
+        res.json({ "PorSair": true, "ultimaEntradaData": entradasSaidas[0]._Data, "ultimaEntradaHorario": entradasSaidas[0]._Horario });
         return;
       }
 
