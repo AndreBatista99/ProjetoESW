@@ -1,7 +1,7 @@
 
 $(document).ready(function () {
     lerEventos();
-    if (havePermission("Professor") || havePermission("Aluno") || havePermission("Admin")) {
+    if (havePermission("Professor") ||  havePermission("Admin")) {
         document.getElementById("btnPopUpCriarEvento").style.display = "block";
         document.getElementById("theadAccao").style.display = "table-cell";
         document.getElementById("MessageNoResults").colSpan  = "5";
@@ -49,7 +49,7 @@ function lerEventos() {
                 tr.appendChild(td);
 
 
-                if (havePermission("Professor") || havePermission("Aluno") || havePermission("Admin")) {
+                if (havePermission("Professor") || havePermission("Admin")) {
                     /* Row */
                     var td = document.createElement("td");
                     td.id = "" + elem._id

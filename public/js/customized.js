@@ -3,6 +3,9 @@ $(document).ready(function () {
     if (isLogged()) {
         document.getElementById("loggedIn").style.display = "block";
         document.getElementById("LoggedUsername").textContent = getCookie("_Nome");
+        if (!havePermission("Professor") && !havePermission("Admin")) {
+            document.getElementById("btnMenuGestao").style.display = "none";
+        }
 
     } else {
         document.getElementById("notLoggedIn").style.display = "block";

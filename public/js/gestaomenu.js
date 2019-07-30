@@ -23,7 +23,7 @@ function printReport() {
 
     var DataAntiga = new Date(1900, 01, 01);
     var DataProposta = new Date(date);
-    if (DataProposta != DataAntiga && DataProposta > DataAntiga) {
+    if (DataProposta <= DataAntiga) {
         alert('Insira uma data igual ou superior ao ano de 1900');
         return;
     }
