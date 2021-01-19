@@ -2,174 +2,448 @@
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Gestão segurança</title>
-	<meta name="description" content="Cardio is a free one page template made exclusively for Codrops by Luka Cvetinovic" />
-	<meta name="keywords" content="html template, css, free, one page, gym, fitness, web design" />
-	<meta name="author" content="Luka Cvetinovic for Codrops" />
-	<!-- Favicons (created with http://realfavicongenerator.net/)-->
-	<link rel="apple-touch-icon" sizes="57x57" href="img/favicons/apple-touch-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="img/favicons/apple-touch-icon-60x60.png">
-	<link rel="icon" type="image/png" href="img/favicons/favicon-32x32.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="img/favicons/favicon-16x16.png" sizes="16x16">
-	<link rel="manifest" href="img/favicons/manifest.json">
-	<link rel="shortcut icon" href="img/favicons/favicon.ico">
-	<meta name="msapplication-TileColor" content="#00a8ff">
-	<meta name="msapplication-config" content="img/favicons/browserconfig.xml">
-	<meta name="theme-color" content="#ffffff">
-	<script
-  src="https://code.jquery.com/jquery-3.4.1.min.js"
-  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-  crossorigin="anonymous"></script>
-	<!-- Normalize -->
-	<link rel="stylesheet" type="text/css" href="css/normalize.css">
-	<!-- Bootstrap -->
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-	<!-- Owl -->
-	<link rel="stylesheet" type="text/css" href="css/owl.css">
-	<!-- Animate.css -->
-	<link rel="stylesheet" type="text/css" href="css/animate.css">
-	<!-- Font Awesome -->
-	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.1.0/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
-	<!-- Elegant Icons -->
-	<link rel="stylesheet" type="text/css" href="fonts/eleganticons/et-icons.css">
-	<!-- Main style -->
-	<link rel="stylesheet" type="text/css" href="css/cardio.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Tendinha do miratejo</title>
+
+  <!-- Bootstrap Core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom Fonts -->
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+  <link href="vendor/simple-line-icons/css/simple-line-icons.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="css/stylish-portfolio.min.css" rel="stylesheet">
+
 
 </head>
 
-<body>
-	<div class="preloader">
-		<img src="img/loader.gif" alt="Preloader image">
-	</div>
-	<nav class="navbar">
-		<div class="container">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="index.html"><img src="img/logo.png" data-active-url="img/logo-active.png" alt=""></a>
-			</div>
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-				<ul class="active nav navbar-nav navbar-right main-nav">
-					<li><a href="entradas.html">Entradas</a></li>
-					<li id="btnMenuRequisicoes"><a href="requisicoesMenu.html">Requisições</a></li>
-					<li><a href="eventos.html">Eventos</a></li>
-					<li><a href="ocorrencias.html">Ocorrências</a></li>
-					<li id="btnMenuGestao"><a href="gestaoMenu.html">Gestão</a></li>
-					<li><a href="contactos.html">Contactos</a></li>
-					<li id="notLoggedIn" style="display:none">
-						<a href="#" data-toggle="modal" data-target="#modal1" class="custButton btn btn-blue">ENTRAR</a>
-					</li>
-					<li id="loggedIn" style="display:none">
-						<div class="dropdown show">
-							<a style="color:orange" class="custButton  btn btn-secondary dropdown-toggle list-item" href="#" role="button" id="LoggedUsername" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Username</a>
-							<div class="dropdown-menu list-item" onclick="doLogout();" style="left:0px;" aria-labelledby="dropdownMenuLink">
-							<a class="dropdown-item list-item userOption"> <i class="fas fa-sign-out-alt"></i> Logout</a>
-							</div>
-						</div>
-					</li>
-				</ul>
-			</div>
-			<!-- /.navbar-collapse -->
-		</div>
-		<!-- /.container-fluid -->
-	</nav>
-	<header id="intro" style="width:100%;height:100%">
-		<div class="container">
-			<div class="table"style="margin:0px">
-				<div class="header-text">
-					<div class="row">
-						<div class="col-md-12 text-center">
-							<h3 class="light white">Software de gestão de segurança.</h3>
-							<h1 class="white typed">Simplificar é um processo complicado.</h1>
-							<span class="typed-cursor">|</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
-	<div class="modal fade" id="modal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content modal-popup">
-				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
-				<h3 class="white">Login</h3>
-				<form action="" class="popup-form">
-					<input type="text" id="LoginStudentNumber" class="form-control form-white" placeholder="Número de aluno" name="studentNumber" onkeypress="return checkEnter(event)">
-					<input type="password" id="LoginPassword" class="form-control form-white" placeholder="Password" name="password" onkeypress="return checkEnter(event)">
-					<button type="button" onclick="doLogin()" class="custButton btn btn-submit">Entrar</button>
-					<button type="button"  class="custButton btn btn-submit">Utilizar Cartão</button>
-					<button type="button"  data-toggle="modal" data-target="#modal2" class="custButton btn close-link btn-submit">Recuperar Pass</button>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div class="modal fade" id="modal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content modal-popup">
-				<a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
-				<h3 class="white" id="recuperarPasswordLabel">Recuperar password</h3>
-				<form action="" id="RecuperarPassForm" class="popup-form">
-					<input type="text" id="RecoveryStudentNumber" name="RecoveryStudentNumber" class="form-control form-white" placeholder="Número de aluno">
-					<input type="text" id="RecoveryBINumber" name="RecoveryBINumber" class="form-control form-white" placeholder="BI">
-					<button type="button" onclick="resetPass()" class="custButton btn btn-submit" data-toggle="modal">Recuperar</button>
-				</form>
-			</div>
-		</div>
-	</div>
+<body id="page-top">
 
-	<div class="modal fade" id="modal_validation" tabindex="-5" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header" >
-					<div class="row">
-						<div class="col-lg-10 col-md-10 col-sm-10">
-							<h4 class="modal-title" id="modal-title-login">Validação de login</h4>
-						</div>
-						<div class="col-lg-2 col-md-2 col-sm-2">
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true" style="font-size:30px">&times;</span>
-							</button>
-						</div>
-					</div>
-				</div>
-				<div class="modal-body" >
-					<p id="Wrong-Combination" style="color:red;display:none">
-							<i class="fas fa-exclamation-triangle"></i> Combinação inválida 
-					</p>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
-				</div>
-			</div>
-		</div>
-	</div>
-	<!-- Holder for mobile navigation -->
-	<div class="mobile-nav">
-		<ul>
-		</ul>
-		<a href="#" class="close-link"><i class="arrow_up"></i></a>
-	</div>
-	<!-- Scripts -->
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/customized.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/wow.min.js"></script>
-	<script src="js/typewriter.js"></script>
-	<script src="js/jquery.onepagenav.js"></script>
-	<script src="js/main.js"></script>
-	
-	
+  <!-- Navigation -->
+  <a class="menu-toggle rounded" href="#">
+    <i class="fas fa-bars"></i>
+  </a>
+  <nav id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand">
+        <a class="js-scroll-trigger" href="#page-top">Tendinha do miratejo</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#page-top">Inicio</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#services">Serviços</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#portfolio">Produtos</a>
+      </li>
+      <li class="sidebar-nav-item">
+        <a class="js-scroll-trigger" href="#contact">Contacto</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header >
+    <div class="d-none d-xl-block">
+      <div class="masthead d-flex" >
+        <div class="container text-center my-auto">
+          <h1 class="mb-1">Tendinha do miratejo</h1>
+          <h3 class="mb-5">
+            <em>Especialidades no carvão </em><br>
+            <em><i class="icon-phone"></i> 21 253 5108</em>
+            
+          </h3>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Encomende já</a>
+        </div>
+        <div class="overlay"></div>
+      </div>
+    </div>
+    <div class="d-block d-xl-none">
+      <div class="mastheadMobile d-flex" >
+        <div class="container text-center my-auto">
+          <h1 class="mb-1">Tendinha do miratejo</h1>
+          <h3 class="mb-5">
+            <em>Especialidades no carvão </em><br>
+            <em><i class="icon-phone"></i> 21 253 5108</em>
+            
+          </h3>
+          <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Encomende já</a>
+        </div>
+        <div class="overlay"></div>
+      </div>
+    </div>
+      
+    
+  </header>
+
+  <!-- About -->
+  <section class="content-section bg-light" id="about">
+    <div class="container text-center">
+      <div class="row">
+        <div class="col-lg-10 mx-auto">
+          <h2>Quer escolher a sua refeição antes de encomendar?</h2>
+          <p class="lead mb-5">Veja os nossos produtos !</p>
+          <a class="btn btn-dark btn-xl js-scroll-trigger" href="#portfolio"><i class="icon-target"></i> Produtos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="content-section bg-danger text-white text-center" id="services">
+    <div class="container">
+      <div class="content-section-heading">
+        <h2 class="text-secondary mb-0">Serviços</h2>
+        <h2 class="mb-5">...</h2>
+      </div>
+      <div class="row">
+        <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
+          <span class="service-icon rounded-circle mx-auto mb-3">
+            <i class="fas fa-fire-alt"></i>
+          </span>
+          <h4>
+            <strong>Grelhados</strong>
+          </h4>
+          <p class="text-faded mb-0">Especialidades no carvão.</p>
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-5 mb-lg-0">
+          <span class="service-icon rounded-circle mx-auto mb-3">
+            <i class="fas fa-utensils"></i>
+          </span>
+          <h4>
+            <strong>Acompanhamentos</strong>
+          </h4>
+          <p class="text-faded mb-0">Arroz, batata frita e saladas.</p>
+        </div>
+
+        <div class="col-lg-2 col-md-6 mb-5 mb-md-0">
+          <span class="service-icon rounded-circle mx-auto mb-3">
+            <i class="fas fa-cookie-bite"></i>
+          </span>
+          <h4>
+            <strong>Sobremesas</strong>
+          </h4>
+          <p class="text-faded mb-0">Sobremesas caseiras
+            <i class="fas fa-heart"></i></p>
+        </div>
+        
+        <div class="col-lg-2 col-md-6 mb-5 mb-lg-0">
+          <span class="service-icon rounded-circle mx-auto mb-3">
+            <i class="fas fa-glass-cheers"></i>
+          </span>
+          <h4>
+            <strong>Bebidas</strong>
+          </h4>
+          <p class="text-faded mb-0">Refrigerantes, bebidas alcolicas e vinhos.</p>
+        </div>
+
+        <div class="col-lg-3 col-md-12 mb-5 mb-lg-0">
+          <span class="service-icon rounded-circle mx-auto mb-3">
+            <i class="fas fa-apple-alt"></i>
+          </span>
+          <h4>
+            <strong>Fruta fresca</strong>
+          </h4>
+          <p class="text-faded mb-0">Todo o tipo de fruta fresca.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Portfolio -->
+  <section class="content-section" id="portfolio">
+    <div class="container">
+      <div class="content-section-heading text-center">
+        <h3 class="text-secondary mb-0">Produtos</h3>
+        <h2 class="mb-5">Grelhados</h2>
+      </div>
+      <div class="row no-gutters"><!--Produto-->
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Frango</div>
+                <p class="mb-0"><b>6.80€ Unidade</b></p>
+                <p class="mb-0"><b>3.40€ 1/2</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/frango.jpg" style="height:400px;width:555px"  alt="">
+          </a>
+        </div>
+        <div class="col-lg-6"><!--Produto-->
+          <a class="portfolio-item" href="#!">
+            <div class="caption" >
+              <div class="caption-content" >
+                <div class="h2">Espetadas</div>
+                <p class="mb-0"><b>2.00€ Unidade de Peru</b></p>
+                <p class="mb-0"><b>3.80€ Unidade de Porco</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/espetadasperu.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6"><!--Produto-->
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Entremeadas</div>
+                <p class="mb-0"><b>8.60€ kg</b></p> 
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/entremeadasw.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6"><!--Produto-->
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Codornizes</div>
+                <p class="mb-0"><b>1.80€ UN</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/codornizes.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        
+        <div class="col-lg-6"><!--Produto-->
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Salsicha Toscana</div>
+                <p class="mb-0"><b>1.20€ UN</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/Salsicha.png" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6"><!--Produto-->
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Coelho</div>
+                <p class="mb-0"><b>9.60 KG</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/coelho.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6"><!--Produto-->
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Secretos/Lagartos</div>
+                <p class="mb-0"><b>14.00€ KG</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/lagarto.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6"><!--Produto-->
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Picanha</div>
+                <p class="mb-0"><b>15.00€ KG</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/Picanha.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+      </div>
+    </div>
+	<br>
+	<div class="container">
+      <div class="content-section-heading text-center">
+        <h2 class="mb-5">Acompanhamentos</h2>
+      </div>
+      <div class="row no-gutters">
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Strawberries</div>
+                <p class="mb-0">Strawberries are such a tasty snack, especially with a little sugar on top!</p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/portfolio-3.jpg" style="height:400px;width:555px"alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Workspace</div>
+                <p class="mb-0">A yellow workspace with some scissors, pencils, and other objects.</p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/portfolio-4.jpg" style="height:400px;width:555px"alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Workspace</div>
+                <p class="mb-0">A yellow workspace with some scissors, pencils, and other objects.</p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/portfolio-4.jpg"style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Workspace</div>
+                <p class="mb-0">A yellow workspace with some scissors, pencils, and other objects.</p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/portfolio-4.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+      </div>
+    </div>
+	<br>
+	<div class="container">
+      <div class="content-section-heading text-center">
+        <h2 class="mb-5">Sobremesas</h2>
+      </div>
+      <div class="row no-gutters">
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Arroz doce</div>
+                <p class="mb-0"><b></b> 1.25€ UN</p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/arroz doce.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Três sabores</div>
+                <p class="mb-0"><b>1.25€ UN</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/3 saboes.jpg" style="height:400px;width:555px"alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Mousse de chocolate</div>
+                <p class="mb-0"><b>1.25€ UN</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/mousse de cholate.jpg" style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Serradura</div>
+                <p class="mb-0"><b>1.25€ UN</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/serradura.jpg"style="height:400px;width:555px" alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Baba de camelo</div>
+                <p class="mb-0"><b>1.25€ UN</b></p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/produtos/baba de camelojpg.jpg" style="height:400px;width:555px"alt="">
+          </a>
+        </div>
+        <div class="col-lg-6">
+          <a class="portfolio-item" href="#!">
+            <div class="caption">
+              <div class="caption-content">
+                <div class="h2">Workspace</div>
+                <p class="mb-0">A yellow workspace with some scissors, pencils, and other objects.</p>
+              </div>
+            </div>
+            <img class="img-fluid" src="img/portfolio-4.jpg" style="height:400px;width:555px"alt="">
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="content-section bg-primary text-white" id="contact">
+    <div class="container text-center">
+      <h2 class="mb-4">Já escolheu a sua encomenda?</h2>
+      <p>Ao clicar no botão recebe o número no seu telemóvel <b>21 253 5108</b></p>
+      <a href="tel:21 253 5108" class="btn btn-xl btn-dark" ><i class="fas fa-phone-alt"></i>&nbsp;Ligue já!</a>
+    </div>
+  </section>
+
+  <!-- Map -->
+   <div id="localizacao" class="map">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6232.090186067234!2d-9.153472006962714!3d38.64784346949937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd19357541e5134d%3A0xab1885d492304072!2sChurrasqueira%20Tendinha%20do%20Miratejo!5e0!3m2!1spt-PT!2spt!4v1608261898751!5m2!1spt-PT!2spt"></iframe>
+    <br />
+    <small>
+      <a href="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6232.090186067234!2d-9.153472006962714!3d38.64784346949937!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd19357541e5134d%3A0xab1885d492304072!2sChurrasqueira%20Tendinha%20do%20Miratejo!5e0!3m2!1spt-PT!2spt!4v1608261898751!5m2!1spt-PT!2spt"></a>
+    </small>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <ul class="list-inline mb-5">
+        <li class="list-inline-item">
+          <a class="social-link rounded-circle text-white mr-3" href="#!">
+            <i class="icon-social-facebook"></i>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a class="social-link rounded-circle text-white mr-3" href="#!">
+            <i class="icon-social-twitter"></i>
+          </a>
+        </li>
+        <li class="list-inline-item">
+          <a class="social-link rounded-circle text-white" href="#!">
+            <i class="icon-social-github"></i>
+          </a>
+        </li>
+      </ul>
+      <p class="text-muted small mb-0">Copyright &copy; Tendinha do miratejo 2020</p>
+    </div>
+  </footer>
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded js-scroll-trigger" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/stylish-portfolio.min.js"></script>
+
 </body>
 
 </html>
